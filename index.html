@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+
+	<link rel="stylesheet" href="style.css">
+
+	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<script>
+		var menuOpen = false;
+		var menuShown = false;
+		var navigation = {
+			0:"Maths",
+			1:"Méca",
+			2:"ELG",
+			3:"SDA",
+			4:"ISER",
+			5:"WEB",
+			6:"MIN",
+			7:"ENI",
+			8:"IAR"
+		};
+
+		var infoUser = {
+			"prenom":"Martin",
+			"nom":"JOLY",
+			"promo":"L1"
+		}
+
+		function createMatiereIconsFromJson(data) {
+			var container = $("#matiereMenuContainer");
+			for(var i = 0; data[i]; i++) {
+				var newDiv = document.createElement("div");
+				newDiv.className = 'matiereIcon';
+				newDiv.innerHTML = data[i];
+				newDiv.onmouseover = function() {
+					$(this).animate({borderRadius:'+=10px'}, "fast");
+					$(this).css('background-color', "#d77");
+				}
+				newDiv.onmouseout = function() {
+					$(this).animate({borderRadius:'-=10px'}, "fast");
+					$(this).css('background-color', "#d66");
+				}
+				container.append(newDiv);
+			}
+		}
+
+		function fillUserInfosFromJson(data) {
+			$("#profileInfosContainer #nom").text(data["nom"]);
+			$("#profileInfosContainer #prenom").text(data["prenom"]);
+			$("#profileInfosContainer #promo").text(data["promo"]);
+		}
+
+
+		function init() {
+			createMatiereIconsFromJson(navigation);
+			fillUserInfosFromJson(infoUser);
+		}
+
+		function expandMenu() {
+			if(menuOpen==false) {
+				$(".menu").animate({width:'20%'});
+				setTimeout(function(){$(".menuText").show()},150);
+				$(".menuText").animate({opacity:'1'}, 1000);
+				menuOpen = true;
+			}
+			else {
+				$(".menuText").animate({opacity:'0'});
+				$(".menuText").hide();
+				$(".menu").animate({width:'40px'});
+				menuOpen=false;
+			}
+		}
+
+		function onClickNotification() {
+			$("#dropDownBulle").left = $(".fa-comments").position().left;
+			$("#dropDownBulle").top = $(".fa-comments").position().top;
+			$("#dropDownBulle").show();
+		}
+
+	</script>
+</head>
+<body onload="init()">
+	<div class="navBar">
+		<a href="index.html">
+			<img src="img/logo_mpm.png" alt="#" id="logo">
+		</a>
+		<input type="text" id="searchField" placeholder="Rechercher">
+		<button id="rechercher"><i class="fa fa-search" aria-hidden="true"></i></button>
+		<div class="centerDiv">
+		<span id="siteTitle">IG2I COMMUNICATION SERVICE</span>
+		<div class="dropdownZone">
+			<button>
+				<i class="fa fa-users" aria-hidden="true"></i>
+			</button>
+			<button>
+				<i class="fa fa-comments" aria-hidden="true"></i>
+			</button>
+			<button onclick="onClickNotification()">
+				<i class="fa fa-globe" aria-hidden="true"></i>
+			</button>
+		</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="left">
+			<div class="top">
+				<h3>EMPLOI DU TEMPS</h3>
+				<br>
+			<div class="dateContainer">
+				<div class="dateNumber">04</div>
+				<div class="dateMois">MARS</div>
+			</div>
+			<p>PAS COURS</p>
+
+			</div>
+			<div class="bottom">
+				<div id="matiereMenuContainer"></div>
+			</div>
+		</div>
+		<div class="center">
+			<h2>DOCUMENT</h2>
+			<div class="justCenter">
+			<table id="documentInfos">
+				<tr>
+					<th>Date</th>
+					<th>Promo</th>
+					<th>Matière</th>
+					<th>Nom</th>
+					<th>Corrigé</th>
+					<th>Publié par</th>
+				</tr>
+				<tr>
+					<td>01/03</td>
+					<td>LE1</td>
+					<td>Maths</td>
+					<td>Exercice n°2 Polynômes</td>
+					<td>OUI</td>
+					<td>Martin JOLY (LE1)</td>
+				</tr>
+			</table>
+			</div>
+			<!--
+			Pour gérer l'affichage d'un profil (bof bof)
+			<div id="profileInfosContainer">
+				<table id="profileInfos">
+					<tr>
+						<td id="nom">Joly</td>
+					</tr>
+					<tr>
+						<td id="prenom">Remy</td>
+					</tr>
+					<tr>
+						<td id="promo">L1</td>
+					</tr>
+				</table>
+			</div>-->
+
+		</div>
+		<div class="right">
+			<h2>NEWS FEED</h2>
+		</div>
+		<div class="menu">
+			<button id="menuExpander" onclick="expandMenu()" >
+				<i class="fa fa-bars" aria-hidden="true"><span class="menuText"> Menu</span></i>
+			</button><br><br>
+			<a href="index.html">
+			<button class="menuBtn">
+				<i class="fa fa-home" aria-hidden="true"><span class="menuText"> Accueil</span></i>
+			</button>
+			</a><br>
+			<a href="calendar.html">
+				<button class="menuBtn">
+				<i class="fa fa-calendar" aria-hidden="true"><span class="menuText"> Evènements</span></i>
+				</button>
+			</a><br>
+			<button class="menuBtn">
+				<i class="fa fa-comments" aria-hidden="true"><span class="menuText"> Messages</span></i>
+			</button><br>
+			<button class="menuBtn deconnexionText">
+				<i class="fa fa-power-off" aria-hidden="true"><span class="menuText deconnexionText"> Déconnexion</span></i>
+			</button><br>
+		</div>
+
+		<div id="dropDownBulle">
+			
+		</div>
+	</body>
+	</html>
