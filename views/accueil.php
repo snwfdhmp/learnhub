@@ -89,6 +89,7 @@
 	<div class="content">
 		<? include_once "layouts/leftside.php" ?>
 		<div class="center">
+			<button id="addCourseBtn">+ Ajouter</button>
 			<h2>DOCUMENT</h2>
 			<div class="justCenter">
 				<table id="documentInfos">

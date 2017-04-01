@@ -1,4 +1,5 @@
 <?
+
 class Authenticator {
 	private $authenticated;
 	private $email;
@@ -57,16 +58,15 @@ class Authenticator {
 
 	}
 
-	private function isCookieCorrect($cookie, $id_user, $ip) {
-		$query = $db->prepare("SELECT * FROM connexions WHERE sessionCookie=:cookie AND id_user=:id_user AND last_ip");
+	public function isCookieCorrect($cookie, $id_user, $ip, $db) {
+		$query = $db->prepare("SELECT * FROM connexions WHERE sessionCookie=:cookie AND id_user=:id_user AND last_ip=:ip");
 		$query->bindParam(':cookie', $cookie);
 		$query->bindParam(':id_user', $id_user);
+		$query->bindParam(':ip', $ip);
 		$nbRows = $query->execute()->fetchColumn();
 
 		if($nbRows <= 0) //if there's no entry in db, don't go forward
-			return false;
-
-		$query = $db->prepare("")
+			die("Pas de correspondances dans la base");
 	}
 
 }

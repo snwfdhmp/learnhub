@@ -9,7 +9,7 @@ function authenticate($email, $pass, $db) {
 
 		if (password_verify($pass, $answer["pass"]))
 		{
-			return $answer["id_user"];
+			return $answer["id_user"];										
 		}
 		else {
 			return false;
