@@ -2,7 +2,7 @@
 session_start();
 
 // Following GLOBALS configuration is inspired by phpSteroid (https://github.com/DarKnight1346/phpSteroid/blob/master/index.php)
-$GLOBALS["config"] = array(
+$conf = array(
 	"appName" => "ICS",
 	"version" => "beta 0.1",
 	"domain" => "localhost:8888",
@@ -16,34 +16,37 @@ $GLOBALS["config"] = array(
 		"password"=>"dev",
 		"name"=>"ICS"
 		),
-
+	"paths" => array(
+		"views" => "../views/",
+		"actions" => "../actions/",
+		"libs" => "../lib/"
+		),
+	"views" => array(
+		"accueil" => "accueil.php",
+		"calendar" => "calendar.php",
+		"signup" => "signup.php",
+		"login" => "login.php"
+		),
+	"actions" => array(
+		"signup" => "proceedSignUp.php",
+		"login" => "proceedLogin.php"
+		),
 	);
 
-$app_urls = array (
-	"accueil" => "accueil.php",
-	"calendar" => "calendar.php",
-	"signup" => "signup.php",
-	"login" => "login.php"
-);
+require_once($conf['paths']['libs']."class/Authenticator.php");
 
-$app_actions = array (
-	"signup" => "proceedSignUp.php",
-	"login" => "proceedLogin.php"
-);
-
-$views = "../views/";
-$actions = "../actions/";
+$auth = new Authenticator();
 
 if(!isset($_GET["u"])) {
 	$_GET["u"] = "accueil";
 }
 
-if(array_key_exists($_POST["action"], $app_actions)) {
+if(array_key_exists($_POST["action"], $conf["actions"])) {
 	include("../actions/proceedLogin.php");
 }
 
-if(array_key_exists($_GET["u"], $app_urls)) {
-	include($views.$app_urls[$_GET["u"]]);
+if(array_key_exists($_GET["u"], $conf["views"])) {
+	include($conf["paths"]["views"].$conf["views"][$_GET["u"]]);
 }
 
 ?>
