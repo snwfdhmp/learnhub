@@ -37,7 +37,7 @@ require_once($GLOBALS['config']['paths']['libs']."class/Authenticator.php");
 
 $auth = new Authenticator();
 
-if(!isset($_GET["u"])) {
+if(!isset($_GET["u"]) || $_GET["u"] == "") {
 	$_GET["u"] = "accueil";
 }
 
