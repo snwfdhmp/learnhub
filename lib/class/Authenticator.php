@@ -1,5 +1,5 @@
 <?
-require_once($conf['paths']['libs'].'db_funcs.php');
+require_once($GLOBALS['config']['paths']['libs'].'db_funcs.php');
 
 class Authenticator {
 	private $authenticated;
@@ -22,8 +22,15 @@ class Authenticator {
 	}
 
 	private function generateSessionCookie() { //generateSessionCookie
-		return bin2hex(random_bytes($GLOBALS["config"]["authenticator"]["sessionCookieLength"]));
+		return bin2hex(random_bytes($GLOBALS['config']["authenticator"]["sessionCookieLength"]));
 	}
+
+
+	private function createConnexion() {
+		$cookie = $this-> generateSessionCookie();
+		echo "<p>Generating a new cookie : ".$cookie."</p>";
+	}
+
 
 	public function writeConnexion($pass) {
 		if(strlen($pass) >= 8) {
@@ -46,36 +53,47 @@ class Authenticator {
 		}
 	}
 
-	public function requiresAuthentication() {
-		verifyAuthenticated();
+	public function requiresAuth() {
+		if($this->verifyAuth() === true)
+			echo "<p style='color:green'>Fuck yeah !!!!";
+		else
+			echo "<p style='color:red'>What about no .... :/</p>";
 	}
 
-	public function verifyAuthenticated() {
-		if(!isset($_SESSION['sessionCookie']))
+	private function verifyAuth() {
+		if(!isset($_COOKIE['session_cookie'])) {
+			header('Location: ?u=login');
+			exit();
 			return false;
-		$sessionCookie = $_SESSION['sessionCookie'];
-		if(!isSessionCookieCorrect())
+		}
+		else if(!isSessionCookieCorrect())
 			return false;
+		else
+			return true;
 	}
 
-	public function isSessionCookieCorrect() {
-		$cookie = $_SESSION['sessionCookie'];
+	private function isSessionCookieCorrect() {
+		if(!isset($_COOKIE['session_cookie']))
+			return false;
+
+		$cookie = $_COOKIE['session_cookie'];
 		$id_user = $_SESSION['id_user'];
-		$ip = $_SESSION['ip'];
+		$ip = $_SERVER['REMOTE_ADDR'];
+
 		$db = getPdoDbObject();
-		$query = $db->prepare("SELECT * FROM connexions WHERE sessionCookie=:cookie AND id_user=:id_user AND last_ip=:ip");
+		$query = $db->prepare("SELECT * FROM connexions WHERE session_cookie=:cookie AND id_user=:id_user AND last_ip=:ip");
 		$query->bindParam(':cookie', $cookie);
 		$query->bindParam(':id_user', $id_user);
 		$query->bindParam(':ip', $ip);
 		$query->execute();
 		$nbRows = $query->rowCount();
 
-		if($nbRows <= 0) //if there's no entry in db, don't go forward
-			echo "<p>Pas de correspondances dans la base</p>";
-		else
-			echo "<p>Success !!!!!!!</p>";
-
 		$db = null;
+
+		if($nbRows <= 0) //if there's no entry in db, don't go forward
+			return 0;
+		else
+			return 1;
 	}
 
 }

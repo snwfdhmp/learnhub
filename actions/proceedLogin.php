@@ -1,4 +1,4 @@
-<? // Yepco_officiel
+<? // Note à aller voir : Yepco_officiel
 include "connectDb.php";
 include "../lib/authenticate.php";
 
@@ -26,9 +26,9 @@ if($login) {
 
 	$query->execute();
 
-	/*header('Location: ?u=calendar');
-	exit();*/
+	//header('Location: ?u=calendar');
+	//exit();
 }
 else {
-	echo "nop";
+	echo "Erreur d'identifiants.";
 }
