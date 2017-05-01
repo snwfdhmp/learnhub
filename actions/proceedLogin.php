@@ -1,4 +1,4 @@
-<? // Note à aller voir : Yepco_officiel
+<? // Yepco_officiel
 include "connectDb.php";
 include "../lib/authenticate.php";
 
@@ -23,12 +23,11 @@ if($login) {
 	$query->bindParam(':id_user', $id_user);
 	$query->bindParam(':last_ip', $last_ip);
 	$query->bindParam(':last_ping', $last_ping);
-
 	$query->execute();
 
-	//header('Location: ?u=calendar');
-	//exit();
+	/*header('Location: ?u=calendar');
+	exit();*/
 }
 else {
-	echo "Erreur d'identifiants.";
+	echo "nop";
 }

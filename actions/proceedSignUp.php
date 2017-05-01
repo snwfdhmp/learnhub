@@ -21,7 +21,7 @@ if(strlen($prenom) > 0 && strlen($nom) > 0 && filter_var($email, FILTER_VALIDATE
 	$query->bindParam(':nom', $nom);
 	$query->bindParam(':pass', $hash);
 	$query->bindParam(':email', $email);
-	/*$req = "INSERT INTO users (prenom, nom, pass, email) VALUES('".$prenom."','".$nom."', '".$pass."', '".$email."')";
-	$query = $db->exec($req);*/
+	$req = "INSERT INTO users (prenom, nom, pass, email) VALUES('".$prenom."','".$nom."', '".$pass."', '".$email."')";
+	$query = $db->exec($req);
 	$query->execute();
 } ?>
