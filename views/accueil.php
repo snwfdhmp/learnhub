@@ -89,6 +89,29 @@
 			addArea.style.display="block";
             itemsArea.style.display="none";
 		}
+
+		function getSubjects(obj){
+            promo=obj.value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("subjects").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "../actions/getSubjects.php?p=" + promo, true);
+            xmlhttp.send();
+        }
+        function getChap(obj){
+            mat=obj.value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("chaps").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "../actions/getSubjects.php?m=" + mat, true);
+            xmlhttp.send();
+        }
 	</script>
 </head>
 <body onload="init()">
@@ -130,8 +153,7 @@
             if($_GET["x"]=="upfail") echo'<div id="addArea" style="display= block;">
             							 <button id="succ">Upload Failed</button>';
             else echo'<div id="addArea">';
-            echo'
-                <h2>Ajouter un document</h2>
+            echo'<h2>Ajouter un document</h2>
                 <div class="justCenter">
                 	<form action="?u=accueil" enctype="multipart/form-data" method="POST">
                 	<input type="hidden" name="action" id="action" value="addDoc">
@@ -143,20 +165,19 @@
                 		<option value="4">Correction</option>
                 	</select>
                 	<p>Promo :</p><select name="promo">
-                		<option value="1">LE1</option>
-                		<option value="2">LE2</option>
-                		<option value="3">LE3</option>
-                		<option value="4">LE4</option>
-                		<option value="5">LE5</option>
-                		<option value="6">LA1</option>
-                		<option value="7">LA2</option>
-                		<option value="8">LA3</option>
+                        <option value="0" selected="selected">selectionez votre promo</option>
+                		<option value="1" onclick="getSubjects(this);">LE1</option>
+                		<option value="2" onclick="getSubjects(this);">LE2</option>
+                		<option value="3" onclick="getSubjects(this);">LE3</option>
+                		<option value="4" onclick="getSubjects(this);">LE4</option>
+                		<option value="5" onclick="getSubjects(this);">LE5</option>
+                		<option value="6" onclick="getSubjects(this);">LA1</option>
+                		<option value="7" onclick="getSubjects(this);">LA2</option>
+                		<option value="8" onclick="getSubjects(this);">LA3</option>
                 	</select>
-                	<p>Matieres:</p><select name="matiere">
-                		<option value="1">ENI</option>
-                	</select>
-                	<p>Chapitre:</p><select name="chapitre">
-                		<option value="1">Transfo</option>
+                	<p>Matieres:</p><select name="matiere" id="subjects">
+                    </select>
+                	<p>Chapitre:</p><select name="chapitre" id="chaps">
                 	</select>
                 	<p>Nom:</p><br>
                 	<input type="text" name="nom">

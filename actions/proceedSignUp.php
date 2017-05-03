@@ -9,7 +9,7 @@ $passconf = $_POST["passconf"];
 
 if(strlen($prenom) > 0 && strlen($nom) > 0 && filter_var($email, FILTER_VALIDATE_EMAIL) && strlen($pass) >= 8 && $pass == $passconf) {
 	
-	$salt = random_bytes(262);
+	$salt = openssl_random_pseudo_bytes(262);
 
 	$options = [
 	"cost"=>10,
