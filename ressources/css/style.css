@@ -50,15 +50,6 @@ padding: 15px;
 	cursor:pointer;
 }
 
-.menu {
-position:fixed;
-right:0;
-width:40px;
-height:100%;
-background-color: #333;
-top:0;
-text-align: center;
-}
 .navBar {
 	position:fixed;
 	top:0;
@@ -81,57 +72,6 @@ input#searchField {
 	border-radius: 1px;
 	border:none;
 	padding:5px;
-}
-.dropdownZone {
-	position:fixed;
-	top:2px;
-	left:80%;
-	margin: 0px;
-	display: inline-block;
-}
-div.dropdownZone button {
-	background: none;
-	border:none;
-	color:white;
-	font-size: 20px;
-	cursor: pointer;
-	margin:0px;
-}
-
-.menuBtn {
-	padding:10px;
-	color:white;
-	background:none;
-	border:none;
-	font-size:20px;
-	cursor:pointer;
-}
-.menuBtn:hover {
-	color:#aaf;
-}
-
-#menuExpander {
-	padding:10px;
-	color:white;
-	background:none;
-	border:none;
-	font-size:20px;
-	cursor:pointer;
-}
-#menuExpander:hover {
-	color: #aaf;
-}
-.menuText {
-	display:none;
-	opacity: 0;
-	font-family: 'Quicksand', sans-serif;
-	cursor:pointer;
-}
-.deconnexionText:hover {
-	color:#faa;
-}
-.signUpText:hover {
-	color:#afa;
 }
 
 .left {
@@ -256,15 +196,6 @@ table#documentInfos td{
 .justCenter {
 	margin-left: 5%;
 }
-
-#dropDownBulle {
-	width:200px;
-	height: 300px;
-	background-color: white;
-	position:fixed;
-	display: none;
-}
-
 #addCourseBtn {
 	position:fixed;
 	top:50px;
