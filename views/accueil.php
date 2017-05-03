@@ -32,7 +32,6 @@
 			"promo":"L1",
 			"idUser":1
 		}
-
 		function createMatiereIconsFromJson(data) {
 			var container = $("#matiereMenuContainer");
 			for(var i = 0; data[i]; i++) {
