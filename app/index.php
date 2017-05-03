@@ -2,9 +2,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 session_start();
-
+$connected=1;
 // Following GLOBALS configuration is inspired by phpSteroid (https://github.com/DarKnight1346/phpSteroid/blob/master/index.php)
-$GLOBALS['config'] = array(
+$conf = array(
 	"appName" => "ICS",
 	"version" => "beta 0.1",
 	"domain" => "localhost:8888",
@@ -31,20 +31,22 @@ $GLOBALS['config'] = array(
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",
-		"login" => "proceedLogin.php"
+		"login" => "proceedLogin.php",
+		"addDoc" => "proceedAddDoc.php"
 		),
 	"default" => array(
 		"view" => "accueil"
 		)
 	);
 
-require_once($GLOBALS['config']['paths']['libs']."class/Authenticator.php");
+require_once($conf['paths']['libs']."class/Authenticator.php");
 
 $auth = NULL;
 
 if(isset($_SESSION['auth']))
 	$auth = unserialize($_SESSION['auth']);
 
+<<<<<<< HEAD
 if($auth == NULL)
 	$auth = new Authenticator();
 
@@ -62,5 +64,14 @@ if(!isset($auth))
 	$auth = new Authenticator();
 
 $_SESSION['auth'] = serialize($auth);
+=======
+if(array_key_exists($_POST["action"], $conf["actions"])) {
+	include("../actions/".$conf["actions"][$_POST["action"]]);
+}
+
+if(array_key_exists($_GET["u"], $conf["views"])) {
+	include($conf["paths"]["views"].$conf["views"][$_GET["u"]]);
+}
+>>>>>>> PDF-content
 
 ?>

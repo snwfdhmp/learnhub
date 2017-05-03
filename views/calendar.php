@@ -1,6 +1,3 @@
-<?
-	$auth->requiresAuth();
-	?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

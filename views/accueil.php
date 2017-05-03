@@ -15,6 +15,8 @@
 	<script>
 		var menuOpen = false;
 		var menuShown = false;
+		var itemsArea;
+		var addArea;
 		var navigation = {
 			0:"Maths",
 			1:"Méca",
@@ -26,13 +28,12 @@
 			7:"ENI",
 			8:"IAR"
 		};
-
 		var infoUser = {
 			"prenom":"Martin",
 			"nom":"JOLY",
-			"promo":"L1"
+			"promo":"L1",
+			"idUser":1
 		}
-
 		function createMatiereIconsFromJson(data) {
 			var container = $("#matiereMenuContainer");
 			for(var i = 0; data[i]; i++) {
@@ -61,6 +62,8 @@
 		function init() {
 			createMatiereIconsFromJson(navigation);
 			fillUserInfosFromJson(infoUser);
+			addArea= document.getElementById("addArea");
+            itemsArea= document.getElementById("itemsArea");
 		}
 
 		function expandMenu() {
@@ -83,7 +86,33 @@
 			$("#dropDownBulle").top = $(".fa-comments").position().top;
 			$("#dropDownBulle").show();
 		}
+		function showadd(){
+			addArea.style.display="block";
+            itemsArea.style.display="none";
+		}
 
+		function getSubjects(obj){
+            promo=obj.value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("subjects").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "../actions/getSubjects.php?p=" + promo, true);
+            xmlhttp.send();
+        }
+        function getChap(obj){
+            mat=obj.value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("chaps").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "../actions/getSubjects.php?m=" + mat, true);
+            xmlhttp.send();
+        }
 	</script>
 </head>
 <body onload="init()">
@@ -91,6 +120,7 @@
 	<!--<div class="content">
 		<? include_once "layouts/leftside.php" ?>
 		<div class="center">
+<<<<<<< HEAD
 			<button id="addCourseBtn">+ Ajouter</button>
 			<h2>DOCUMENT</h2>
 			<div class="justCenter">
@@ -115,6 +145,76 @@
 			</div>
 
 		</div>
+=======
+				<div id="itemsArea">
+				<?php 
+					if($connected){
+						echo '<button id="addCourseBtn" onclick="showadd()">+ Ajouter</button>';
+					}
+					if(isset($_GET["x"]) && $_GET["x"]=="upsucc") echo'<button id="succ">Upload Succeful</button>';
+					if(!isset($_GET["x"]) || $_GET["x"]=="upsucc") echo'
+								<h2>DOCUMENT</h2>
+								<div class="justCenter">
+									<table id="documentInfos">
+										<tr>
+											<th>Date</th>
+											<th>Promo</th>
+											<th>Matière</th>
+											<th>Nom</th>
+											<th>Corrigé</th>
+											<th>Publié par</th>
+										</tr>
+										<tr>
+											<td>01/03</td>
+											<td>LE1</td>
+											<td>Maths</td>
+											<td>Exercice n°2 Polynômes</td>
+											<td>OUI</td>
+											<td>Martin JOLY (LE1)</td>
+										</tr>
+									</table>
+								</div>
+							</div>';
+			?>
+			<?php
+            if($_GET["x"]=="upfail") echo'<div id="addArea" style="display= block;">
+            							 <button id="succ">Upload Failed</button>';
+            else echo'<div id="addArea">';
+            echo'<h2>Ajouter un document</h2>
+                <div class="justCenter">
+                	<form action="?u=accueil" enctype="multipart/form-data" method="POST">
+                	<input type="hidden" name="action" id="action" value="addDoc">
+                	<input type="hidden" name="auteur" id="auteur" value="1">
+                	<p>Type :</p><select name="type">
+                		<option value="1">Cours</option>
+                		<option value="2">Exercice</option>
+                		<option value="3">Annale</option>
+                		<option value="4">Correction</option>
+                	</select>
+                	<p>Promo :</p><select name="promo">
+                        <option value="0" selected="selected">selectionez votre promo</option>
+                		<option value="1" onclick="getSubjects(this);">LE1</option>
+                		<option value="2" onclick="getSubjects(this);">LE2</option>
+                		<option value="3" onclick="getSubjects(this);">LE3</option>
+                		<option value="4" onclick="getSubjects(this);">LE4</option>
+                		<option value="5" onclick="getSubjects(this);">LE5</option>
+                		<option value="6" onclick="getSubjects(this);">LA1</option>
+                		<option value="7" onclick="getSubjects(this);">LA2</option>
+                		<option value="8" onclick="getSubjects(this);">LA3</option>
+                	</select>
+                	<p>Matieres:</p><select name="matiere" id="subjects">
+                    </select>
+                	<p>Chapitre:</p><select name="chapitre" id="chaps">
+                	</select>
+                	<p>Nom:</p><br>
+                	<input type="text" name="nom">
+                	<p>le document</p><input type="file" name="doc" id="doc" /><br>
+                	<input type="submit" name="submit"  value="envoyer">
+                	</form>
+                </div>
+            </div>
+		</div>';?>
+>>>>>>> PDF-content
 		<? include_once "layouts/rightside.php" ?>
 		<? include_once "layouts/menu.php" ?>
 		</div> -->
