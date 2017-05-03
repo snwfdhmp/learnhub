@@ -10,4 +10,4 @@ function getPdoDbObject() {
 		die();
 	}
 	return $db;
-}
+} ?>

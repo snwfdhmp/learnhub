@@ -1,5 +1,5 @@
 <?
-require_once($conf['paths']['libs'].'db_funcs.php');
+require_once ($GLOBALS['config']['paths']['libs'].'db_funcs.php');
 
 class Authenticator {
 	private $authenticated;
@@ -40,8 +40,6 @@ class Authenticator {
 		return bin2hex(random_bytes($GLOBALS["config"]["authenticator"]["sessionCookieLength"]));
 	}
 
-<<<<<<< HEAD
-
 	private function createConnexion() {
 		$cookie = $this-> generateSessionCookie();
 		echo "<p>Generating a new cookie : ".$cookie."</p>";
@@ -50,10 +48,6 @@ class Authenticator {
 
 	private function validateCredentials($email, $pass) {
 		$this->connectDb();
-
-=======
-	public function writeConnexion($pass) {
->>>>>>> PDF-content
 		if(strlen($pass) >= 8) {
 			$query = $this->db->prepare("SELECT id_user, pass FROM users WHERE email=:email");
 			$query->bindParam(':email', $email);
@@ -81,8 +75,6 @@ class Authenticator {
 			header('Location: ?u=login&err=creds');
 			exit();
 		}
-
-<<<<<<< HEAD
 		$bytes = random_bytes(64);
 		$session_cookie = bin2hex($bytes);
 		$last_ip = $_SERVER['REMOTE_ADDR'];
@@ -154,41 +146,16 @@ class Authenticator {
 
 		$this->db = getPdoDbObject();
 		$query = $this->db->prepare("SELECT * FROM connexions WHERE session_cookie=:cookie AND id_user=:id_user AND last_ip=:ip");
-=======
-	public function requiresAuthentication() {
-		verifyAuthenticated();
-	}
 
-	public function verifyAuthenticated() {
-		if(!isset($_SESSION['sessionCookie']))
-			return false;
-		$sessionCookie = $_SESSION['sessionCookie'];
-		if(!isSessionCookieCorrect())
-			return false;
-	}
-
-	public function isSessionCookieCorrect() {
-		$cookie = $_SESSION['sessionCookie'];
-		$id_user = $_SESSION['id_user'];
-		$ip = $_SESSION['ip'];
-		$db = getPdoDbObject();
-		$query = $db->prepare("SELECT * FROM connexions WHERE sessionCookie=:cookie AND id_user=:id_user AND last_ip=:ip");
->>>>>>> PDF-content
 		$query->bindParam(':cookie', $cookie);
 		$query->bindParam(':id_user', $id_user);
 		$query->bindParam(':ip', $ip);
 		$query->execute();
 		$nbRows = $query->rowCount();
-
-<<<<<<< HEAD
 		$this->closeDb();
 
 		if($nbRows <= 0) //if there's no entry in db, don't go forward
 		return 0;
-=======
-		if($nbRows <= 0) //if there's no entry in db, don't go forward
-			echo "<p>Pas de correspondances dans la base</p>";
->>>>>>> PDF-content
 		else
 			echo "<p>Success !!!!!!!</p>";
 
