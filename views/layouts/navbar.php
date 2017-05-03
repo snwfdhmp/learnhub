@@ -1,5 +1,5 @@
 <div class="navBar">
-	<a href="index.html">
+	<a href="?v=accueil">
 		<img src="../ressources/img/logo_mpm.png" alt="#" id="logo">
 	</a>
 	<input type="text" id="searchField" placeholder="Rechercher">
