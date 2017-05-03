@@ -1,6 +1,4 @@
 <? // Note à aller voir : Yepco_officiel
-include "connectDb.php";
-include "../lib/authenticate.php";
 
 if(isset($_POST['email']) && isset($_POST['pass']) && isset($auth)) {
 	$email = $_POST["email"];

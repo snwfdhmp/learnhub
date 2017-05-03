@@ -27,12 +27,22 @@ $GLOBALS['config'] = array(
 		"accueil" => "accueil.php",
 		"calendar" => "calendar.php",
 		"signup" => "signup.php",
-		"login" => "login.php"
+		"login" => "login.php",
+		"addCourse" => "addCourse.php",
+		"explore" => "explore.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",
 		"login" => "proceedLogin.php",
 		"addDoc" => "proceedAddDoc.php"
+		),
+	"upload" => array(
+		'valid_extensions' => array(
+			'jpg',
+			'jpeg',
+			'gif',
+			'png',
+			'pdf')
 		),
 	"default" => array(
 		"view" => "accueil"
@@ -43,24 +53,27 @@ require_once($GLOBALS['config']['paths']['libs']."class/Authenticator.php");
 
 $auth = NULL;
 
-if(isset($_SESSION['auth']))
+if(isset($_SESSION['auth'])) {
 	$auth = unserialize($_SESSION['auth']);
+	if(isset($_GET['r']) && $_GET['r']=='logout')
+		$auth->disconnect();
+}
 
 if($auth == NULL)
 	$auth = new Authenticator();
 
-if(!isset($_GET['u']) || $_GET['u']="")
-	$_GET['u'] = 'accueil';
+if(!isset($_GET['u']) || $_GET['u']=="")
+	$_GET['u'] = $GLOBALS['config']['default']['view'];
 
 
-if(isset($_POST['action']) && array_key_exists($_POST["action"], $GLOBALS['config']["actions"])) {
+
+if(isset($_POST['action']) && array_key_exists($_POST["action"], $GLOBALS['config']["actions"]))
 	include($GLOBALS['config']["paths"]["actions"].$GLOBALS['config']["actions"][$_POST["action"]]);
-}
 
 if(array_key_exists($_GET["u"], $GLOBALS['config']["views"]))
 	include($GLOBALS['config']["paths"]["views"].$GLOBALS['config']["views"][$_GET["u"]]);
 else
-	include($GLOBALS['config']["paths"]["views"].$GLOBALS['config']['views'][$GLOBALS['config']['default']['view']]);
+	die("Erreur, cet URL n'existe pas.");
 
 if(!isset($auth))
 	$auth = new Authenticator();

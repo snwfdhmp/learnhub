@@ -27,9 +27,10 @@
 			</button>
 		</a><br>
 	<?} else {?>
+		<a href="?r=logout&u=accueil">
 		<button class="menuBtn deconnexionText">
 			<i class="fa fa-power-off" aria-hidden="true"><span class="menuText deconnexionText"> Déconnexion</span></i>
 		</button>
-		<i class="fa fa-plus-square" aria-hidden="true"></i>
+		</a></i>
 	<?}?>
 </div>

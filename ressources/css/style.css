@@ -212,7 +212,11 @@ table#documentInfos td{
 	position:relative;
 	top:1px;
 }
-#addArea{
+
+#addArea {
+	display:block;
+}
+/*#addArea{
 	display: none;
 	background-color: #335;
 	margin: 11px 20px 0px 20px;
@@ -237,4 +241,4 @@ table#documentInfos td{
 }
 #addArea form input:last-child:hover{
 	background-color:#77a809;
-}
+}*/

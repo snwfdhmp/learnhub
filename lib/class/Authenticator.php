@@ -95,28 +95,17 @@ class Authenticator {
 
 		setcookie("session_cookie",$session_cookie,time()+3600);
 
-		$query = $this->db->prepare("SELECT id_user, prenom, nom, email, url_pdp, promo, pseudo_cas FROM users WHERE id_user = :id_user");
-		$query->bindParam(':id_user', $id_user);
-		$query->execute();
-		$req = $query->fetch();
+		$this->applyAuth($id_user);
 
 		$this->closeDb();
 
-		$_SESSION['auth'] = serialize($this);
-		$_SESSION['id_user'] = $req['id_user'];
-		$_SESSION['prenom'] = $req['prenom'];
-		$_SESSION['nom'] = $req['nom'];
-		$_SESSION['email'] = $req['email'];
-		$_SESSION['url_pdp'] = $req['url_pdp'];
-		$_SESSION['promo'] = $req['promo'];
-		$_SESSION['pseudo_cas'] = $req['pseudo_cas'];
-
-		$this->authenticated = true;
+		header('Location: ?u=explore');
 	}
 
 	public function requiresAuth() {
-		if($this->verifyAuth() === true) {
-			$this->authenticated = true;
+		$id_user = $this->verifyAuth();
+		if($id_user !== false) {
+			$this->applyAuth($id_user);
 			return true;
 		}
 		else {
@@ -128,13 +117,6 @@ class Authenticator {
 	}
 
 	private function verifyAuth() {
-		if(isset($_COOKIE['session_cookie']) && $this->isSessionCookieCorrect())
-			return true;
-		else
-			return false;
-	}
-
-	private function isSessionCookieCorrect() {
 		if(!isset($_COOKIE['session_cookie']))
 			return false;
 
@@ -155,11 +137,37 @@ class Authenticator {
 		$this->closeDb();
 
 		if($nbRows <= 0) //if there's no entry in db, don't go forward
-		return 0;
-		else
-			echo "<p>Success !!!!!!!</p>";
+			return false;
+		else 
+			return $id_user;
+	}
 
-		$db = null;
+	private function applyAuth($id_user) {
+		$this->connectDb();
+		$query = $this->db->prepare("SELECT id_user, prenom, nom, email, url_pdp, promo, pseudo_cas FROM users WHERE id_user = :id_user");
+		$query->bindParam(':id_user', $id_user);
+		$query->execute();
+		$req = $query->fetch();
+
+		$this->closeDb();
+
+		$_SESSION['auth'] = serialize($this);
+		$_SESSION['id_user'] = $req['id_user'];
+		$_SESSION['prenom'] = $req['prenom'];
+		$_SESSION['nom'] = $req['nom'];
+		$_SESSION['email'] = $req['email'];
+		$_SESSION['url_pdp'] = $req['url_pdp'];
+		$_SESSION['promo'] = $req['promo'];
+		$_SESSION['pseudo_cas'] = $req['pseudo_cas'];
+
+		$this->authenticated = true;
+		$this->closeDb();
+	}
+
+	public function disconnect() {
+		session_destroy();
+		setcookie("session_cookie","",time()-1);
+		header('Location: ?u=accueil');
 	}
 
 }

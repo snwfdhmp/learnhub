@@ -10,4 +10,21 @@ function getPdoDbObject() {
 		die();
 	}
 	return $db;
-} ?>
+}
+
+function getMatieres($promo) {
+	$db = getPdoDbObject();
+	$query = $db->query("SELECT * FROM matieres WHERE promo=".$promo." ORDER BY id_matiere");
+	$query->execute();
+	return $query->fetchAll();
+}
+
+function getChapitres($id_matiere) {
+	$db = getPdoDbObject();
+	$query = $db->query("SELECT * FROM chapitres WHERE id_matiere=".$id_matiere." ORDER BY rang");
+	$query->execute();
+	return $query->fetchAll();
+}
+
+
+?>

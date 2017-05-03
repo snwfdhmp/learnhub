@@ -12,3 +12,11 @@
 #search-bar:focus {
 	width:200px;
 }
+
+#search-btn {
+	opacity:0;
+}
+
+.navbar-custom {
+	background-color: #efefef !important;
+}
