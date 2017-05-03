@@ -4,11 +4,13 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 
-
+	<link rel="stylesheet" href="../ressources/css/navbar.css">
+	<link rel="stylesheet" href="../ressources/css/menu.css">
 	<link rel="stylesheet" href="../ressources/css/style.css">
 
-	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<script>
 		var menuOpen = false;
@@ -34,17 +36,17 @@
 		function createMatiereIconsFromJson(data) {
 			var container = $("#matiereMenuContainer");
 			for(var i = 0; data[i]; i++) {
-				var newDiv = document.createElement("div");
+				var newDiv = document.createElement("li");
 				newDiv.className = 'matiereIcon';
 				newDiv.innerHTML = data[i];
-				newDiv.onmouseover = function() {
+				/*newDiv.onmouseover = function() {
 					$(this).animate({borderRadius:'+=10px'}, "fast");
 					$(this).css('background-color', "#d77");
 				}
 				newDiv.onmouseout = function() {
 					$(this).animate({borderRadius:'-=10px'}, "fast");
 					$(this).css('background-color', "#d66");
-				}
+				}*/
 				container.append(newDiv);
 			}
 		}
@@ -86,7 +88,7 @@
 </head>
 <body onload="init()">
 	<? include_once "layouts/navbar.php" ?>
-	<div class="content">
+	<!--<div class="content">
 		<? include_once "layouts/leftside.php" ?>
 		<div class="center">
 			<button id="addCourseBtn">+ Ajouter</button>
@@ -111,25 +113,10 @@
 					</tr>
 				</table>
 			</div>
-			<!--
-			Pour gérer l'affichage d'un profil (bof bof)
-			<div id="profileInfosContainer">
-				<table id="profileInfos">
-					<tr>
-						<td id="nom">Joly</td>
-					</tr>
-					<tr>
-						<td id="prenom">Remy</td>
-					</tr>
-					<tr>
-						<td id="promo">L1</td>
-					</tr>
-				</table>
-			</div>-->
 
 		</div>
 		<? include_once "layouts/rightside.php" ?>
 		<? include_once "layouts/menu.php" ?>
-		</div>
+		</div> -->
 	</body>
 	</html>

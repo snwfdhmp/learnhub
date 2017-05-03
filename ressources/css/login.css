@@ -78,3 +78,7 @@ body {
     display: block;
     margin-top: 10px;
 }
+.error-text {
+    color:red;
+    text-align: center;
+}

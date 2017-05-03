@@ -17,6 +17,12 @@
                     <div class="profile-img">
                         <i class="fa fa-power-off" aria-hidden="true"></i>
                     </div>
+                    <?  // errors handling
+                    if(isset($_GET["err"]) && $_GET["err"]=="creds")
+                        echo "<p class='error-text'>Erreur, ces identifiants ne sont pas corrects.</p>";
+                    if(isset($_GET["err"]) && $_GET["err"]=="undef")
+                        echo "<p class='error-text'>Veuillez nous excuser, une erreur s'est produite pendant votre connexion.</p>";
+                    ?>
                     <form class="form-signin" method="post">
                         <input type="hidden" name="action" id="action" value="login">
                         <input type="text" id="email" name="email" class="form-control" placeholder="Email" required autofocus>
