@@ -4,11 +4,13 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 
-
+	<link rel="stylesheet" href="../ressources/css/navbar.css">
+	<link rel="stylesheet" href="../ressources/css/menu.css">
 	<link rel="stylesheet" href="../ressources/css/style.css">
 
-	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<script>
 		var menuOpen = false;
@@ -35,17 +37,17 @@
 		function createMatiereIconsFromJson(data) {
 			var container = $("#matiereMenuContainer");
 			for(var i = 0; data[i]; i++) {
-				var newDiv = document.createElement("div");
+				var newDiv = document.createElement("li");
 				newDiv.className = 'matiereIcon';
 				newDiv.innerHTML = data[i];
-				newDiv.onmouseover = function() {
+				/*newDiv.onmouseover = function() {
 					$(this).animate({borderRadius:'+=10px'}, "fast");
 					$(this).css('background-color', "#d77");
 				}
 				newDiv.onmouseout = function() {
 					$(this).animate({borderRadius:'-=10px'}, "fast");
 					$(this).css('background-color', "#d66");
-				}
+				}*/
 				container.append(newDiv);
 			}
 		}
@@ -115,9 +117,35 @@
 </head>
 <body onload="init()">
 	<? include_once "layouts/navbar.php" ?>
-	<div class="content">
+	<!--<div class="content">
 		<? include_once "layouts/leftside.php" ?>
 		<div class="center">
+<<<<<<< HEAD
+			<button id="addCourseBtn">+ Ajouter</button>
+			<h2>DOCUMENT</h2>
+			<div class="justCenter">
+				<table id="documentInfos">
+					<tr>
+						<th>Date</th>
+						<th>Promo</th>
+						<th>Matière</th>
+						<th>Nom</th>
+						<th>Corrigé</th>
+						<th>Publié par</th>
+					</tr>
+					<tr>
+						<td>01/03</td>
+						<td>LE1</td>
+						<td>Maths</td>
+						<td>Exercice n°2 Polynômes</td>
+						<td>OUI</td>
+						<td>Martin JOLY (LE1)</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+=======
 				<div id="itemsArea">
 				<?php 
 					if($connected){
@@ -186,8 +214,9 @@
                 </div>
             </div>
 		</div>';?>
+>>>>>>> PDF-content
 		<? include_once "layouts/rightside.php" ?>
 		<? include_once "layouts/menu.php" ?>
-		</div>
+		</div> -->
 	</body>
 	</html>

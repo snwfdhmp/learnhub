@@ -10,6 +10,6 @@ a<div class="left">
 
 </div>
 <div class="bottom">
-	<div id="matiereMenuContainer"></div>
+	<ul id="matiereMenuContainer"></ul>
 </div>
 </div>
