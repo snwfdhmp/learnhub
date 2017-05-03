@@ -6,7 +6,6 @@ function authenticate($email, $pass, $db) {
 		$query->bindParam(':email', $email);
 		$query->execute();
 		$answer = $query->fetch();
-
 		if (password_verify($pass, $answer["pass"]))
 		{
 			return $answer["id_user"];										

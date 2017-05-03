@@ -10,6 +10,11 @@ $auth->tryConnexion($email, $pass);
 
 $_SESSION['auth'] = serialize($auth);
 
+if(isset($_POST['email']) && isset($_POST['pass']) && isset($auth)) {
+$email = $_POST["email"];
+$pass = $_POST["pass"];
+$auth->tryConnexion($email, $pass);
+$_SESSION['auth'] = serialize($auth);
 header('Location: ?u=accueil');
 exit();
 }
