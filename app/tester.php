@@ -37,8 +37,8 @@ $GLOBALS['config'] = array(
 include_once "../actions/connectDb.php";
 include("../lib/class/Authenticator.php");
 
-
-$auth = new Authenticator();
+if(!isset($_SESSION['auth']))
+	$_SESSION['auth'] = new Authenticator();
 
 $_SESSION['session_cookie'] = "someRandomInfo";
 $_SESSION['id_user'] = 3;

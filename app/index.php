@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors',1);
 session_start();
 
 // Following GLOBALS configuration is inspired by phpSteroid (https://github.com/DarKnight1346/phpSteroid/blob/master/index.php)
@@ -31,23 +33,34 @@ $GLOBALS['config'] = array(
 		"signup" => "proceedSignUp.php",
 		"login" => "proceedLogin.php"
 		),
+	"default" => array(
+		"view" => "accueil"
+		)
 	);
 
 require_once($GLOBALS['config']['paths']['libs']."class/Authenticator.php");
 
-$auth = new Authenticator();
+$auth = NULL;
 
-if(!isset($_GET["u"]) || $_GET["u"] == "") {
-	$_GET["u"] = "accueil";
-}
+if(isset($_SESSION['auth']))
+	$auth = unserialize($_SESSION['auth']);
 
-if(array_key_exists($_POST["action"], $GLOBALS['config']["actions"])) {
+if($auth == NULL)
+	$auth = new Authenticator();
+
+
+if(isset($_POST['action']) && array_key_exists($_POST["action"], $GLOBALS['config']["actions"])) {
 	include($GLOBALS['config']["paths"]["actions"].$GLOBALS['config']["actions"][$_POST["action"]]);
-
 }
 
-if(array_key_exists($_GET["u"], $GLOBALS['config']["views"])) {
+if(array_key_exists($_GET["u"], $GLOBALS['config']["views"]))
 	include($GLOBALS['config']["paths"]["views"].$GLOBALS['config']["views"][$_GET["u"]]);
-}
+else
+	include($GLOBALS['config']["paths"]["views"].$GLOBALS['config']['views'][$GLOBALS['config']['default']['view']]);
+
+if(!isset($auth))
+	$auth = new Authenticator();
+
+$_SESSION['auth'] = serialize($auth);
 
 ?>

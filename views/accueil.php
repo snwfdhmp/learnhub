@@ -34,17 +34,17 @@
 		function createMatiereIconsFromJson(data) {
 			var container = $("#matiereMenuContainer");
 			for(var i = 0; data[i]; i++) {
-				var newDiv = document.createElement("div");
+				var newDiv = document.createElement("li");
 				newDiv.className = 'matiereIcon';
 				newDiv.innerHTML = data[i];
-				newDiv.onmouseover = function() {
+				/*newDiv.onmouseover = function() {
 					$(this).animate({borderRadius:'+=10px'}, "fast");
 					$(this).css('background-color', "#d77");
 				}
 				newDiv.onmouseout = function() {
 					$(this).animate({borderRadius:'-=10px'}, "fast");
 					$(this).css('background-color', "#d66");
-				}
+				}*/
 				container.append(newDiv);
 			}
 		}
