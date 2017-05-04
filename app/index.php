@@ -21,7 +21,8 @@ $GLOBALS['config'] = array(
 	"paths" => array(
 		"views" => "../views/",
 		"actions" => "../actions/",
-		"libs" => "../lib/"
+		"libs" => "../lib/",
+		"ajax" => "../lib/ajax/"
 		),
 	"views" => array(
 		"accueil" => "accueil.php",
@@ -30,6 +31,10 @@ $GLOBALS['config'] = array(
 		"login" => "login.php",
 		"addCourse" => "addCourse.php",
 		"explore" => "explore.php"
+		),
+	"ajax" => array(
+		"getchap" => "getSubjects.php",
+		"getmat" => "getMatieres.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",
@@ -65,11 +70,15 @@ if($auth == NULL)
 if(!isset($_GET['u']) || $_GET['u']=="")
 	$_GET['u'] = $GLOBALS['config']['default']['view'];
 
+// HANDLE ajax
+if(isset($_GET['ajax']) && array_key_exists($_GET["ajax"], $GLOBALS['config']["ajax"]))
+	include($GLOBALS['config']["paths"]["ajax"].$GLOBALS['config']["ajax"][$_GET["ajax"]]);
 
-
+//HANDLE actions
 if(isset($_POST['action']) && array_key_exists($_POST["action"], $GLOBALS['config']["actions"]))
 	include($GLOBALS['config']["paths"]["actions"].$GLOBALS['config']["actions"][$_POST["action"]]);
 
+//HANDLE views
 if(array_key_exists($_GET["u"], $GLOBALS['config']["views"]))
 	include($GLOBALS['config']["paths"]["views"].$GLOBALS['config']["views"][$_GET["u"]]);
 else

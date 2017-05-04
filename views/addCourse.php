@@ -93,30 +93,54 @@
             itemsArea.style.display="none";
 		}
 
-		function getSubjects(obj){
-            promo=obj.value;
+		function getMatieres(promo){
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("subjects").innerHTML = this.responseText;
+                    document.getElementById("matiere-select").innerHTML = this.responseText;
                 }
             };
-            xmlhttp.open("GET", "../actions/getSubjects.php?p=" + promo, true);
+            xmlhttp.open("GET", "?ajax=getmat&p=" + promo, true);
             xmlhttp.send();
         }
-        function getChap(obj){
-            mat=obj.value;
+
+        function getChap(mat){
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("chaps").innerHTML = this.responseText;
+                	console.log(this.responseText);
+                    document.getElementById("chapitre-select").innerHTML = this.responseText;
                 }
             };
-            xmlhttp.open("GET", "../actions/getSubjects.php?m=" + mat, true);
+            xmlhttp.open("GET", "?ajax=getchap&m=" + mat, true);
             xmlhttp.send();
+        }
+
+        function promoChangeModeEnable() {
+        	$("#promo-change-mode-enable").css('display', 'none');
+        	$("#promo-change-mode-disable").css('display', 'block');
+        	$("#promo-select-div").css('display', 'block');
+        }
+
+        function promoChangeModeDisable() {
+        	$("#promo-change-mode-enable").css('display', 'block');
+        	$("#promo-change-mode-disable").css('display', 'none');
+        	$("#promo-select-div").css('display', 'none');
         }
 	</script>
 </head>
 <body>
-	<? include_once "layouts/content.php" ?>
+<a href="?u=accueil">
+<button id="addCourseBtn" onclick="showadd()">Retour</button>
+</a>
+<?
+  if(isset($_GET["x"]) && $_GET["x"]=="upsucc")
+  echo '<p>Upload Successful</p>';
+?>
+<div class="container">
+<div id="addArea" <?if(isset($_GET["x"]) && $_GET["x"]=="upfail") {echo "style='display:block'> <button id='succ'>Upload Failed</button";} ?>>
+    <h1>Ajouter un document</h1>
+       <? include_once('layouts/uploadForm.php') ?>
+</div>
+</div>
 </body>

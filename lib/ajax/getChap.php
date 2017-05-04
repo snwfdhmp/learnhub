@@ -5,7 +5,5 @@
 
 	    chapitres_select_view($id_matiere);
 
-
-
 		exit();
 ?>
