@@ -46,7 +46,11 @@
 	<? include_once "layouts/navbar.php" ?>
 	<div class="container">
 		<h1>Bienvenue sur ICS <? if($auth->isAuthenticated()) echo $_SESSION['prenom']. " !"?></h1><br/>
-		<h2>Vous n'avez aucune notification. Vous pouvez néanmoins <a href="?u=addCourse">poster un cours</a>.</h2>
+		<? if($auth->isAuthenticated()) {?>
+			<h2>Vous n'avez aucune notification. Vous pouvez néanmoins <a href="?u=addCourse">poster un cours</a>.</h2>
+		<? } else {?>
+			<h2>Vous n'êtes pas connecté.</h2>
+		<? } ?>
 	</div>
 </body>
 </html>

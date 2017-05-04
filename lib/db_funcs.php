@@ -71,6 +71,42 @@ function getDocument($id_doc) {
 	return $rep;
 }
 
+function searchDocuments($search) {
+	$db = getPdoDbObject();
+	/* ONE WAY TO DO 
+	$arraySearch = explode(" ",$search);
+
+
+	$req = "SELECT * FROM documents WHERE ";
+	$targets=array("nom");
+
+	foreach ($targets as $target) {
+		foreach($arraySearch as $word) {
+			$req = $req.'LOWER('.$target.') LIKE(LOWER("%'.$word.'%")) OR ';
+		}
+	}*/
+
+	$arraySearch = explode(" ",$search);
+
+
+	$req = "SELECT * FROM documents WHERE ";
+	$targets=array("nom");
+
+	foreach ($targets as $target) {
+		$req= $req.'LOWER('.$target.') LIKE(LOWER("';
+		foreach($arraySearch as $word) {
+			$req = $req.'%'.$word.'%';
+		}
+		$req=$req.'")) OR ';
+	}
+
+	$req=$req."0 LIMIT 7";
+	$query = $db->query($req);
+	$query->execute();
+	$db = null;
+	return $query->fetchAll();
+}
+
 function getComments($id_doc) {
 	$db = getPdoDbObject();
 	$query = $db->query("SELECT * FROM comments WHERE id_doc=".$id_doc."");

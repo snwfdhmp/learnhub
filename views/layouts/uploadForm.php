@@ -1,6 +1,9 @@
-<? include_once '../lib/views_constructor.php';
+<?
+//$auth->requiresAuth();
+include_once '../lib/views_constructor.php';
 ?>
 <form action="?u=accueil" enctype="multipart/form-data" method="POST">
+<input type="hidden" name="action" value="addDoc">
 <div class="container container-fluid">
   <div id="promo-change-mode-enable">
   <p>Nous avons sélectionné votre promo pour vous : <? echo getNomPromo($_SESSION['promo']) ?>. <a onclick="promoChangeModeEnable()">Publier dans une autre promo</a></p>
@@ -10,22 +13,8 @@
   </div>
   <div class="addcourse-input input-group input-group-lg col-md-4">
     <span class="input-group-addon" id="sizing-addon1">Nom</span>
-    <input type="text" class="form-control" placeholder="Exercices de maths" aria-describedby="sizing-addon1">
+    <input name="nom" type="text" class="form-control" placeholder="Exercices de maths" aria-describedby="sizing-addon1">
   </div><br/>
-  <!--<div class="addcourse-input input-group input-group-lg col-md-4">
-    <span class="input-group-addon" id="sizing-addon1">Promo</span>
-    <select name="promo" class="form-control" placeholder="Exercices de maths" aria-describedby="sizing-addon1">
-      <option value="0" onclick="getSubjects(this);" selected disabled>Sélectionnez</option>
-      <option value="1" onclick="getSubjects(this);">LE1</option>
-      <option value="2" onclick="getSubjects(this);">LE2</option>
-      <option value="3" onclick="getSubjects(this);">LE3</option>
-      <option value="4" onclick="getSubjects(this);">LE4</option>
-      <option value="5" onclick="getSubjects(this);">LE5</option>
-      <option value="6" onclick="getSubjects(this);">LA1</option>
-      <option value="7" onclick="getSubjects(this);">LA2</option>
-      <option value="8" onclick="getSubjects(this);">LA3</option>
-    </select>
-  </div><br/>-->
   <div id="promo-select-div">
   <div class="addcourse-input input-group input-group-lg col-md-4">
     <span class="input-group-addon" id="sizing-addon1">Promo</span>

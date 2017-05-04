@@ -55,7 +55,7 @@ $document = getDocument($id);
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					if (this.responseText !== false) {
-						document.getElementById("comment-input").innerHTML = "";
+						document.getElementById("comment-input").value = "";
 					}
 				}
 			};

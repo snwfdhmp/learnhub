@@ -7,7 +7,7 @@ function matieres_line_view($promo, $focus = 1) {
 	echo '<ul class="nav nav-pills nav-justified">';
 
 	if($matieres == NULL) {
-		echo "<h2>Il n'y a pas encore de documents pour votre promo ... <a href='?u=addCourse'>Soyez le premier à poster un document</a>";
+		echo "<h2>Il n'y a pas encore de documents pour votre promo ... <a href='?u=addCourse'>Soyez le premier à poster un document</a></h2>";
 		return false;
 	}
 
@@ -44,7 +44,7 @@ function chapitres_list_view($matiere, $focus) {
 	echo '<ul class="nav nav-tabs nav-justified">';
 
 	if($chapitres == NULL) {
-		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a>";
+		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a></h2>";
 		return false;
 	}
 
@@ -52,7 +52,7 @@ function chapitres_list_view($matiere, $focus) {
 		echo '<li role="presentation"';
 		if($chapitre['id_chapitre'] == $focus)
 			echo 'class="active"';
-		echo '><a href="?u='.$GLOBALS['active_view'].'&m='.$chapitre['id_matiere'].'&c='.$chapitre['id_chapitre'].'"</a>'.$chapitre['nom'].'</li>';
+		echo '><a href="?u='.$GLOBALS['active_view'].'&m='.$chapitre['id_matiere'].'&c='.$chapitre['id_chapitre'].'">'.$chapitre['nom'].'</a></li>';
 	}
 
 	echo '</ul>';
@@ -80,9 +80,8 @@ function chapitres_select_view($matiere, $focus = 1) {
 function promo_select_view($focus) {
 	$promos = getPromos();
 
-
 	if($promos == NULL) {
-		echo "<option value='' selected disabled>Il n'y a pas encore de promos dans votre école... </option><p><a href='?u=addCourse'>Soyez le premier à créer une promo</a></p>";
+		echo "<option value='' selected disabled>Il n'y a pas encore de promo dans votre école... </option><p><a href='?u=addCourse'>Soyez le premier à créer une promo</a></p>";
 		return false;
 	}
 
@@ -125,16 +124,28 @@ function comments_doc_view($id_doc, $logged = false) {
 		$auteur = getUser($comment['id_auteur']);
 		echo '<div class="col-md-4 col-md-offset-4 comment">
 		<div class="input-group">
-			<div class="input-group-addon">
-			'.$auteur['prenom'].' '.$auteur['nom'].'</div>
-
+			<div class="input-group-btn"><button class="btn btn-default"><span class="badge">'.$comment['note'].'</span></button><button class="btn btn-default">
+			'.$auteur['prenom'].' '.$auteur['nom'].'</button></div>
 			<div class="form-control">
 			'.$comment['contenu'].'
 			</div>
 		</div>
 	</div>';
 	}
-
 	return true;
-
 }
+
+	function search_view($search) {
+		$results = searchDocuments($search);
+
+		if($results == NULL) {
+			echo "<li><a href='#'>Pas de résultat</a></li>";
+			die();
+		}
+
+		foreach ($results as $result) {
+			echo "<li><a href='?u=view&id=".$result['id_doc']."'>".$result['nom']."</a></li>";
+		}
+
+		return true;
+	}

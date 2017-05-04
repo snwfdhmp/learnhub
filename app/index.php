@@ -38,7 +38,8 @@ $GLOBALS['config'] = array(
 		"getchap" => "getSubjects.php",
 		"getmat" => "getMatieres.php",
 		"comments" => "commentsView.php",
-		"postCom" => "postComment.php"
+		"postCom" => "postComment.php",
+		"search" => "getSearch.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",
