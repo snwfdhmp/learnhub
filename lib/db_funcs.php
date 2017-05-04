@@ -62,14 +62,24 @@ function getUser($id_user) {
 	return $rep;
 }
 
-function getDocument($id_document) {
+function getDocument($id_doc) {
 	$db = getPdoDbObject();
-	$query = $db->query("SELECT * FROM documents WHERE id_doc=".$id_document."");
+	$query = $db->query("SELECT * FROM documents WHERE id_doc=".$id_doc."");
 	$query->execute();
 	$db = null;
 	$rep = $query->fetch();
 	return $rep;
 }
+
+function getComments($id_doc) {
+	$db = getPdoDbObject();
+	$query = $db->query("SELECT * FROM comments WHERE id_doc=".$id_doc."");
+	$query->execute();
+	$db = null;
+	$rep = $query->fetchAll();
+	return $rep;
+}
+
 
 
 ?>

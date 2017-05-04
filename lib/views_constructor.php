@@ -110,4 +110,29 @@ function documents_table_view($chapitre) {
 	}
 
 	echo '</table>';
+	return true;
+}
+
+function comments_doc_view($id_doc) {
+	$comments = getComments($id_doc);
+
+	if($comments==NULL) {
+		echo "<p>Les commentaires de ce post n'ont pas pu être chargés.</p>";
+		return false;
+	}
+
+	foreach ($comments as $comment) {
+		$auteur = getUser($comment['id_auteur']);
+		echo '<div class="panel panel-default">
+		<div class="panel-heading">
+		<h3 class="panel-title">'.$auteur['prenom'].' '.$auteur['nom'].'</h3>
+		</div>
+		<div class="panel-body">
+			'.$comment['contenu'].'
+		</div>
+	</div>';
+	}
+
+	return true;
+
 }

@@ -31,11 +31,13 @@ $GLOBALS['config'] = array(
 		"login" => "login.php",
 		"addCourse" => "addCourse.php",
 		"explore" => "explore.php",
-		"profile" => "profile.php"
+		"profile" => "profile.php",
+		"view" => "documentView.php"
 		),
 	"ajax" => array(
 		"getchap" => "getSubjects.php",
-		"getmat" => "getMatieres.php"
+		"getmat" => "getMatieres.php",
+		"comments" => "commentsView.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",
