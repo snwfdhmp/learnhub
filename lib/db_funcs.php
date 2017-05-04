@@ -28,6 +28,14 @@ function getChapitres($id_matiere) {
 	return $query->fetchAll();
 }
 
+function getDocuments($chapitre) {
+	$db = getPdoDbObject();
+	$query = $db->query("SELECT * FROM documents WHERE id_chapitre=".$chapitre." ORDER BY nom");
+	$query->execute();
+	$db = null;
+	return $query->fetchAll();
+}
+
 function getPromos() {
 	$db = getPdoDbObject();
 	$query = $db->query("SELECT * FROM promos ORDER BY id_promo");
@@ -43,6 +51,24 @@ function getNomPromo($id_promo) {
 	$db = null;
 	$rep = $query->fetch();
 	return $rep['nom'];
+}
+
+function getUser($id_user) {
+	$db = getPdoDbObject();
+	$query = $db->query("SELECT id_user, prenom, nom, email FROM users WHERE id_user=".$id_user."");
+	$query->execute();
+	$db = null;
+	$rep = $query->fetch();
+	return $rep;
+}
+
+function getDocument($id_document) {
+	$db = getPdoDbObject();
+	$query = $db->query("SELECT * FROM documents WHERE id_doc=".$id_document."");
+	$query->execute();
+	$db = null;
+	$rep = $query->fetch();
+	return $rep;
 }
 
 

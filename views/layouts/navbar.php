@@ -36,7 +36,7 @@
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="caret"></span></a>
 				<ul class="dropdown-menu">
-					<li><a href="#">Voir mon profil</a></li>
+					<li><a href="?u=profile">Voir mon profil</a></li>
 					<li><a href="#">Modifier mon profil</a></li>
 					<li role="separator" class="divider"></li>
 					<li><a href="?r=logout&u=accueil">Se déconnecter</a></li>

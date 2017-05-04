@@ -19,6 +19,7 @@ function matieres_line_view($promo, $focus = 1) {
 		$GLOBALS['active_view'].'&m='.$matiere['id_matiere'].'">'.$matiere['diminutif'].'</a></li>';
 	}
 	echo'</ul><br/>';
+	return true;
 }
 
 function matieres_select_view($promo, $focus = 1) {
@@ -55,6 +56,7 @@ function chapitres_list_view($matiere, $focus) {
 	}
 
 	echo '</ul>';
+	return true;
 }
 
 function chapitres_select_view($matiere, $focus = 1) {
@@ -72,6 +74,7 @@ function chapitres_select_view($matiere, $focus = 1) {
 			echo ' selected';
 		echo '>'.$chapitre['nom'].'</option>';
 	}
+	return true;
 }
 
 function promo_select_view($focus) {
@@ -89,4 +92,22 @@ function promo_select_view($focus) {
 			echo ' selected';
 		echo '>'.$promo['nom'].'</option>';
 	}
+}
+
+function documents_table_view($chapitre) {
+	$documents = getDocuments($chapitre);
+
+	if($documents == NULL) {
+		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a>";
+		return false;
+	}
+
+	echo '<table class="table table-hover">';
+	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
+	foreach ($documents as $document) {
+		$auteur = getUser($document['id_auteur']);
+		echo '<tr><td>'.$document['nom'].'</td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.$document['date_creation'].'</td></tr>';
+	}
+
+	echo '</table>';
 }

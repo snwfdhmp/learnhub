@@ -1,16 +1,14 @@
 <? $auth->requiresAuth();
 
-$GLOBALS['active_view']="explore";
-include_once '../lib/views_constructor.php';
+$GLOBALS['active_view']="profile";
+include_once '../lib/db_funcs.php';
 
-$matiere_focused = 1;
-if(isset($_GET['m']) && $_GET['m'] != "")
-	$matiere_focused=$_GET['m'];
 
-$chapitre_focused = 1;
-if(isset($_GET['c']) && $_GET['c'] != "")
-	$chapitre_focused=$_GET['c'];
+$id = $_SESSION['id_user'];
+if(isset($_GET['id']) && $_GET['id'] != '')
+	$id = $_GET['id'];
 
+$user = getUser($id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,12 +26,8 @@ if(isset($_GET['c']) && $_GET['c'] != "")
 <body>
 	<? include_once "layouts/navbar.php" ?>
 	<div class="container">
-		<? 
-			if(matieres_line_view($_SESSION['promo'], $matiere_focused))
-	  	   		if(chapitres_list_view($matiere_focused, $chapitre_focused))
-	  	   			documents_table_view($chapitre_focused);
-
-		?>
+		<h2><? echo $user['prenom']." ".$user['nom'] ?></h2>
+		<div class="text-center"><p>Contact : <a mailto="<? echo $user['email'] ?>"><? echo $user['email'] ?></a></p></div>
 	</div>
 </body>
 </html>

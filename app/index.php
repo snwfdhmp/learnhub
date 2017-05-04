@@ -30,7 +30,8 @@ $GLOBALS['config'] = array(
 		"signup" => "signup.php",
 		"login" => "login.php",
 		"addCourse" => "addCourse.php",
-		"explore" => "explore.php"
+		"explore" => "explore.php",
+		"profile" => "profile.php"
 		),
 	"ajax" => array(
 		"getchap" => "getSubjects.php",
