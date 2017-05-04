@@ -26,6 +26,7 @@ $document = getDocument($id);
 	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script>
+		function init()
 		function getComments(id_doc){
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
@@ -38,12 +39,12 @@ $document = getDocument($id);
         }
 	</script>
 </head>
-<body>
+<body onload="init()">
 	<? include_once "layouts/navbar.php" ?>
 	<div class="container">
 		<h2><? echo $document['nom']?></h2>
 		<div id="document-view"></div>
-		<div id="comments-view" onload="getComments(<? echo $id ?>)"></div>
+		<div id="comments-view"></div>
 	</div>
 </body>
 </html>
