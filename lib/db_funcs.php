@@ -81,5 +81,13 @@ function getComments($id_doc) {
 }
 
 
+function postComment($id_doc, $content, $id_user) {
+	$db = getPdoDbObject();
+	$query = $db->prepare("INSERT INTO comments (id_doc, id_auteur, contenu) VALUES(:id_doc, :id_user, :content)");
+	$query->bindParam(':id_doc', $id_doc);
+	$query->bindParam(':id_user', $id_user);
+	$query->bindParam(':content', $content);
+	return $query->execute();
+}
 
 ?>

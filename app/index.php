@@ -37,7 +37,8 @@ $GLOBALS['config'] = array(
 	"ajax" => array(
 		"getchap" => "getSubjects.php",
 		"getmat" => "getMatieres.php",
-		"comments" => "commentsView.php"
+		"comments" => "commentsView.php",
+		"postCom" => "postComment.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",

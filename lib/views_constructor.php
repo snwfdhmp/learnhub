@@ -106,29 +106,31 @@ function documents_table_view($chapitre) {
 	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
 	foreach ($documents as $document) {
 		$auteur = getUser($document['id_auteur']);
-		echo '<tr><td>'.$document['nom'].'</td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.$document['date_creation'].'</td></tr>';
+		echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.$document['date_creation'].'</td></tr>';
 	}
 
 	echo '</table>';
 	return true;
 }
 
-function comments_doc_view($id_doc) {
+function comments_doc_view($id_doc, $logged = false) {
 	$comments = getComments($id_doc);
 
 	if($comments==NULL) {
-		echo "<p>Les commentaires de ce post n'ont pas pu être chargés.</p>";
+		echo "<p class='well col-md-6 col-md-offset-3'>Il n'y a pas encore de commentaires sur ce post. Soyez le premier à commenter.</p>";
 		return false;
 	}
 
 	foreach ($comments as $comment) {
 		$auteur = getUser($comment['id_auteur']);
-		echo '<div class="panel panel-default">
-		<div class="panel-heading">
-		<h3 class="panel-title">'.$auteur['prenom'].' '.$auteur['nom'].'</h3>
-		</div>
-		<div class="panel-body">
+		echo '<div class="col-md-4 col-md-offset-4 comment">
+		<div class="input-group">
+			<div class="input-group-addon">
+			'.$auteur['prenom'].' '.$auteur['nom'].'</div>
+
+			<div class="form-control">
 			'.$comment['contenu'].'
+			</div>
 		</div>
 	</div>';
 	}
