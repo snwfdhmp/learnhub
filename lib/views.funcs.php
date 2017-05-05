@@ -1,5 +1,6 @@
 <?
-include_once '../lib/db_funcs.php';
+include_once '$GLOBALS['config']['paths']['libs']/db.funcs.php';
+include_once '$GLOBALS['config']['paths']['libs']/std.funcs.php';
 
 function matieres_line_view($promo, $focus = 1) {
 	$matieres = getMatieres($promo);
@@ -44,7 +45,7 @@ function chapitres_list_view($matiere, $focus) {
 	echo '<ul class="nav nav-tabs">';
 
 	if($chapitres == NULL) {
-		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a></h2>";
+		echo "<h2>Il n'y a pas encore de chapitres pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a></h2>";
 		return false;
 	}
 
@@ -105,7 +106,7 @@ function documents_table_view($chapitre) {
 	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
 	foreach ($documents as $document) {
 		$auteur = getUser($document['id_auteur']);
-		echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.$document['date_creation'].'</td></tr>';
+		echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
 	}
 
 	echo '</table>';
@@ -148,16 +149,31 @@ function comments_doc_view($id_doc, $logged = false) {
 	foreach ($comments as $comment) {
 		$auteur = getUser($comment['id_auteur']);
 		$likes = getLikes($GLOBALS['config']['database']['type_ref']['comment'], $comment['id_com']);
-		echo '<div class="col-md-4 col-md-offset-4 comment">
-		<div class="panel panel-default">
+		echo '
+		<div class="col-md-4 col-md-offset-4 comment">
+			<div class="panel panel-danger">
 				<div class="panel-heading">
-		<div class="input-group">
-				<button class="btn btn-default">'.$auteur['prenom'].' '.$auteur['nom'].'</button><span class="badge like-com" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'">'.$likes.'</span>
-			<div class="input-group-btn"><button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')" class="btn btn-default">+</button><button class="btn btn-default" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')">-</button>
-			</div></div></div>
+					'.$auteur['prenom'].' '.$auteur['nom'].'
+				</div>
 				<div class="panel-body">
-				'.$comment['contenu'].'</div>
-		</div>
+					'.$comment['contenu'].'
+				</div>
+				<div class="panel-footer">
+					<div class="row">
+						<div class="col-md-9 text-muted">
+						'.time2str($comment['date_creation']).'
+						</div>
+						<div class="like-view">
+							<div class="btn-toolbar" role="toolbar">
+								<div class="btn-group-xs" role="group">
+									<button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')" class="btn btn-default like-btn"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+									<button class="btn btn-default"> <span class="like-com" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'"> '.$likes.' </span> </button><button class="btn btn-default dislike-btn" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>';
 	}
 	return true;
@@ -189,7 +205,7 @@ function online_users_view() {
 	foreach ($online as $on) {
 		$id_user = $on['id_user'];
 		$user = getUser($id_user);
-		echo "<li><a href='?u=profile&id=".$id_user."'>".$user['prenom']." ".$user['nom']."</a></li>";
+		echo "<li><a href='?u=profile&id=".$id_user."'><span class='green-dot'></span>".$user['prenom']." ".$user['nom']."</a></li>";
 	}
 
 	return true;

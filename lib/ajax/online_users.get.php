@@ -3,7 +3,7 @@
 		exit();
 	}
 
-	include '../lib/views_constructor.php';
+	include '$GLOBALS['config']['paths']['libs']/views.funcs.php';
 
 	online_users_view();
 

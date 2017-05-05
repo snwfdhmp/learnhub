@@ -1,5 +1,5 @@
 <?php
-		include_once "../lib/views_constructor.php";
+		include_once "$GLOBALS['config']['paths']['libs']/views.funcs.php";
 
 	    $id_matiere=$_GET['m'];
 

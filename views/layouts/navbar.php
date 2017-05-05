@@ -1,4 +1,4 @@
-<? include_once("../lib/router.php"); ?>
+<? include_once($GLOBALS['config']['paths']['libs']."std.funcs.php"); ?>
 
 <nav class="navbar navbar-default">
 	<div class="container-fluid navbar-custom">

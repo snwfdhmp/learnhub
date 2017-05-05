@@ -13,6 +13,7 @@ Le repo : https://github.com/snwfdhmp/MPM
 - like sur doc
 - create matiere et chapitres
 - times
+- Pouvoir choisir la couleur de son commentaire
 
 #Notes
 

@@ -1,2 +1,2 @@
 <? // Yepco_officiel
-include "../lib/authenticate.php";
+include "$GLOBALS['config']['paths']['libs']/authenticate.php";

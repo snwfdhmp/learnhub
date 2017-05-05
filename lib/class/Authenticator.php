@@ -1,5 +1,5 @@
 <?
-require_once ($GLOBALS['config']['paths']['libs'].'db_funcs.php');
+require_once ($GLOBALS['config']['paths']['libs'].'db.funcs.php');
 
 class Authenticator {
 	private $authenticated;

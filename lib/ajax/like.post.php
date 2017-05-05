@@ -7,12 +7,12 @@
 		exit();
 	}
 
-	include_once '../lib/db_funcs.php';
+	include_once '$GLOBALS['config']['paths']['libs']/db.funcs.php';
 
 	if($_GET['val'] == "like") {
-		putLike($_GET['type'], $_GET['ref'], "1");
+		putLike($_GET['type'], $_GET['ref'], 1);
 	} else if($_GET['val'] == "dislike") {
-		putLike($_GET['type'], $_GET['ref'], "-1");
+		putLike($_GET['type'], $_GET['ref'], -1);
 	}
 
 	exit();

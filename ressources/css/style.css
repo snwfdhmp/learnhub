@@ -220,29 +220,20 @@ table#documentInfos td{
 #addArea {
 	display:block;
 }
-/*#addArea{
-	display: none;
-	background-color: #335;
-	margin: 11px 20px 0px 20px;
-	color: white;
-	padding: 6px 0px 15px 0px;
+.green-dot {
+	background: rgb(66, 183, 42);
+	border-radius: 50%;
+	display: inline-block;
+	height: 6px;
+	width: 6px;
+	margin-right: 10px;
 }
-#addArea form{
-	display: flex;
-	flex-direction: column;
+.like-btn {
+	color: rgba(42, 66, 183, 1);
 }
-#addArea form select{
-	flex: 1;
-	width: 100%;
+.dislike-btn {
+	color: rgba(183, 66, 42, 1);
 }
-#addArea form input:last-child{
-	margin: 20px 0px 0px 400px;
-	width: 100px;
-	height: 42px;
-	border: none;
-	background-color: rgb(221, 102, 102);
-	color: white;
+.like-view {
+	
 }
-#addArea form input:last-child:hover{
-	background-color:#77a809;
-}*/

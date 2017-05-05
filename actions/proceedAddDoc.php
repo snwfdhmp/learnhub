@@ -1,5 +1,5 @@
 <? // Yepco_officiel
-include_once '../lib/db_funcs.php';
+include_once '$GLOBALS['config']['paths']['libs']/db.funcs.php';
 
 $auth->requiresAuth();
 $db = getPdoDbObject();

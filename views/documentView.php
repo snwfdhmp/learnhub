@@ -1,7 +1,7 @@
 <? $auth->requiresAuth();
 
 $GLOBALS['active_view']="profile";
-include_once '../lib/db_funcs.php';
+include_once '$GLOBALS['config']['paths']['libs']/db.funcs.php';
 
 if(!isset($_GET['id']) || $_GET['id'] == '') {
 	header('Location: ?u=explore');
@@ -66,7 +66,7 @@ $document = getDocument($id);
 
 		function putLike(type, ref) {
 			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET", url, true);
+			xmlhttp.open("GET", "?ajax=like&type=" + type +"&ref="+ref+"&val=like", true);
 			xmlhttp.send();
 			var tmp = document.getElementById("badge-like-"+type+"-"+ref).innerHTML;
 			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = ++tmp;
@@ -82,31 +82,42 @@ $document = getDocument($id);
 			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = --tmp;
 			getComments();
 		}
+
+		function resizeFrameToContent( frame ) {
+
+			frame.width  = frame.contentWindow.document.body.scrollWidth;
+			frame.height = frame.contentWindow.document.body.scrollHeight;
+		}
+
+		function expand() {
+			resizeFrameToContent(document.getElementById("doc-frame"));
+		}
 	</script>
 </head>
 <body onload="init()">
 	<? include_once "layouts/navbar.php" ?>
 	<div class="container">
-		<h2><? echo $document['nom']?></h2>
-		<div id="document-view">
-				<iframe src="http://localhost:8888/web/MPM/app/<? echo $document['url'] ?>" height="1000" width="800"></iframe></div>
-
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<h2><? echo $document['nom']?></h2>
+				<iframe class="doc-frame col-md-12" height="500" src="<? echo $document['url'] ?>"></iframe>
+			</div>
+		</div>
 		<div class='container'>
 			<h3>Commentaires</h3>
-			<div id="comments-view">
-			</div>
+			<div id="comments-view"></div>
 			<div id="comment comment-me">
 				<div class="col-md-6 col-md-offset-3">
 					<form id="post-comment">
-					<div class="input-group">
-						<div class="input-group-addon">
-							<?echo $_SESSION['prenom'].' '.$_SESSION['nom'] ?>
+						<div class="input-group">
+							<div class="input-group-addon">
+								<?echo $_SESSION['prenom'].' '.$_SESSION['nom'] ?>
+							</div>
+							<input id="comment-input" type="text" class="form-control" placeholder="Poster un commentaire">
+							<div class="input-group-btn">
+								<input type="submit" class="btn btn-primary" value="Poster">
+							</div>
 						</div>
-						<input id="comment-input" type="text" class="form-control" placeholder="Poster un commentaire">
-						<div class="input-group-btn">
-							<input type="submit" class="btn btn-primary" value="Poster">
-						</div>
-					</div>
 					</form>
 				</div>
 			</div>

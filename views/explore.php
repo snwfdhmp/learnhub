@@ -1,7 +1,7 @@
 <? $auth->requiresAuth();
 
 $GLOBALS['active_view']="explore";
-include_once '../lib/views_constructor.php';
+include_once '$GLOBALS['config']['paths']['libs']/views.funcs.php';
 
 $matiere_focused = 1;
 if(isset($_GET['m']) && $_GET['m'] != "")

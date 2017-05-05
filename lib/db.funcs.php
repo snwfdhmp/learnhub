@@ -2,7 +2,7 @@
 
 function getPdoDbObject() {
 	try {
-		$db = new PDO('mysql:host=localhost;dbname=share2i', 'root', 'rootdbs1');
+		$db = new PDO('mysql:host=localhost;dbname='.$GLOBALS['config']['database']['name'], $GLOBALS['config']['database']['username'], $GLOBALS['config']['database']['password']);
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	catch(PDOException $e) {
@@ -37,10 +37,7 @@ function getPromos() {
 }
 
 function getNomPromo($id_promo) {
-	$query = $GLOBALS['db']->query("SELECT nom FROM promos WHERE id_promo=".$id_promo."");
-	$query->execute();
-	$rep = $query->fetch();
-	return $rep['nom'];
+	return fetchFirst("SELECT nom FROM promos WHERE id_promo=".$id_promo)['nom'];
 }
 
 function getUser($id_user) {
@@ -50,27 +47,18 @@ function getUser($id_user) {
 	return $rep;
 }
 
-function getDocument($id_doc) {
-	$query = $GLOBALS['db']->query("SELECT * FROM documents WHERE id_doc=".$id_doc."");
+function fetchFirst($req) {
+	$query = $GLOBALS['db']->query($req);
 	$query->execute();
 	$rep = $query->fetch();
 	return $rep;
 }
 
+function getDocument($id_doc) {
+	return fetchFirst("SELECT * FROM documents WHERE id_doc=".$id_doc);
+}
+
 function searchDocuments($search) {
-	/* ONE WAY TO DO 
-	$arraySearch = explode(" ",$search);
-
-
-	$req = "SELECT * FROM documents WHERE ";
-	$targets=array("nom");
-
-	foreach ($targets as $target) {
-		foreach($arraySearch as $word) {
-			$req = $req.'LOWER('.$target.') LIKE(LOWER("%'.$word.'%")) OR ';
-		}
-	}*/
-
 	$arraySearch = explode(" ",$search);
 
 

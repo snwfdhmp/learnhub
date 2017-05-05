@@ -17,7 +17,7 @@ $GLOBALS['config'] = array(
 		"host"=>"localhost",
 		"username"=>"root",
 		"password"=>"root",
-		"name"=>"ics"
+		"name"=>"ics",
 		"type_ref" => array("comment"=>"0")
 		),
 	"paths" => array(
@@ -37,13 +37,13 @@ $GLOBALS['config'] = array(
 		"view" => "documentView.php"
 		),
 	"ajax" => array(
-		"getchap" => "getSubjects.php",
-		"getmat" => "getMatieres.php",
-		"comments" => "commentsView.php",
-		"postCom" => "postComment.php",
-		"search" => "getSearch.php",
-		"like" => "putLike.php",
-		"online_users" => "getOnlineUsers.php"
+		"getchap" => "chapitres.get.php",
+		"getmat" => "matieres.get.php",
+		"comments" => "comment_view.get.php",
+		"postCom" => "comment.post.php",
+		"search" => "search.get.php",
+		"like" => "like.post.php",
+		"online_users" => "online_users.get.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",
@@ -63,7 +63,7 @@ $GLOBALS['config'] = array(
 		)
 	);
 
-require_once($GLOBALS['config']['paths']['libs']."db_funcs.php");
+require_once($GLOBALS['config']['paths']['libs']."db.funcs.php");
 
 $GLOBALS['db'] = getPdoDbObject();
 
