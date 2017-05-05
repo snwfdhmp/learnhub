@@ -16,7 +16,10 @@ $GLOBALS['config'] = array(
 		"host"=>"localhost",
 		"username"=>"dev",
 		"password"=>"dev",
-		"name"=>"ICS"
+		"name"=>"ICS",
+		"type_ref" => array(
+			"comment"=>"0"
+			)
 		),
 	"paths" => array(
 		"views" => "../views/",
@@ -39,7 +42,8 @@ $GLOBALS['config'] = array(
 		"getmat" => "getMatieres.php",
 		"comments" => "commentsView.php",
 		"postCom" => "postComment.php",
-		"search" => "getSearch.php"
+		"search" => "getSearch.php",
+		"like" => "putLike.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",

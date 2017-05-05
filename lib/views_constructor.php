@@ -122,9 +122,10 @@ function comments_doc_view($id_doc, $logged = false) {
 
 	foreach ($comments as $comment) {
 		$auteur = getUser($comment['id_auteur']);
+		$likes = getLikes($GLOBALS['config']['database']['type_ref']['comment'], $comment['id_com']);
 		echo '<div class="col-md-4 col-md-offset-4 comment">
 		<div class="input-group">
-			<div class="input-group-btn"><button class="btn btn-default"><span class="badge">'.$comment['note'].'</span></button><button class="btn btn-default">
+			<div class="input-group-btn"><button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_doc'].')" class="btn btn-default">+</button><button class="btn btn-default"><span class="badge">'.$likes.'</span></button><button class="btn btn-default" onclick="putDislike(this)">-</button><button class="btn btn-default">
 			'.$auteur['prenom'].' '.$auteur['nom'].'</button></div>
 			<div class="form-control">
 			'.$comment['contenu'].'

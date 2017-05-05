@@ -62,6 +62,36 @@ $document = getDocument($id);
 			xmlhttp.open("GET", "?ajax=postCom&id=" + id_doc +"&content="+escape(text), true);
 			xmlhttp.send();
 		}
+
+		function putLike(type, ref) {
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					if (this.responseText !== false) {
+						document.getElementById("comment-input").value = "";
+					}
+				}
+			};
+			xmlhttp.open("GET", "?ajax=putLike&type=" + type +"&ref="+ref+"&val=like", true);
+			xmlhttp.send();
+		}
+
+		function putLike(type, ref) {
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					if (this.responseText !== false) {
+						document.getElementById("comment-input").value = "";
+					}
+				}
+			};
+			xmlhttp.open("GET", "?ajax=putLike&type=" + type +"&ref="+ref+"&val=dislike", true);
+			xmlhttp.send();
+		}
+
+		function putDislike(type, ref) {
+
+		}
 	</script>
 </head>
 <body onload="init()">
@@ -72,7 +102,9 @@ $document = getDocument($id);
 
 		<div class='container'>
 			<h3>Commentaires</h3>
-			<div id="comments-view"></div>
+			<div id="comments-view">
+				<iframe src="http://localhost:8888/web/MPM/<? echo $document['url'] ?>" height="800" width="600"></iframe>
+			</div>
 			<div id="comment comment-me">
 				<div class="col-md-6 col-md-offset-3">
 					<form id="post-comment">
