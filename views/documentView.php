@@ -17,14 +17,15 @@ $document = getDocument($id);
 	<meta charset="UTF-8">
 	<title><? echo $document['nom']?></title>
 
-	<link rel="stylesheet" href="../ressources/css/documentView.css">
-	<link rel="stylesheet" href="../ressources/css/comments.css">
-	<link rel="stylesheet" href="../ressources/css/navbar.css">
-	<link rel="stylesheet" href="../ressources/css/style.css">
-
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+	<link rel="stylesheet" href="../ressources/css/documentView.css">
+	<link rel="stylesheet" href="../ressources/css/navbar.css">
+	<link rel="stylesheet" href="../ressources/css/style.css">
+	<link rel="stylesheet" href="../ressources/css/comments.css">
 	<script>
 		var id_doc = <? echo $id ?>;
 		function init() {
@@ -64,27 +65,21 @@ $document = getDocument($id);
 		}
 
 		function putLike(type, ref) {
-			var url="?ajax=like&type=" + type +"&ref="+ref+"&val=like";
-			console.log(url);
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("GET", url, true);
 			xmlhttp.send();
 			var tmp = document.getElementById("badge-like-"+type+"-"+ref).innerHTML;
-			tmp++;
-			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = tmp;
+			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = ++tmp;
 			getComments();
 		}
 
 		function putDislike(type, ref) {
-			var url="?ajax=like&type=" + type +"&ref="+ref+"&val=like";
-			console.log(url);
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("GET", "?ajax=like&type=" + type +"&ref="+ref+"&val=dislike", true);
 			xmlhttp.send();
 			getComments();
 			var tmp = document.getElementById("badge-like-"+type+"-"+ref).innerHTML;
-			tmp--;
-			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = tmp;
+			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = --tmp;
 			getComments();
 		}
 	</script>
@@ -93,12 +88,12 @@ $document = getDocument($id);
 	<? include_once "layouts/navbar.php" ?>
 	<div class="container">
 		<h2><? echo $document['nom']?></h2>
-		<div id="document-view"></div>
+		<div id="document-view">
+				<iframe src="http://localhost:8888/web/MPM/app/<? echo $document['url'] ?>" height="1000" width="800"></iframe></div>
 
 		<div class='container'>
 			<h3>Commentaires</h3>
 			<div id="comments-view">
-				<iframe src="http://localhost:8888/web/MPM/<? echo $document['url'] ?>" height="800" width="600"></iframe>
 			</div>
 			<div id="comment comment-me">
 				<div class="col-md-6 col-md-offset-3">

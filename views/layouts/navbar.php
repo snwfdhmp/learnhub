@@ -33,11 +33,18 @@
 				<button type="submit" id="search-submit" class="btn btn-default">Submit</button>
 			</form>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="?u=addCourse">+ Publier</a></li> 
+				<li><a href="#" id="server-ping-fire"><span id="server-status"></span></a></li>
+				<li><a href="?u=addCourse">+ Publier</a></li>
 				<? if(! $auth->isAuthenticated()) { ?>
 				<li><a href="?u=login">Se connecter</a></li> 
 				<li><a href="?u=signup">S'inscrire</a></li> 
 				<? } else { ?>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Messages</a>
+					<ul class="dropdown-menu" id="online-users-view">
+					</ul>
+				</li>
+				<li><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -109,4 +116,19 @@
 		xmlhttp.open("GET", "?ajax=search&search=" + escape(search), true);
 		xmlhttp.send();
 	}
+
+	function getOnline(){
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var view = document.getElementById("online-users-view");
+				if (this.responseText != view.innerHTML)
+					view.innerHTML = this.responseText;
+			}
+		};
+		xmlhttp.open("GET", "?ajax=online_users", true);
+		xmlhttp.send();
+	}
+
+	window.setInterval(getOnline, 2000);
 </script>

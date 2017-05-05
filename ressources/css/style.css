@@ -7,6 +7,10 @@ body {
 	font-family: 'Quicksand', sans-serif;
 }
 
+.chapitre-menu {
+	font-size: 15px;
+}
+
 .user-infos {
 	background-color: #e44;
 	height:25%;

@@ -7,15 +7,6 @@ class Authenticator {
 	private $id_user;
 	private $db;
 
-	function connectDb() {
-		if($this->db == NULL)
-			$this->db = getPdoDbObject();
-	}
-
-	function closeDb() {
-		$this->db = NULL;
-	}
-
 	function __construct() {
 		$authenticated = false;
 		$email = "";
@@ -24,6 +15,21 @@ class Authenticator {
 
 	public function isAuthenticated() { //returns whether the current user is authenticated or not
 		return $this->authenticated;
+	}
+
+	public function ping() {
+		$query = $GLOBALS['db']->prepare("UPDATE connexions SET last_ping=current_timestamp(), last_ip=:last_ip WHERE session_cookie=:session_cookie AND id_user=:id_user");
+		$query->bindParam(':session_cookie', $_COOKIE['session_cookie']);
+		$query->bindParam(':id_user', $_SESSION['id_user']);
+		$query->bindParam(':last_ip', $_SERVER['REMOTE_ADDR']);
+		if(!$query->execute())
+			return -1;
+
+		$query = $GLOBALS['db']->prepare("DELETE FROM connexions WHERE last_ping<current_timestamp()-:timeout");
+		$query->bindParam(':timeout', $GLOBALS['config']['authenticator']['connexionTimeout']);
+		$query->execute();
+
+		return "pong";
 	}
 
 	public function setEmail($newEmail) { //set object's email
@@ -47,9 +53,8 @@ class Authenticator {
 
 
 	private function validateCredentials($email, $pass) {
-		$this->connectDb();
 		if(strlen($pass) >= 8) {
-			$query = $this->db->prepare("SELECT id_user, pass FROM users WHERE email=:email");
+			$query = $GLOBALS['db']->prepare("SELECT id_user, pass FROM users WHERE email=:email");
 			$query->bindParam(':email', $email);
 			$query->execute();
 			$answer = $query->fetch();
@@ -63,13 +68,10 @@ class Authenticator {
 		}
 		else
 			return false;
-		$this->closeDb();
 	}
 
 	public function tryConnexion($email, $pass) {
 		$id_user = $this->validateCredentials($email, $pass);
-
-		$this->connectDb();
 
 		if($id_user === false) {
 			header('Location: ?u=login&err=creds');
@@ -78,27 +80,21 @@ class Authenticator {
 		$bytes = random_bytes(64);
 		$session_cookie = bin2hex($bytes);
 		$last_ip = $_SERVER['REMOTE_ADDR'];
-		$last_ping = time();
 
-		$_SESSION['session_cookie']=$session_cookie;
-		$_SESSION['email']=$email;
-		$_SESSION['id_user'] = $id_user;
-
-		//$query = $this->db->query('SELECT * FROM connexions WHERE 1');
-		$query = $this->db->prepare("INSERT INTO connexions (session_cookie, id_user, last_ip, last_ping) VALUES(:session_cookie, :id_user, :last_ip, :last_ping)");
+		//$query = $GLOBALS['db']->query('SELECT * FROM connexions WHERE 1');
+		$query = $GLOBALS['db']->prepare("INSERT INTO connexions (session_cookie, id_user, last_ip) VALUES(:session_cookie, :id_user, :last_ip)");
 		$query->bindParam(':session_cookie', $session_cookie);
 		$query->bindParam(':id_user', $id_user);
 		$query->bindParam(':last_ip', $last_ip);
-		$query->bindParam(':last_ping', $last_ping);
+		$_SESSION['email']=$email;
+		$_SESSION['id_user'] = $id_user;
 
 		$query->execute();
 
-		setcookie("session_cookie",$session_cookie,time()+3600);
+		setcookie("session_cookie",$session_cookie,time()+360000000);
 
 		$this->applyAuth($id_user);
-
-		$this->closeDb();
-
+		//die("${_SESSION['prenom']}");
 		header('Location: ?u=explore');
 	}
 
@@ -109,8 +105,8 @@ class Authenticator {
 			return true;
 		}
 		else {
-			$this->authenticated = false;
-			header('Location: ?u=login');
+			$this->disconnect();
+			header('Location: ?u=login&f=on');
 			exit();
 			return false;
 		}
@@ -120,36 +116,28 @@ class Authenticator {
 		if(!isset($_COOKIE['session_cookie']))
 			return false;
 
-		$this->connectDb();
+		$GLOBALS['db'] = getPdoDbObject();
+		$query = $GLOBALS['db']->prepare('SELECT * FROM connexions WHERE session_cookie=:cookie AND id_user=:id_user AND last_ip=:ip');
 
-		$cookie = $_COOKIE['session_cookie'];
-		$id_user = $_SESSION['id_user'];
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$query->bindParam(':cookie', $_COOKIE['session_cookie']);
+		$query->bindParam(':id_user', $_SESSION['id_user']);
+		$query->bindParam(':ip', $_SERVER['REMOTE_ADDR']);
 
-		$this->db = getPdoDbObject();
-		$query = $this->db->prepare("SELECT * FROM connexions WHERE session_cookie=:cookie AND id_user=:id_user AND last_ip=:ip");
-
-		$query->bindParam(':cookie', $cookie);
-		$query->bindParam(':id_user', $id_user);
-		$query->bindParam(':ip', $ip);
 		$query->execute();
 		$nbRows = $query->rowCount();
-		$this->closeDb();
+		$rep = $query->fetch();
 
-		if($nbRows <= 0) //if there's no entry in db, don't go forward
+		if($nbRows <= 0) // || intval($rep['last_ping']) < $timeout
 			return false;
-		else 
-			return $id_user;
+		return $rep['id_user'];
 	}
 
 	private function applyAuth($id_user) {
-		$this->connectDb();
-		$query = $this->db->prepare("SELECT id_user, prenom, nom, email, url_pdp, promo, pseudo_cas FROM users WHERE id_user = :id_user");
+		$query = $GLOBALS['db']->prepare("SELECT id_user, prenom, nom, email, url_pdp, promo, pseudo_cas FROM users WHERE id_user = :id_user");
 		$query->bindParam(':id_user', $id_user);
 		$query->execute();
 		$req = $query->fetch();
 
-		$this->closeDb();
 
 		$_SESSION['auth'] = serialize($this);
 		$_SESSION['id_user'] = $req['id_user'];
@@ -161,13 +149,21 @@ class Authenticator {
 		$_SESSION['pseudo_cas'] = $req['pseudo_cas'];
 
 		$this->authenticated = true;
-		$this->closeDb();
 	}
 
 	public function disconnect() {
 		session_destroy();
-		setcookie("session_cookie","",time()-1);
-		header('Location: ?u=accueil');
+		$this->authenticated=false;
+		if(isset($_COOKIE['session_cookie'])) {
+			setcookie("session_cookie","",time()-1);
+			$this->deleteCookie($_COOKIE['session_cookie']);
+		}
+	}
+
+	public function deleteCookie($cookie) {
+		$query = $GLOBALS['db']->prepare("DELETE FROM connexions WHERE session_cookie=:session_cookie");
+		$query->bindParam(':session_cookie', $cookie);
+		$query->execute();
 	}
 
 }

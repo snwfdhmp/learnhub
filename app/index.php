@@ -10,7 +10,8 @@ $GLOBALS['config'] = array(
 	"domain" => "localhost:8888",
 	"authenticator" => array(
 		"sessionCookieLength" => 40, //length of the connexion cookie
-		"connexionTimeout" => 5*3600 //if time-lastPingTime > this, ask for a reconnexion
+		"connexionTimeout" => 3600, //if time-lastPingTime > this, ask for a reconnexion
+		"onlineTimeout"=>600 // 10 minutes
 		),
 	"database" => array(
 		"host"=>"localhost",
@@ -43,7 +44,8 @@ $GLOBALS['config'] = array(
 		"comments" => "commentsView.php",
 		"postCom" => "postComment.php",
 		"search" => "getSearch.php",
-		"like" => "putLike.php"
+		"like" => "putLike.php",
+		"online_users" => "getOnlineUsers.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",
@@ -63,14 +65,27 @@ $GLOBALS['config'] = array(
 		)
 	);
 
+require_once($GLOBALS['config']['paths']['libs']."db_funcs.php");
+
+$GLOBALS['db'] = getPdoDbObject();
+
 require_once($GLOBALS['config']['paths']['libs']."class/Authenticator.php");
+
 
 $auth = NULL;
 
 if(isset($_SESSION['auth'])) {
 	$auth = unserialize($_SESSION['auth']);
-	if(isset($_GET['r']) && $_GET['r']=='logout')
+	if(isset($_GET['r']) && $_GET['r']=='logout') {
 		$auth->disconnect();
+		header('Location: ?u=accueil');
+		exit();
+	}
+	if(isset($_GET['r']) && $_GET['r']=='ping') {
+		echo $auth->ping();
+		exit();
+	}
+	$auth->ping();
 }
 
 if($auth == NULL)
@@ -98,4 +113,43 @@ if(!isset($auth))
 
 $_SESSION['auth'] = serialize($auth);
 
+?>
+
+<script>
+	function ping() {
+		var req = new XMLHttpRequest();
+		req.onreadystatechange = function(event) {
+    // XMLHttpRequest.DONE === 4
+    if (this.readyState == 4) {
+    	if (this.status != 200) {
+    		$("#server-status").html("<i class='fa fa-plug' aria-hidden='true'></i> Serveur inaccessible");
+    	} else if (this.responseText=="pong"){
+    		$("#server-status").html("<i class='fa fa-check-circle' aria-hidden='true'></i> Serveur connecté");
+    	} else {
+    		$("#server-status").html("<i class='fa fa-plug' aria-hidden='true'></i> Serveur déconnecté");
+    	}
+    }
+};
+req.open("GET", "?r=ping", true);
+req.send();
+window.setTimeout(ping, 2000);
+}
+
+function lateInitMain() {
+	ping();
+	$("#server-status").html("Connexion au serveur...");
+	$("#server-ping-fire").click(function() {
+		$("#server-status").html("Connexion au serveur...");
+		ping();
+	})
+}
+
+
+lateInitMain();
+</script>
+
+
+<?
+$GLOBALS['db']=null;
+exit(); 
 ?>

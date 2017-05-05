@@ -41,7 +41,7 @@ function matieres_select_view($promo, $focus = 1) {
 function chapitres_list_view($matiere, $focus) {
 	$chapitres = getChapitres($matiere);
 
-	echo '<ul class="nav nav-tabs nav-justified">';
+	echo '<ul class="nav nav-tabs">';
 
 	if($chapitres == NULL) {
 		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a></h2>";
@@ -52,10 +52,10 @@ function chapitres_list_view($matiere, $focus) {
 		echo '<li role="presentation"';
 		if($chapitre['id_chapitre'] == $focus)
 			echo 'class="active"';
-		echo '><a href="?u='.$GLOBALS['active_view'].'&m='.$chapitre['id_matiere'].'&c='.$chapitre['id_chapitre'].'">'.$chapitre['nom'].'</a></li>';
+		echo '><a class="chapitre-menu" href="?u='.$GLOBALS['active_view'].'&m='.$chapitre['id_matiere'].'&c='.$chapitre['id_chapitre'].'">'.$chapitre['nom'].'</a></li>';
 	}
 
-	echo '</ul>';
+	echo '</ul><br/>';
 	return true;
 }
 
@@ -152,7 +152,7 @@ function comments_doc_view($id_doc, $logged = false) {
 		<div class="panel panel-default">
 				<div class="panel-heading">
 		<div class="input-group">
-				<button class="btn btn-default">'.$auteur['prenom'].' '.$auteur['nom'].'</button><span class="badge" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'">'.$likes.'</span>
+				<button class="btn btn-default">'.$auteur['prenom'].' '.$auteur['nom'].'</button><span class="badge like-com" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'">'.$likes.'</span>
 			<div class="input-group-btn"><button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')" class="btn btn-default">+</button><button class="btn btn-default" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')">-</button>
 			</div></div></div>
 				<div class="panel-body">
@@ -173,6 +173,23 @@ function search_view($search) {
 
 	foreach ($results as $result) {
 		echo "<li><a href='?u=view&id=".$result['id_doc']."'>".$result['nom']."</a></li>";
+	}
+
+	return true;
+}
+
+function online_users_view() {
+	$online = getOnlineUsers();
+
+	if($online == NULL) {
+		echo "<li><a href='#'>Personne en ligne actuellement</a></li>";
+		die();
+	}
+
+	foreach ($online as $on) {
+		$id_user = $on['id_user'];
+		$user = getUser($id_user);
+		echo "<li><a href='?u=profile&id=".$id_user."'>".$user['prenom']." ".$user['nom']."</a></li>";
 	}
 
 	return true;
