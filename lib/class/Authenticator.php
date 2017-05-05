@@ -77,7 +77,7 @@ class Authenticator {
 			header('Location: ?u=login&err=creds');
 			exit();
 		}
-		$bytes = random_bytes(64);
+		$bytes = random_bytes(64); //random_bytes n'est pas comptaibe avec toute les versions de PHP
 		$session_cookie = bin2hex($bytes);
 		$last_ip = $_SERVER['REMOTE_ADDR'];
 

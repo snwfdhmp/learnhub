@@ -83,8 +83,19 @@
 					<form class="form-signin" method="post" action="?u=accueil">
 						<input type="hidden" id="action" name="action" value="signup">
 						<input type="text" id="prenom" name="prenom" class="form-control attached-top" placeholder="Prénom" required autofocus>
-						<input type="text" id="nom" name="nom" class="form-control attached-bottom" placeholder="Nom" required >
-
+						<input type="text" id="nom" name="nom" class="form-control attached" placeholder="Nom" required >
+						<select name="promo" placeholder="Promo" class="form-control attached-bottom">
+							<option value="0">Promo</option>
+							<option value="1">LE1</option>
+							<option value="2">LE2</option>
+							<option value="3">LE3</option>
+							<option value="4">LE4</option>
+							<option value="5">LE5</option>
+							<option value="6">LA1</option>
+							<option value="7">LA1</option>
+							<option value="8">LA3</option>
+							<option value="9">Diplômé</option>
+						</select>
 						<input type="text" id="email" name="email" class="form-control attached-top" placeholder="Email" required >
 						<input type="password" id="pass" name="pass" class="form-control attached" placeholder="Mot de passe" required>
 						<input type="password" id="passconf" name="passconf" class="form-control attached-bottom" placeholder="Confirmer le mot de passe" required>
