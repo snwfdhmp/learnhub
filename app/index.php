@@ -7,16 +7,16 @@ $connected=1;
 $GLOBALS['config'] = array(
 	"appName" => "ICS",
 	"version" => "beta 0.1",
-	"domain" => "localhost:8888",
+	"domain" => "localhost",
 	"authenticator" => array(
 		"sessionCookieLength" => 40, //length of the connexion cookie
 		"connexionTimeout" => 5*3600 //if time-lastPingTime > this, ask for a reconnexion
 		),
 	"database" => array(
 		"host"=>"localhost",
-		"username"=>"dev",
-		"password"=>"dev",
-		"name"=>"ICS"
+		"username"=>"root",
+		"password"=>"rootdbs1",
+		"name"=>"ics"
 		),
 	"paths" => array(
 		"views" => "../views/",

@@ -222,8 +222,6 @@ INSERT INTO `promos` (`id_promo`, `nom`) VALUES
 -- Doublure de structure pour la vue `recent connexions`
 -- (Voir ci-dessous la vue réelle)
 --
-CREATE TABLE `recent connexions` (
-);
 
 -- --------------------------------------------------------
 
@@ -257,7 +255,6 @@ INSERT INTO `users` (`id_user`, `prenom`, `nom`, `pass`, `email`, `url_pdp`, `pr
 --
 -- Structure de la vue `recent connexions`
 --
-DROP TABLE IF EXISTS `recent connexions`;
 -- utilisé(#1356 - View 'ics.recent connexions' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them)
 
 --
