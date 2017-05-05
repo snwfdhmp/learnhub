@@ -14,9 +14,11 @@ $GLOBALS['config'] = array(
 		),
 	"database" => array(
 		"host"=>"localhost",
+
 		"username"=>"root",
 		"password"=>"rootdbs1",
 		"name"=>"ics"
+		"type_ref" => array("comment"=>"0")
 		),
 	"paths" => array(
 		"views" => "../views/",
@@ -37,7 +39,10 @@ $GLOBALS['config'] = array(
 	"ajax" => array(
 		"getchap" => "getSubjects.php",
 		"getmat" => "getMatieres.php",
-		"comments" => "commentsView.php"
+		"comments" => "commentsView.php",
+		"postCom" => "postComment.php",
+		"search" => "getSearch.php",
+		"like" => "putLike.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",

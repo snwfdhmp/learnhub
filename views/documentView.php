@@ -26,17 +26,72 @@ $document = getDocument($id);
 	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script>
-		function init()
-		function getComments(id_doc){
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("comments-view").innerHTML = this.responseText;
-                }
-            };
-            xmlhttp.open("GET", "?ajax=comments&id=" + id_doc, true);
-            xmlhttp.send();
-        }
+		var id_doc = <? echo $id ?>;
+		function init() {
+			getComments();
+			setInterval(getComments, 2000);
+			$("#post-comment").submit(function() {
+				sendComment($("#comment-input").val());
+				getComments();
+				return false;
+			});
+		}
+
+		function getComments(){
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var commentsView = document.getElementById("comments-view");
+					if (this.responseText != commentsView.innerHTML)
+						commentsView.innerHTML = this.responseText;
+				}
+			};
+			xmlhttp.open("GET", "?ajax=comments&id=" + id_doc, true);
+			xmlhttp.send();
+		}
+
+		function sendComment(text){
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					if (this.responseText !== false) {
+						document.getElementById("comment-input").value = "";
+					}
+				}
+			};
+			xmlhttp.open("GET", "?ajax=postCom&id=" + id_doc +"&content="+escape(text), true);
+			xmlhttp.send();
+		}
+
+		function putLike(type, ref) {
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					if (this.responseText !== false) {
+						document.getElementById("comment-input").value = "";
+					}
+				}
+			};
+			xmlhttp.open("GET", "?ajax=putLike&type=" + type +"&ref="+ref+"&val=like", true);
+			xmlhttp.send();
+		}
+
+		function putLike(type, ref) {
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					if (this.responseText !== false) {
+						document.getElementById("comment-input").value = "";
+					}
+				}
+			};
+			xmlhttp.open("GET", "?ajax=putLike&type=" + type +"&ref="+ref+"&val=dislike", true);
+			xmlhttp.send();
+		}
+
+		function putDislike(type, ref) {
+
+		}
 	</script>
 </head>
 <body onload="init()">
@@ -44,7 +99,29 @@ $document = getDocument($id);
 	<div class="container">
 		<h2><? echo $document['nom']?></h2>
 		<div id="document-view"></div>
-		<div id="comments-view"></div>
+
+		<div class='container'>
+			<h3>Commentaires</h3>
+			<div id="comments-view">
+				<iframe src="http://localhost:8888/web/MPM/<? echo $document['url'] ?>" height="800" width="600"></iframe>
+			</div>
+			<div id="comment comment-me">
+				<div class="col-md-6 col-md-offset-3">
+					<form id="post-comment">
+					<div class="input-group">
+						<div class="input-group-addon">
+							<?echo $_SESSION['prenom'].' '.$_SESSION['nom'] ?>
+						</div>
+						<input id="comment-input" type="text" class="form-control" placeholder="Poster un commentaire">
+						<div class="input-group-btn">
+							<input type="submit" class="btn btn-primary" value="Poster">
+						</div>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
+	<br/>
 </body>
 </html>

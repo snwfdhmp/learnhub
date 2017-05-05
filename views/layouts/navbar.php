@@ -20,39 +20,93 @@
 				<li <?activeIf('explore')?> ><a href="?u=explore">Explorer </a></li>
 			</ul>
 			<form class="navbar-form navbar-left">
-			<div class="form-group input-group">
-					<input type="text" class="form-control" id="search-bar" placeholder="Rechercher">
-					<span class="input-group-btn">
-						<button class="btn btn-default" id="search-btn" type="button">Go!</button>
-					</span>
-			</div>
-			<button type="submit" id="search-submit" class="btn btn-default">Submit</button>
-		</form>
-		<ul class="nav navbar-nav navbar-right">
-			<li><a href="?u=addCourse">+ Publier</a></li> 
-			<? if(! $auth->isAuthenticated()) { ?>
-			<li><a href="?u=login">Se connecter</a></li> 
-			<? } else { ?>
-			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li><a href="?u=profile">Voir mon profil</a></li>
-					<li><a href="#">Modifier mon profil</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="?r=logout&u=accueil">Se déconnecter</a></li>
-				</ul>
-			</li>
-			<? } ?>
-		</ul>
-	</div><!-- /.navbar-collapse -->
-</div><!-- /.container-fluid -->
+				<div class="form-group input-group">
+					<li class="dropdown" style="list-style-type: none">
+						<input type="text" class="form-control" id="search-bar" placeholder="Rechercher">
+						<input id="search-toggle" type="hidden" class="dropdown-toggle" data-toggle="dropdown"></span>
+						<span class="input-group-btn">
+							<button class="btn btn-default" id="search-btn" type="button">Go!</button>
+						</span>
+						<ul id="search-view" class="dropdown-menu"></ul>
+					</li>
+				</div>
+				<button type="submit" id="search-submit" class="btn btn-default">Submit</button>
+			</form>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="?u=addCourse">+ Publier</a></li> 
+				<? if(! $auth->isAuthenticated()) { ?>
+				<li><a href="?u=login">Se connecter</a></li> 
+				<li><a href="?u=signup">S'inscrire</a></li> 
+				<? } else { ?>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="?u=profile">Voir mon profil</a></li>
+						<li><a href="#">Modifier mon profil</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="?r=logout&u=accueil">Se déconnecter</a></li>
+					</ul>
+				</li>
+				<? } ?>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
 </nav>
 
 <script>
+	var opened = false;
+
+	function openSearchView() {
+		if(!opened) {
+			$("#search-toggle").dropdown("toggle");
+			opened = true;
+		}
+	}
+
+	function closeSearchView() {
+		if(opened) {
+			$("#search-toggle").dropdown("toggle");
+			opened = false;
+		}
+	}
+
 	$("#search-bar").on('focusin', function() {
 		$("#search-btn").animate({opacity:'1'}, 200);
 	});
+	$("#search-bar").on('keydown', function() {
+		if($("#search-bar").val().length > 0) {
+		getSearch();
+		openSearchView();
+		}
+		else {
+			closeSearchView();
+		}
+	});
+	$("#search-bar").on('keyup', function() {
+		if($("#search-bar").val().length > 0) {
+		getSearch();
+		openSearchView();
+		}
+		else {
+			closeSearchView();
+		}
+	});
 	$("#search-bar").on('focusout', function() {
 		$("#search-btn").animate({opacity:'0'}, 400);
+		opened = false;
 	});
+
+	function getSearch(){
+		var search = $("#search-bar").val();
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var searchView = document.getElementById("search-view");
+				if (this.responseText != searchView.innerHTML)
+					searchView.innerHTML = this.responseText;
+			}
+		};
+		xmlhttp.open("GET", "?ajax=search&search=" + escape(search), true);
+		xmlhttp.send();
+	}
 </script>
