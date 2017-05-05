@@ -64,33 +64,28 @@ $document = getDocument($id);
 		}
 
 		function putLike(type, ref) {
+			var url="?ajax=like&type=" + type +"&ref="+ref+"&val=like";
+			console.log(url);
 			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					if (this.responseText !== false) {
-						document.getElementById("comment-input").value = "";
-					}
-				}
-			};
-			xmlhttp.open("GET", "?ajax=putLike&type=" + type +"&ref="+ref+"&val=like", true);
+			xmlhttp.open("GET", url, true);
 			xmlhttp.send();
-		}
-
-		function putLike(type, ref) {
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					if (this.responseText !== false) {
-						document.getElementById("comment-input").value = "";
-					}
-				}
-			};
-			xmlhttp.open("GET", "?ajax=putLike&type=" + type +"&ref="+ref+"&val=dislike", true);
-			xmlhttp.send();
+			var tmp = document.getElementById("badge-like-"+type+"-"+ref).innerHTML;
+			tmp++;
+			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = tmp;
+			getComments();
 		}
 
 		function putDislike(type, ref) {
-
+			var url="?ajax=like&type=" + type +"&ref="+ref+"&val=like";
+			console.log(url);
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("GET", "?ajax=like&type=" + type +"&ref="+ref+"&val=dislike", true);
+			xmlhttp.send();
+			getComments();
+			var tmp = document.getElementById("badge-like-"+type+"-"+ref).innerHTML;
+			tmp--;
+			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = tmp;
+			getComments();
 		}
 	</script>
 </head>

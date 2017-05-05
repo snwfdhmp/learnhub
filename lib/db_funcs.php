@@ -131,15 +131,14 @@ function getLikes($type_ref, $id_ref) {
 
 function putLike($type_ref, $id_ref, $valeur) {
 	$db = getPdoDbObject();
-	$query = $db->query('SELECT * FROM likes WHERE type_ref='.$type_ref.' AND id_ref='.$id_ref);
+	$query = $db->query('SELECT * FROM likes WHERE type_ref='.$type_ref.' AND id_ref='.$id_ref.' AND id_auteur='.$_SESSION['id_user']);
 	$query->execute();
-	$db = null;
 	$rep = $query->fetchAll();
 	$query="";
 	if($rep != NULL) {
-		$query = $db->prepare("INSERT INTO likes (type_ref, id_ref, id_auteur, valeur) VALUES(:type_ref, :id_ref, :id_auteur, :valeur)");
+		$query = $db->prepare("UPDATE likes SET valeur=:valeur WHERE type_ref=:type_ref AND id_ref=:id_ref AND id_auteur=:id_auteur");
 	} else {
-		$query = $db->prepare("UPDATE likes SET (valeur) VALUES(:valeur) WHERE type_ref=:type_ref, id_ref=:id_ref, id_auteur=:id_auteur");
+		$query = $db->prepare("INSERT INTO likes (type_ref, id_ref, id_auteur, valeur) VALUES(:type_ref, :id_ref, :id_auteur, :valeur)");
 	}
 	$query->bindParam(':type_ref', $type_ref);
 	$query->bindParam(':id_ref', $id_ref);

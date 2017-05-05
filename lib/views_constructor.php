@@ -112,6 +112,7 @@ function documents_table_view($chapitre) {
 	return true;
 }
 
+/*
 function comments_doc_view($id_doc, $logged = false) {
 	$comments = getComments($id_doc);
 
@@ -125,28 +126,54 @@ function comments_doc_view($id_doc, $logged = false) {
 		$likes = getLikes($GLOBALS['config']['database']['type_ref']['comment'], $comment['id_com']);
 		echo '<div class="col-md-4 col-md-offset-4 comment">
 		<div class="input-group">
-			<div class="input-group-btn"><button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_doc'].')" class="btn btn-default">+</button><button class="btn btn-default"><span class="badge">'.$likes.'</span></button><button class="btn btn-default" onclick="putDislike(this)">-</button><button class="btn btn-default">
-			'.$auteur['prenom'].' '.$auteur['nom'].'</button></div>
-			<div class="form-control">
-			'.$comment['contenu'].'
+			<div class="input-group-btn"><button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')" class="btn btn-default">+</button><button class="btn btn-default"><span class="badge" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'">'.$likes.'</span></button><button class="btn btn-default" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')">-</button><button class="btn btn-default">
+				'.$auteur['prenom'].' '.$auteur['nom'].'</button></div>
+				<div class="form-control">
+					'.$comment['contenu'].'
+				</div>
 			</div>
+		</div>';
+	}
+	return true;
+}*/
+
+function comments_doc_view($id_doc, $logged = false) {
+	$comments = getComments($id_doc);
+
+	if($comments==NULL) {
+		echo "<p class='well col-md-6 col-md-offset-3'>Il n'y a pas encore de commentaires sur ce post. Soyez le premier à commenter.</p>";
+		return false;
+	}
+
+	foreach ($comments as $comment) {
+		$auteur = getUser($comment['id_auteur']);
+		$likes = getLikes($GLOBALS['config']['database']['type_ref']['comment'], $comment['id_com']);
+		echo '<div class="col-md-4 col-md-offset-4 comment">
+		<div class="panel panel-default">
+				<div class="panel-heading">
+		<div class="input-group">
+				<button class="btn btn-default">'.$auteur['prenom'].' '.$auteur['nom'].'</button><span class="badge" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'">'.$likes.'</span>
+			<div class="input-group-btn"><button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')" class="btn btn-default">+</button><button class="btn btn-default" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')">-</button>
+			</div></div></div>
+				<div class="panel-body">
+				'.$comment['contenu'].'</div>
 		</div>
-	</div>';
+		</div>';
 	}
 	return true;
 }
 
-	function search_view($search) {
-		$results = searchDocuments($search);
+function search_view($search) {
+	$results = searchDocuments($search);
 
-		if($results == NULL) {
-			echo "<li><a href='#'>Pas de résultat</a></li>";
-			die();
-		}
-
-		foreach ($results as $result) {
-			echo "<li><a href='?u=view&id=".$result['id_doc']."'>".$result['nom']."</a></li>";
-		}
-
-		return true;
+	if($results == NULL) {
+		echo "<li><a href='#'>Pas de résultat</a></li>";
+		die();
 	}
+
+	foreach ($results as $result) {
+		echo "<li><a href='?u=view&id=".$result['id_doc']."'>".$result['nom']."</a></li>";
+	}
+
+	return true;
+}
