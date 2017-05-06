@@ -1,6 +1,5 @@
 <? 
 if($auth->isAuthenticated() && (!isset($_GET['f']) || $_GET['f'] != "on")) {
-	
 	if (!empty($_SERVER['HTTP_REFERER']))
 		header("Location: ".$_SERVER['HTTP_REFERER']);
 	else
@@ -11,7 +10,7 @@ if($auth->isAuthenticated() && (!isset($_GET['f']) || $_GET['f'] != "on")) {
 	<html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>S'inscire - ICS</title>
+		<title>S'inscrire - ICS</title>
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link rel="stylesheet" href="../ressources/css/signup.css">
 

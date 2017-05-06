@@ -1,4 +1,4 @@
-<? // Yepco_officiel
+<? // A regarder : Yepco_officiel
 include_once "../lib/db.funcs.php";
 
 if(!isset($_POST["prenom"]) || !isset($_POST["nom"]) || !isset($_POST["email"]) || !isset($_POST["pass"]) || !isset($_POST["passconf"]) || !isset($_POST["promo"])) {
