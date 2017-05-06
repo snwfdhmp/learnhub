@@ -1,4 +1,6 @@
-<? $auth->requiresAuth(); ?>
+<? 
+$auth->requiresAuth();
+$GLOBALS['active_view']="addCourse"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,7 +67,7 @@
 			createMatiereIconsFromJson(navigation);
 			fillUserInfosFromJson(infoUser);
 			addArea= document.getElementById("addArea");
-            itemsArea= document.getElementById("itemsArea");
+			itemsArea= document.getElementById("itemsArea");
 		}
 
 		function expandMenu() {
@@ -90,57 +92,57 @@
 		}
 		function showadd(){
 			addArea.style.display="block";
-            itemsArea.style.display="none";
+			itemsArea.style.display="none";
 		}
 
 		function getMatieres(promo){
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("matiere-select").innerHTML = this.responseText;
-                }
-            };
-            xmlhttp.open("GET", "?ajax=getmat&p=" + promo, true);
-            xmlhttp.send();
-        }
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById("matiere-select").innerHTML = this.responseText;
+				}
+			};
+			xmlhttp.open("GET", "?ajax=getmat&p=" + promo, true);
+			xmlhttp.send();
+		}
 
-        function getChap(mat){
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                	console.log(this.responseText);
-                    document.getElementById("chapitre-select").innerHTML = this.responseText;
-                }
-            };
-            xmlhttp.open("GET", "?ajax=getchap&m=" + mat, true);
-            xmlhttp.send();
-        }
+		function getChap(mat){
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log(this.responseText);
+					document.getElementById("chapitre-select").innerHTML = this.responseText;
+				}
+			};
+			xmlhttp.open("GET", "?ajax=getchap&m=" + mat, true);
+			xmlhttp.send();
+		}
 
-        function promoChangeModeEnable() {
-        	$("#promo-change-mode-enable").css('display', 'none');
-        	$("#promo-change-mode-disable").css('display', 'block');
-        	$("#promo-select-div").css('display', 'block');
-        }
+		function promoChangeModeEnable() {
+			$("#promo-change-mode-enable").css('display', 'none');
+			$("#promo-change-mode-disable").css('display', 'block');
+			$("#promo-select-div").css('display', 'block');
+		}
 
-        function promoChangeModeDisable() {
-        	$("#promo-change-mode-enable").css('display', 'block');
-        	$("#promo-change-mode-disable").css('display', 'none');
-        	$("#promo-select-div").css('display', 'none');
-        }
+		function promoChangeModeDisable() {
+			$("#promo-change-mode-enable").css('display', 'block');
+			$("#promo-change-mode-disable").css('display', 'none');
+			$("#promo-select-div").css('display', 'none');
+		}
 	</script>
 </head>
 <body>
-<a href="?u=accueil">
-<button id="addCourseBtn" onclick="showadd()">Retour</button>
-</a>
-<?
-  if(isset($_GET["x"]) && $_GET["x"]=="upsucc")
-  echo '<p>Upload Successful</p>';
-?>
-<div class="container">
-<div id="addArea" <?if(isset($_GET["x"]) && $_GET["x"]=="upfail") {echo "style='display:block'> <button id='succ'>Upload Failed</button";} ?>>
-    <h1>Ajouter un document</h1>
-       <? include_once('layouts/uploadForm.php') ?>
-</div>
-</div>
+	<a href="?u=accueil">
+		<button id="addCourseBtn" onclick="showadd()">Retour</button>
+	</a>
+	<?
+	if(isset($_GET["x"]) && $_GET["x"]=="upsucc")
+		echo '<p>Upload Successful</p>';
+	?>
+	<div class="container">
+		<div id="addArea" <?if(isset($_GET["x"]) && $_GET["x"]=="upfail") {echo "style='display:block'> <button id='succ'>Upload Failed</button";} ?>>
+			<h1>Ajouter un document</h1>
+			<? include_once('layouts/uploadForm.php') ?>
+		</div>
+	</div>
 </body>

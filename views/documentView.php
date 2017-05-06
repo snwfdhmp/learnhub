@@ -1,7 +1,7 @@
 <? $auth->requiresAuth();
 
-$GLOBALS['active_view']="profile";
-include_once '$GLOBALS['config']['paths']['libs']/db.funcs.php';
+$GLOBALS['active_view']="docView";
+include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
 
 if(!isset($_GET['id']) || $_GET['id'] == '') {
 	header('Location: ?u=explore');

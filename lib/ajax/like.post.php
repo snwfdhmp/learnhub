@@ -7,7 +7,7 @@
 		exit();
 	}
 
-	include_once '$GLOBALS['config']['paths']['libs']/db.funcs.php';
+	include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
 
 	if($_GET['val'] == "like") {
 		putLike($_GET['type'], $_GET['ref'], 1);

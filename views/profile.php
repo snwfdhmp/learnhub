@@ -1,7 +1,7 @@
 <? $auth->requiresAuth();
 
 $GLOBALS['active_view']="profile";
-include_once '$GLOBALS['config']['paths']['libs']/db.funcs.php';
+include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
 
 
 $id = $_SESSION['id_user'];

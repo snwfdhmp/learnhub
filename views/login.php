@@ -3,6 +3,8 @@
     header("Location: ".$_SERVER['HTTP_REFERER']);
     else
     header("Location: ?u=accueil");
+
+$GLOBALS['active_view']="login";
 }?>
 <!DOCTYPE html>
 <html lang="en">

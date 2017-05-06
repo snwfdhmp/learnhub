@@ -20,7 +20,7 @@ $GLOBALS['config'] = array(
 	"paths" => array(
 		"views" => "../views/",
 		"actions" => "../actions/",
-		"libs" => "$GLOBALS['config']['paths']['libs']/"
+		"libs" => "$GLOBALS['config']['paths']['libs']"
 		),
 	"views" => array(
 		"accueil" => "accueil.php",
@@ -35,7 +35,7 @@ $GLOBALS['config'] = array(
 	);
 
 include_once "../actions/connectDb.php";
-include("$GLOBALS['config']['paths']['libs']/class/Authenticator.php");
+include("$GLOBALS['config']['paths']['libs']class/Authenticator.php");
 
 if(!isset($_SESSION['auth']))
 	$_SESSION['auth'] = new Authenticator();

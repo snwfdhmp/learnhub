@@ -1,5 +1,5 @@
 <? // Yepco_officiel
-include_once '$GLOBALS['config']['paths']['libs']/db.funcs.php';
+include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
 
 $auth->requiresAuth();
 $db = getPdoDbObject();
@@ -19,7 +19,6 @@ if(!is_uploaded_file($_FILES["doc"]["tmp_name"])) header('Location: ?u=accueil&x
 			$query->bindParam(':nom', $_POST["nom"]);
 			$query->bindParam(':url', $cible);
 			$query->execute();
-			$result=1;
 
 			$query = $db->prepare('SELECT id_doc FROM documents WHERE id_auteur=:id_auteur AND id_chapitre=:id_chapitre AND doc_type=:type AND nom=:nom AND url=:url');
 			$query->bindParam(':id_auteur', $_SESSION['id_user']);

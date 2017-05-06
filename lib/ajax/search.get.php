@@ -1,18 +1,19 @@
 <?php
-		if($auth->isAuthenticated() === false) {
-			die("ERR_AUTH");
-		}
-		include_once "$GLOBALS['config']['paths']['libs']/views.funcs.php";
+if($auth->isAuthenticated() === false) {
+	die("ERR_AUTH");
+}
 
-		if(!isset($_GET['search']) || $_GET['search'] == "") {
-			die();
-		}
+include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
 
-	    $search=rawurldecode($_GET['search']);
+if(!isset($_GET['search']) || $_GET['search'] == "") {
+	die();
+}
 
-	    search_view($search);
+$search=rawurldecode($_GET['search']);
 
-		exit();
+search_view($search);
+
+exit();
 ?>
 
 <? $auth->requiresAuth();

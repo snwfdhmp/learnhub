@@ -1,6 +1,6 @@
 <?
-include_once '$GLOBALS['config']['paths']['libs']/db.funcs.php';
-include_once '$GLOBALS['config']['paths']['libs']/std.funcs.php';
+include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
+include_once $GLOBALS['config']['paths']['libs'].'std.funcs.php';
 
 function matieres_line_view($promo, $focus = 1) {
 	$matieres = getMatieres($promo);

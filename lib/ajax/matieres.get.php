@@ -1,5 +1,6 @@
 <?php
-		include_once "$GLOBALS['config']['paths']['libs']/views.funcs.php";
+		
+include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
 
 	    $id_promo=$_GET['p'];
 
