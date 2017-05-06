@@ -1,10 +1,10 @@
 @media (max-width: 991px) {
-	.sidebar {
+	#sidebar {
 		display:none;
 	}
 }
 
-.sidebar {
+#sidebar {
 	background: rgba(80, 80, 80, 0.1);
 	padding:0;
 	position: fixed;
@@ -18,8 +18,12 @@
     transition: ease-in-out, width .35s ease-in-out;
 }
 
+#sidebar+.lost-connexion {
+	background: rgba(80, 80, 80, 0.4);
+}
+
 .user-online-box {
-	margin-bottom:10px;
+	margin-bottom:4px;
 
 	width:100%;
 	height:30px;
@@ -31,6 +35,23 @@
 	cursor:pointer;
 }
 
+.user-online-links {
+	margin-left: 5px;
+	display:none;
+}
+
 .sidebar a:hover {
 	text-decoration: none;
 }
+
+.popup-box
+         	{
+                display: none;
+                position: fixed;
+                bottom: 0px;
+                right: 220px;
+                height: 285px;
+                background-color: rgb(237, 239, 244);
+                width: 300px;
+                border: 1px solid rgba(29, 49, 91, .3);
+            }

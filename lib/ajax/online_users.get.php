@@ -5,7 +5,7 @@ if(! $auth->isAuthenticated()) {
 
 include $GLOBALS['config']['paths']['libs'].'views.funcs.php';
 
-online_users_view();
+online_users_sidebar();
 
 exit();
 ?>

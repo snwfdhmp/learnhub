@@ -4,12 +4,6 @@
 	<div class="container-fluid navbar-custom">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
 			<a class="navbar-brand" href="?u=accueil"><span class="glyphicon glyphicon-console"></span> ICS</a>
 		</div>
 
@@ -23,27 +17,21 @@
 				<div class="form-group input-group">
 					<li class="dropdown" style="list-style-type: none">
 						<input type="text" class="form-control" id="search-bar" placeholder="Rechercher">
-						<input id="search-toggle" type="hidden" class="dropdown-toggle" data-toggle="dropdown">
-						<span class="input-group-btn">
-							<button class="btn btn-default" id="search-btn" type="button">Go!</button>
-						</span>
-						<ul id="search-view" class="dropdown-menu"></ul>
+						<button class="btn btn-default" id="search-btn" type="button">Go!</button>
+						<ul id="search-view" class="dropdown-menu"></ul>						<input id="search-toggle" type="hidden" class="dropdown-toggle" data-toggle="dropdown">
 					</li>
 				</div>
 				<button type="submit" id="search-submit" class="btn btn-default">Submit</button>
 			</form>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#" id="server-ping-fire"><span id="server-status"></span></a></li>
+				<? if($GLOBALS['active_view']!="accueil") { ?>
+				<li class="server-ping-fire"><a><span class="server-status"></span></a></li>
+				<? } ?>
 				<li><a href="?u=addCourse">+ Publier</a></li>
 				<? if(! $auth->isAuthenticated()) { ?>
 				<li><a href="?u=login">Se connecter</a></li> 
 				<li><a href="?u=signup">S'inscrire</a></li> 
 				<? } else { ?>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Messages</a>
-					<ul class="dropdown-menu" id="online-users-view">
-					</ul>
-				</li>
 				<li><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="caret"></span></a>
@@ -107,17 +95,11 @@
 		ajaxGetAndReplace("search&search="+escape($("#search-bar").val()), "search-view");
 	}
 
-	function getOnline(){
-		ajaxGetAndReplace("online_users", "online-users-view");
-	}
-
 	function changeview(obj) {
 		target = this.prop('href');
 		ajaxGetAndReplace(target, "root-dom-tag");
 		return false;
 	}
-
-	window.setInterval(getOnline, 2000);
 </script>
 
 <script src="<? echo $GLOBALS['config']['paths']['js'].'ajax.funcs.js'?>"></script>

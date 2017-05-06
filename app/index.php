@@ -50,48 +50,52 @@ if(array_key_exists($_GET["u"], $GLOBALS['config']["views"]))
 else
 	die("Erreur, cet URL n'existe pas.");
 
-if(!isset($auth))
-	$auth = new Authenticator();
-
-$_SESSION['auth'] = serialize($auth);
-
 ?>
 
 <script>
 	function ping() {
 		var req = new XMLHttpRequest();
 		req.onreadystatechange = function(event) {
-    // XMLHttpRequest.DONE === 4
-    if (this.readyState == 4) {
-    	if (this.status != 200) {
-    		$("#server-status").html("<i class='fa fa-plug' aria-hidden='true'></i> Serveur inaccessible");
-    	} else if (this.responseText=="pong"){
-    		$("#server-status").html("<i class='fa fa-check-circle' aria-hidden='true'></i> Serveur connecté");
-    	} else {
-    		$("#server-status").html("<i class='fa fa-plug' aria-hidden='true'></i> Serveur déconnecté");
-    	}
-    }
-};
-req.open("GET", "?r=ping", true);
-req.send();
-window.setTimeout(ping, 2000);
-}
+			if (this.readyState == 4) {
+				if (this.status != 200) {
+					$(".server-status").html("<i class='fa fa-plug' aria-hidden='true'></i> Serveur inaccessible");
+					return false;
+				} else if (this.responseText=="pong"){
+					$(".server-status").html("<i class='fa fa-check-circle' aria-hidden='true'></i> Connecté");
+					return true;
+				} else {
+					$(".server-status").html("<i class='fa fa-plug' aria-hidden='true'></i> Déconnecté");
+					return false;
+				}
+			}
+		};
+		req.open("GET", "?r=ping", true);
+		req.send();
+	}
 
-function lateInitMain() {
-	ping();
-	$("#server-status").html("Connexion au serveur...");
-	$("#server-ping-fire").click(function() {
-		$("#server-status").html("Connexion au serveur...");
+	function lateInitMain() {
 		ping();
-	})
-}
+		$(".server-status").html("Connexion au serveur...");
+		$(".server-ping-fire").click(function() {
+			$(".server-status").html("Connexion au serveur...");
+			ping();
+		})
+		window.setInterval(function() {
+			if(ping() == false) {
+				$("#sidebar").class('lost-connexion');
+				$("#sidebar").class('lost-connexion');
+			}
+		}, 2000);
+	}
 
-
-lateInitMain();
+	ping();
 </script>
 
 
 <?
+if(!isset($auth))
+	$auth = new Authenticator();
+$_SESSION['auth'] = serialize($auth);
 $GLOBALS['db']=null;
 exit(); 
 ?>
