@@ -89,7 +89,8 @@ function getComments($id_doc) {
 function getOnlineUsers() {
 	$timeover = time() + 200;
 	$timeout = $GLOBALS['config']['authenticator']['onlineTimeout'];
-	$query = $GLOBALS['db']->query("SELECT id_user, last_ping FROM connexions WHERE last_ping > current_timestamp()-".$timeout." AND id_user = ".$_SESSION['id_user']);
+
+	$query = $GLOBALS['db']->query("SELECT id_user, last_ping FROM connexions WHERE last_ping > current_timestamp()-".$timeout/*." ""AND id_user = ".$_SESSION['id_user']*/);
 	$query->execute();
 	$rep = $query->fetchAll();
 	return $rep;
