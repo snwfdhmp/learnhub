@@ -91,12 +91,20 @@ if($auth->isAuthenticated() && (!isset($_GET['f']) || $_GET['f'] != "on")) {
 						<div class="profile-img">
 							<i class="fa fa-plus-square" aria-hidden="true"></i>
 						</div>
+						<? if(isset($_GET['err'])) {
+							if($_GET['err'] == "db")
+								echo "<p class='text-danger text-center'>Erreur de connexion avec la base de données.</p>";
+							if($_GET['err'] == "doubleEmail")
+								echo "<p class='text-danger text-center'>Erreur: Cette addresse email est déjà utilisée.</p>";
+							if($_GET['err'] == "doubleIdentity")
+								echo "<p class='text-danger text-center'>Erreur: Cette personne existe déjà.</p>";
+						} ?>
 						<form class="form-signin" method="post" action="?u=accueil">
 							<input type="hidden" id="action" name="action" value="signup">
 							<input type="text" id="prenom" name="prenom" class="form-control attached-top" placeholder="Prénom" required autofocus>
 							<input type="text" id="nom" name="nom" class="form-control attached" placeholder="Nom" required >
-							<select name="promo" placeholder="Promo" class="form-control attached-bottom">
-								<option value="0">Promo</option>
+							<select name="promo" class="form-control attached-bottom">
+								<option value="0" selected disabled>Promo</option>
 								<option value="1">LE1</option>
 								<option value="2">LE2</option>
 								<option value="3">LE3</option>
@@ -105,7 +113,7 @@ if($auth->isAuthenticated() && (!isset($_GET['f']) || $_GET['f'] != "on")) {
 								<option value="6">LA1</option>
 								<option value="7">LA1</option>
 								<option value="8">LA3</option>
-								<option value="9">Diplômé</option>
+								<option value="9">Personnel</option>
 							</select>
 							<input type="text" id="email" name="email" class="form-control attached-top" placeholder="Email" required >
 							<input type="password" id="pass" name="pass" class="form-control attached" placeholder="Mot de passe" required>
