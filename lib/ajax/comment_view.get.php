@@ -5,7 +5,7 @@
 		}
 
 		
-include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
+		include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
 
 		if(!isset($_GET['id']) || $_GET['id'] == "") {
 			echo "<p>Les commentaires de ce post n'ont pas pu être chargés.</p>";

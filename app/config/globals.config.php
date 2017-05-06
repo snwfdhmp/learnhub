@@ -21,7 +21,8 @@ $GLOBALS['config'] = array(
 		"views" => "../views/",
 		"actions" => "../actions/",
 		"libs" => "../lib/",
-		"ajax" => "../lib/ajax/"
+		"ajax" => "../lib/ajax/",
+		"js" => "../ressources/js/"
 		),
 	"views" => array(
 		"accueil" => "accueil.php",

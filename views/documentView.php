@@ -26,65 +26,24 @@ $document = getDocument($id);
 	<link rel="stylesheet" href="../ressources/css/navbar.css">
 	<link rel="stylesheet" href="../ressources/css/style.css">
 	<link rel="stylesheet" href="../ressources/css/comments.css">
+	<script src="<? echo $GLOBALS['config']['paths']['js'].'ajax.funcs.js'?>"></script>
 	<script>
 		var id_doc = <? echo $id ?>;
-		function init() {
+		function initDocView() {
 			getComments();
 			setInterval(getComments, 2000);
 			$("#post-comment").submit(function() {
-				sendComment($("#comment-input").val());
+				postComment($("#comment-input").val(), id_doc);
 				getComments();
 				return false;
 			});
 		}
-
+ 
 		function getComments(){
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					var commentsView = document.getElementById("comments-view");
-					if (this.responseText != commentsView.innerHTML)
-						commentsView.innerHTML = this.responseText;
-				}
-			};
-			xmlhttp.open("GET", "?ajax=comments&id=" + id_doc, true);
-			xmlhttp.send();
-		}
-
-		function sendComment(text){
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					if (this.responseText !== false) {
-						document.getElementById("comment-input").value = "";
-					}
-				}
-			};
-			xmlhttp.open("GET", "?ajax=postCom&id=" + id_doc +"&content="+escape(text), true);
-			xmlhttp.send();
-		}
-
-		function putLike(type, ref) {
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET", "?ajax=like&type=" + type +"&ref="+ref+"&val=like", true);
-			xmlhttp.send();
-			var tmp = document.getElementById("badge-like-"+type+"-"+ref).innerHTML;
-			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = ++tmp;
-			getComments();
-		}
-
-		function putDislike(type, ref) {
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET", "?ajax=like&type=" + type +"&ref="+ref+"&val=dislike", true);
-			xmlhttp.send();
-			getComments();
-			var tmp = document.getElementById("badge-like-"+type+"-"+ref).innerHTML;
-			document.getElementById("badge-like-"+type+"-"+ref).innerHTML = --tmp;
-			getComments();
+			ajaxGetAndReplace("comments", "&id="+id_doc, "comments-view");
 		}
 
 		function resizeFrameToContent( frame ) {
-
 			frame.width  = frame.contentWindow.document.body.scrollWidth;
 			frame.height = frame.contentWindow.document.body.scrollHeight;
 		}
@@ -94,7 +53,7 @@ $document = getDocument($id);
 		}
 	</script>
 </head>
-<body onload="init()">
+<body onload="initDocView()">
 	<? include_once "layouts/navbar.php" ?>
 	<div class="container">
 		<div class="row">
