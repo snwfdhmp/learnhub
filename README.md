@@ -14,6 +14,7 @@ Le repo : https://github.com/snwfdhmp/MPM
 - create matiere et chapitres
 - times
 - Pouvoir choisir la couleur de son commentaire
+- Bouton pour s'envoyer le doc par mail
 
 #Notes
 

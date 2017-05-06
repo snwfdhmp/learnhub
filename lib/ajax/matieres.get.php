@@ -1,10 +1,10 @@
 <?php
-		
-include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
 
-	    $id_promo=$_GET['p'];
+include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
 
-	    matieres_select_view($id_promo);
+$id_promo=$_GET['p'];
 
-		exit();
+matieres_select_view($id_promo);
+
+exit();
 ?>

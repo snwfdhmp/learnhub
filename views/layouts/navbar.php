@@ -17,13 +17,13 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li <?activeIf('accueil')?> ><a href="?u=accueil">Accueil </a></li>
-				<li <?activeIf('explore')?> ><a href="?u=explore">Explorer </a></li>
+				<li <?activeIf('explore')?> ><a href="?u=explore" onclick="changeView(this)">Explorer </a></li>
 			</ul>
 			<form class="navbar-form navbar-left">
 				<div class="form-group input-group">
 					<li class="dropdown" style="list-style-type: none">
 						<input type="text" class="form-control" id="search-bar" placeholder="Rechercher">
-						<input id="search-toggle" type="hidden" class="dropdown-toggle" data-toggle="dropdown"></span>
+						<input id="search-toggle" type="hidden" class="dropdown-toggle" data-toggle="dropdown">
 						<span class="input-group-btn">
 							<button class="btn btn-default" id="search-btn" type="button">Go!</button>
 						</span>
@@ -104,31 +104,20 @@
 	});
 
 	function getSearch(){
-		var search = $("#search-bar").val();
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				var searchView = document.getElementById("search-view");
-				if (this.responseText != searchView.innerHTML)
-					searchView.innerHTML = this.responseText;
-			}
-		};
-		xmlhttp.open("GET", "?ajax=search&search=" + escape(search), true);
-		xmlhttp.send();
+		ajaxGetAndReplace("search&search="+escape($("#search-bar").val()), "search-view");
 	}
 
 	function getOnline(){
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				var view = document.getElementById("online-users-view");
-				if (this.responseText != view.innerHTML)
-					view.innerHTML = this.responseText;
-			}
-		};
-		xmlhttp.open("GET", "?ajax=online_users", true);
-		xmlhttp.send();
+		ajaxGetAndReplace("online_users", "online-users-view");
+	}
+
+	function changeview(obj) {
+		target = this.prop('href');
+		ajaxGetAndReplace(target, "root-dom-tag");
+		return false;
 	}
 
 	window.setInterval(getOnline, 2000);
 </script>
+
+<script src="<? echo $GLOBALS['config']['paths']['js'].'ajax.funcs.js'?>"></script>

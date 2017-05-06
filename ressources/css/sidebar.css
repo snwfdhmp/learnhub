@@ -1,0 +1,36 @@
+@media (max-width: 991px) {
+	.sidebar {
+		display:none;
+	}
+}
+
+.sidebar {
+	background: rgba(80, 80, 80, 0.1);
+	padding:0;
+	position: fixed;
+	top: 52px;
+	right: 0;
+	width: 200px;
+	height: 100%;
+	list-style-type: none;
+	text-align: center;
+	font-size: 15px;
+    transition: ease-in-out, width .35s ease-in-out;
+}
+
+.user-online-box {
+	margin-bottom:10px;
+
+	width:100%;
+	height:30px;
+	line-height: 30px;
+}
+
+.user-online-box:hover {
+	background: rgba(80, 80, 80, 0.2);
+	cursor:pointer;
+}
+
+.sidebar a:hover {
+	text-decoration: none;
+}

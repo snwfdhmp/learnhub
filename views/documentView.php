@@ -40,7 +40,7 @@ $document = getDocument($id);
 		}
  
 		function getComments(){
-			ajaxGetAndReplace("comments", "&id="+id_doc, "comments-view");
+			ajaxGetAndReplace("comments&id="+id_doc, "comments-view");
 		}
 
 		function resizeFrameToContent( frame ) {

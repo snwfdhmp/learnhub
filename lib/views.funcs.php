@@ -210,3 +210,19 @@ function online_users_view() {
 
 	return true;
 }
+function online_users_sidebar() {
+	$online = getOnlineUsers();
+
+	if($online == NULL) {
+		echo "<li><a href='#'>Personne en ligne actuellement</a></li>";
+		die();
+	}
+
+	foreach ($online as $on) {
+		$id_user = $on['id_user'];
+		$user = getUser($id_user);
+		echo "<div class='user-online-box'><li><a href='?u=profile&id=".$id_user."'><span class='green-dot'></span>".$user['prenom']." ".$user['nom']."</a></li></div>";
+	}
+
+	return true;
+}

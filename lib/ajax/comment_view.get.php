@@ -1,19 +1,19 @@
 <?php
-		if($auth->isAuthenticated() === false) {
-			echo "<p>Il semblerait que vous n'êtes pas identifié</p>";
-			exit();
-		}
+if($auth->isAuthenticated() === false) {
+	echo "<p>Il semblerait que vous n'êtes pas identifié</p>";
+	exit();
+}
 
-		
-		include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
 
-		if(!isset($_GET['id']) || $_GET['id'] == "") {
-			echo "<p>Les commentaires de ce post n'ont pas pu être chargés.</p>";
-		}
+include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
 
-	    $id_doc=$_GET['id'];
+if(!isset($_GET['id']) || $_GET['id'] == "") {
+	echo "<p>Les commentaires de ce post n'ont pas pu être chargés.</p>";
+}
 
-	    comments_doc_view($id_doc, $auth->isAuthenticated());
+$id_doc=$_GET['id'];
 
-		exit();
+comments_doc_view($id_doc, $auth->isAuthenticated());
+
+exit();
 ?>

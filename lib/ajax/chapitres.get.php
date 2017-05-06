@@ -1,10 +1,10 @@
 <?php
-		
-include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
 
-	    $id_matiere=$_GET['m'];
+include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
 
-	    chapitres_select_view($id_matiere);
+$id_matiere=$_GET['m'];
 
-		exit();
+chapitres_select_view($id_matiere);
+
+exit();
 ?>

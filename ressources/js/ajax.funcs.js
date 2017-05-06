@@ -1,4 +1,4 @@
-function ajaxGetAndReplace(script, params, target) {
+function ajaxGetAndReplace(url, target) {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -7,7 +7,7 @@ function ajaxGetAndReplace(script, params, target) {
 				targetView.innerHTML = this.responseText;
 		}
 	};
-	xmlhttp.open("GET", "?ajax="+script+"&"+params, true);
+	xmlhttp.open("GET", "?ajax="+url, true);
 	xmlhttp.send();
 	xmlhttp = null;
 }
