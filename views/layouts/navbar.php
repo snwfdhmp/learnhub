@@ -25,7 +25,7 @@
 			</form>
 			<ul class="nav navbar-nav navbar-right">
 				<? if($GLOBALS['active_view']!="accueil") { ?>
-				<li class="server-ping-fire"><a><span class="server-status"></span></a></li>
+				<li><a href="#"><span class="server-status" class="server-ping-fire"></span></a></li>
 				<? } ?>
 				<li><a href="?u=addCourse">+ Publier</a></li>
 				<? if(! $auth->isAuthenticated()) { ?>

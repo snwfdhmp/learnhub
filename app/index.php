@@ -76,9 +76,11 @@ else
 	function lateInitMain() {
 		ping();
 		$(".server-status").html("Connexion au serveur...");
-		$(".server-ping-fire").click(function() {
+		$(".server-ping-fire").on("click", function() {
 			$(".server-status").html("Connexion au serveur...");
-			ping();
+			//ping();
+			alert('yo');
+			return false;
 		})
 		window.setInterval(function() {
 			if(ping() == false) {

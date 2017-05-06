@@ -1,6 +1,8 @@
 <? 
 $auth->requiresAuth();
-$GLOBALS['active_view']="addCourse"; ?>
+$GLOBALS['active_view']="addCourse";
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,6 +1,6 @@
 <?
 //$auth->requiresAuth();
-include_once $GLOBALS['config']['paths']['libs'].'db.funcs.php';
+include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
 ?>
 <form action="?u=accueil" enctype="multipart/form-data" method="POST">
 <input type="hidden" name="action" value="addDoc">

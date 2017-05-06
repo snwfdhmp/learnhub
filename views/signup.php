@@ -17,7 +17,9 @@ if($auth->isAuthenticated() && (!isset($_GET['f']) || $_GET['f'] != "on")) {
 
 		<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<!-- Pour les photos de profil 
 		<script src="https://gist.github.com/snwfdhmp/a98c4189e3d78c06876a91b4085d3081.js"></script>
+		-->
 
 		<script>
 			function setState(bool_etat, selector, default_class, to_add) {
