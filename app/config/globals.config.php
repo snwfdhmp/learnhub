@@ -28,7 +28,7 @@ $GLOBALS['config'] = array(
 		"actions" => "../actions/",
 		"libs" => "../lib/",
 		"ajax" => "../lib/ajax/",
-		"js" => "../ressources/js/"
+		"js" => "ressources/js/"
 		),
 	"views" => array(
 		"accueil" => "accueil.php",
@@ -65,7 +65,8 @@ $GLOBALS['config'] = array(
 			'png',
 			'pdf',
 			'txt',
-			'c')
+			'c',
+			'cpp')
 		),
 	"default" => array(
 		"view" => "accueil"

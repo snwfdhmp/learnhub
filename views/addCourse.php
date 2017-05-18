@@ -9,10 +9,10 @@ $GLOBALS['active_view']="addCourse";
 	<meta charset="UTF-8">
 	<title>Document</title>
 
-	<link rel="stylesheet" href="../ressources/css/navbar.css">
-	<link rel="stylesheet" href="../ressources/css/addCourse.css">
-	<link rel="stylesheet" href="../ressources/css/menu.css">
-	<link rel="stylesheet" href="../ressources/css/style.css">
+	<link rel="stylesheet" href="ressources/css/navbar.css">
+	<link rel="stylesheet" href="ressources/css/addCourse.css">
+	<link rel="stylesheet" href="ressources/css/menu.css">
+	<link rel="stylesheet" href="ressources/css/style.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>

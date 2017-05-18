@@ -1,0 +1,13 @@
+.document-view {
+	background-color: #ccc;
+	padding:50px;
+}
+
+.doc-frame {
+	margin-top: 0;
+}
+
+.doc-title {
+	margin-bottom: 0;
+	border-style:none;
+}

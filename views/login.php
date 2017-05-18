@@ -14,7 +14,7 @@ $GLOBALS['active_view']="login";
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
 
-    <link rel="stylesheet" href="../ressources/css/login.css">
+    <link rel="stylesheet" href="ressources/css/login.css">
 </head>
 <body>
     <div class="container">

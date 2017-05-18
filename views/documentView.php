@@ -25,10 +25,10 @@ putView($id, $_SESSION['id_user']);
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 
-	<link rel="stylesheet" href="../ressources/css/documentView.css">
-	<link rel="stylesheet" href="../ressources/css/navbar.css">
-	<link rel="stylesheet" href="../ressources/css/style.css">
-	<link rel="stylesheet" href="../ressources/css/comments.css">
+	<link rel="stylesheet" href="ressources/css/documentView.css">
+	<link rel="stylesheet" href="ressources/css/navbar.css">
+	<link rel="stylesheet" href="ressources/css/style.css">
+	<link rel="stylesheet" href="ressources/css/comments.css">
 	<script src="<? echo $GLOBALS['config']['paths']['js'].'ajax.funcs.js'?>"></script>
 	<script>
 		var id_doc = <? echo $id ?>;

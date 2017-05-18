@@ -95,6 +95,7 @@ class Authenticator {
 		$this->applyAuth($id_user);
 		//die("${_SESSION['prenom']}");
 		header('Location: ?u=explore');
+		exit();
 	}
 
 	public function requiresAuth() {
