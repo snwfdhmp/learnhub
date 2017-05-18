@@ -128,46 +128,49 @@ class Authenticator {
 		$rep = $query->fetch();
 
 		if($nbRows <= 0) { // || intval($rep['last_ping']) < $timeout
-			if($this->isAuthenticated() == true) {
-				$this->disconnect();
-			}
-			return false;
+		if($this->isAuthenticated() == true) {
+			$this->disconnect();
 		}
-		return $rep['id_user'];
+		return false;
 	}
+	return $rep['id_user'];
+}
 
-	private function applyAuth($id_user) {
-		$query = $GLOBALS['db']->prepare("SELECT id_user, prenom, nom, email, url_pdp, promo, pseudo_cas FROM users WHERE id_user = :id_user");
-		$query->bindParam(':id_user', $id_user);
-		$query->execute();
-		$req = $query->fetch();
+private function applyAuth($id_user) {
+	$query = $GLOBALS['db']->prepare("SELECT id_user, prenom, nom, email, url_pdp, promo, pseudo_cas FROM users WHERE id_user = :id_user");
+	$query->bindParam(':id_user', $id_user);
+	$query->execute();
+	$req = $query->fetch();
 
 
-		$_SESSION['auth'] = serialize($this);
-		$_SESSION['id_user'] = $req['id_user'];
-		$_SESSION['prenom'] = $req['prenom'];
-		$_SESSION['nom'] = $req['nom'];
-		$_SESSION['email'] = $req['email'];
-		$_SESSION['url_pdp'] = $req['url_pdp'];
-		$_SESSION['promo'] = $req['promo'];
-		$_SESSION['pseudo_cas'] = $req['pseudo_cas'];
+	$_SESSION['auth'] = serialize($this);
+	$_SESSION['id_user'] = $req['id_user'];
+	$_SESSION['prenom'] = $req['prenom'];
+	$_SESSION['nom'] = $req['nom'];
+	$_SESSION['email'] = $req['email'];
+	$_SESSION['url_pdp'] = $req['url_pdp'];
+	$_SESSION['promo'] = $req['promo'];
+	$_SESSION['pseudo_cas'] = $req['pseudo_cas'];
 
-		$this->authenticated = true;
-	}
+	$this->authenticated = true;
+}
 
-	public function disconnect() {
+public function disconnect() {
+	if(isset($_COOKIE["PHPSESSID"]))
+	{
 		session_destroy();
-		$this->authenticated=false;
-		if(isset($_COOKIE['session_cookie'])) {
-			setcookie("session_cookie","",time()-1);
-			$this->deleteCookie($_COOKIE['session_cookie']);
-		}
 	}
+	$this->authenticated=false;
+	if(isset($_COOKIE['session_cookie'])) {
+		setcookie("session_cookie","",time()-1);
+		$this->deleteCookie($_COOKIE['session_cookie']);
+	}
+}
 
-	public function deleteCookie($cookie) {
-		$query = $GLOBALS['db']->prepare("DELETE FROM connexions WHERE session_cookie=:session_cookie");
-		$query->bindParam(':session_cookie', $cookie);
-		$query->execute();
-	}
+public function deleteCookie($cookie) {
+	$query = $GLOBALS['db']->prepare("DELETE FROM connexions WHERE session_cookie=:session_cookie");
+	$query->bindParam(':session_cookie', $cookie);
+	$query->execute();
+}
 
 }

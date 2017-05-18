@@ -9,8 +9,8 @@ if(!is_uploaded_file($_FILES["doc"]["tmp_name"])) header('Location: ?u=accueil&x
 	$extension_upload = strtolower(substr(strrchr($_FILES['doc']['name'], '.'),1));
 	if (in_array($extension_upload,$GLOBALS['config']['upload']['valid_extensions']) && $_FILES['doc']['error']==0 && $_FILES['doc']['size'] <= $maxsize){
 		$nom = md5(uniqid(rand(), true));
-		$cible='../files/'.$nom;
-		$resultat = move_uploaded_file($_FILES['doc']['tmp_name'],$cible);
+		$cible='files/'.$nom;
+		$resultat = move_uploaded_file($_FILES['doc']['tmp_name'],'../app/'.$cible);
 		if($resultat){
 			$datenow=date("Y-m-d H:i:s");
 			$query = $db->prepare("INSERT INTO documents (id_auteur, id_chapitre, doc_type, nom, url,date_creation) VALUES(:id_auteur, :id_chapitre, :type, :nom, :url,:datenow)");

@@ -8,12 +8,12 @@ $GLOBALS['config'] = array(
 	"authenticator" => array(
 		"sessionCookieLength" => 40, //length of the connexion cookie
 		"connexionTimeout" => 3600, //if time-lastPingTime > this, ask for a reconnexion
-		"onlineTimeout"=>600 // 10 minutes
+		"onlineTimeout"=>20 // 20 secondes
 		),
 	"database" => array(
 		"host"=>"localhost",
-		"username"=>"root",
-		"password"=>"root",
+		"username"=>"dev",
+		"password"=>"dev",
 		"name"=>"ICS",
 		"type_ref" => array("comment"=>"0"),
 		"doctypes"=>array(

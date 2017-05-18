@@ -97,6 +97,8 @@ if($auth->isAuthenticated() && (!isset($_GET['f']) || $_GET['f'] != "on")) {
 								echo "<p class='text-danger text-center'>Erreur: Cette addresse email est déjà utilisée.</p>";
 							if($_GET['err'] == "doubleIdentity")
 								echo "<p class='text-danger text-center'>Erreur: Cette personne existe déjà.</p>";
+							if($_GET['err'] == "fill")
+								echo "<div class='alert alert-danger'>Veuillez remplir tous les champs.</div>";
 						} ?>
 						<form class="form-signin" method="post" action="?u=accueil">
 							<input type="hidden" id="action" name="action" value="signup">
