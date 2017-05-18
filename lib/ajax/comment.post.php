@@ -10,8 +10,8 @@ if(!isset($_GET['id']) || $_GET['id'] == "") {
 
 $id_doc=$_GET['id'];
 $content=rawurldecode($_GET['content']);
-
-echo postComment($id_doc, $content, $_SESSION['id_user']);
+$type=rawurldecode($_GET['type']);
+echo postComment($id_doc,$content,$type,$_SESSION['id_user']);
 
 exit();
 ?>

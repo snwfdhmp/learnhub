@@ -29,11 +29,13 @@ $document = getDocument($id);
 	<script src="<? echo $GLOBALS['config']['paths']['js'].'ajax.funcs.js'?>"></script>
 	<script>
 		var id_doc = <? echo $id ?>;
+		var cominp;
 		function initDocView() {
+			cominp=document.getElementById("coment-input");
 			getComments();
 			setInterval(getComments, 2000);
 			$("#post-comment").submit(function() {
-				postComment($("#comment-input").val(), id_doc);
+				postComment($("#comment-input").val(),$("#comment-color").val(), id_doc);
 				getComments();
 				return false;
 			});
@@ -51,26 +53,59 @@ $document = getDocument($id);
 		function expand() {
 			resizeFrameToContent(document.getElementById("doc-frame"));
 		}
+		function changeShadow(obj){
+			var type=obj.value;
+			switch(type){
+				case "primary":
+				document.getElementById("comment-input").style.boxShadow = "inset 0 1px 1px blue";
+				break;
+				case "success":
+				document.getElementById("comment-input").style.boxShadow = "inset 0 1px 1px green";
+				break;
+				case "danger":
+				document.getElementById("comment-input").style.boxShadow = "inset 0 1px 1px red"; 
+				break;
+			}
+		}
+		function sendDocMail() {
+			document.getElementById("sendDocMail").innerHTML="Envoi en Cours....";
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+						document.getElementById("sendDocMail").innerHTML= this.responseText;
+				}
+			};
+			xmlhttp.open("GET", "?ajax=sendDocMail&id=" + id_doc, true);
+			xmlhttp.send();
+		}
 	</script>
 </head>
 <body onload="initDocView()">
 	<? include_once "layouts/navbar.php" ?>
 	<div class="container">
 		<div class="row">
+
 			<div class="col-md-8 col-md-offset-2">
 				<h2><? echo $document['nom']?></h2>
-				<iframe class="doc-frame col-md-12" height="500" src="<? echo $document['url'] ?>"></iframe>
+				<iframe  height="500" width="800" src="<? echo $document['url'] ?>"></iframe>
 			</div>
 		</div>
 		<div class='container'>
 			<h3>Commentaires</h3>
 			<div id="comments-view"></div>
 			<div id="comment comment-me">
-				<div class="col-md-6 col-md-offset-3">
+				<div class="col-md-8 col-md-offset-2">
 					<form id="post-comment">
 						<div class="input-group">
 							<div class="input-group-addon">
 								<?echo $_SESSION['prenom'].' '.$_SESSION['nom'] ?>
+							</div>
+							<div class="input-group-addon">
+								<select name="type" id="comment-color" onchange="changeShadow(this);">
+									<option value="primary" selected>Basic</option>
+									<option value="danger">Attention</option>
+									<option value="success">Recommendation</option>
+								</select>
 							</div>
 							<input id="comment-input" type="text" class="form-control" placeholder="Poster un commentaire">
 							<div class="input-group-btn">
@@ -80,6 +115,7 @@ $document = getDocument($id);
 					</form>
 				</div>
 			</div>
+			<div class="col-md-3 col-md-offset-5" id="sendDocmail" onclick="sendDocMail();"><button id="sendDocMail" class="btn btn-primary">Recevoir le Doc Par Mail</button></div>
 		</div>
 	</div>
 	<br/>

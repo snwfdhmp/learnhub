@@ -1,16 +1,12 @@
 <? $auth->requiresAuth();
-
 $GLOBALS['active_view']="explore";
 include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
-
 $matiere_focused = 1;
 if(isset($_GET['m']) && $_GET['m'] != "")
 	$matiere_focused=$_GET['m'];
-
 $chapitre_focused = 1;
 if(isset($_GET['c']) && $_GET['c'] != "")
 	$chapitre_focused=$_GET['c'];
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

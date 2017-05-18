@@ -17,7 +17,7 @@ function ajaxGetAndReplace(url, target) {
 	xmlhttp = null;
 }
 
-function postComment(text, id_doc){
+function postComment(text,type,id_doc){
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -25,7 +25,7 @@ function postComment(text, id_doc){
 				document.getElementById("comment-input").value = "";
 		}
 	};
-	xmlhttp.open("GET", "?ajax=postCom&id=" + id_doc +"&content="+escape(text), true);
+	xmlhttp.open("GET", "?ajax=postCom&id=" + id_doc +"&content="+escape(text)+"&type="+escape(type), true);
 	xmlhttp.send();
 }
 
@@ -47,3 +47,4 @@ function putDislike(type, ref) {
 	document.getElementById("badge-like-"+type+"-"+ref).innerHTML = --tmp;
 	getComments();
 }
+

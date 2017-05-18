@@ -12,12 +12,14 @@ if(!is_uploaded_file($_FILES["doc"]["tmp_name"])) header('Location: ?u=accueil&x
 		$cible='../files/'.$nom;
 		$resultat = move_uploaded_file($_FILES['doc']['tmp_name'],$cible);
 		if($resultat){
-			$query = $db->prepare("INSERT INTO documents (id_auteur, id_chapitre, doc_type, nom, url) VALUES(:id_auteur, :id_chapitre, :type, :nom, :url)");
+			$datenow=date("Y-m-d H:i:s");
+			$query = $db->prepare("INSERT INTO documents (id_auteur, id_chapitre, doc_type, nom, url,date_creation,likes) VALUES(:id_auteur, :id_chapitre, :type, :nom, :url,:datenow,0)");
 			$query->bindParam(':id_auteur', $_SESSION['id_user']);
 			$query->bindParam(':id_chapitre', $_POST["chapitre"]);
 			$query->bindParam(':type', $_POST["type"]);
 			$query->bindParam(':nom', $_POST["nom"]);
 			$query->bindParam(':url', $cible);
+			$query->bindParam(':datenow',$datenow);
 			$query->execute();
 
 			$query = $db->prepare('SELECT id_doc FROM documents WHERE id_auteur=:id_auteur AND id_chapitre=:id_chapitre AND doc_type=:type AND nom=:nom AND url=:url');

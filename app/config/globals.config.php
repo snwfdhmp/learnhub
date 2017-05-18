@@ -13,8 +13,8 @@ $GLOBALS['config'] = array(
 	"database" => array(
 		"host"=>"localhost",
 		"username"=>"root",
-		"password"=>"root",
-		"name"=>"ics",
+		"password"=>"rootdbs1",
+		"name"=>"share2i",
 		"type_ref" => array("comment"=>"0")
 		),
 	"paths" => array(
@@ -32,7 +32,8 @@ $GLOBALS['config'] = array(
 		"addCourse" => "addCourse.php",
 		"explore" => "explore.php",
 		"profile" => "profile.php",
-		"view" => "documentView.php"
+		"view" => "documentView.php",
+		"addMat" => "addMat.php"
 		),
 	"ajax" => array(
 		"getchap" => "chapitres.get.php",
@@ -41,12 +42,14 @@ $GLOBALS['config'] = array(
 		"postCom" => "comment.post.php",
 		"search" => "search.get.php",
 		"like" => "like.post.php",
-		"online_users" => "online_users.get.php"
+		"online_users" => "online_users.get.php", 
+		"sendDocMail" => "sendDocMail.get.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",
 		"login" => "proceedLogin.php",
-		"addDoc" => "proceedAddDoc.php"
+		"addDoc" => "proceedAddDoc.php",
+		"addMat" => "proceedAddMAT.php"
 		),
 	"upload" => array(
 		'valid_extensions' => array(
