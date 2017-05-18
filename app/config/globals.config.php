@@ -64,7 +64,8 @@ $GLOBALS['config'] = array(
 			'gif',
 			'png',
 			'pdf',
-			'txt')
+			'txt',
+			'c')
 		),
 	"default" => array(
 		"view" => "accueil"
