@@ -32,6 +32,8 @@ if(isset($_SESSION['auth'])) {
 if($auth == NULL)
 	$auth = new Authenticator();
 
+$auth->verifyAuth();
+
 if(!isset($_GET['u']) || $_GET['u']=="")
 	$_GET['u'] = $GLOBALS['config']['default']['view'];
 
@@ -87,10 +89,11 @@ else
 				$("#sidebar").class('lost-connexion');
 				$("#sidebar").class('lost-connexion');
 			}
-		}, 2000);
+		}, 500);
 	}
 
 	ping();
+	lateInitMain();
 </script>
 
 
