@@ -245,7 +245,32 @@ table#documentInfos td{
 .gentitle h2{
 	padding: 8px;
 }
+
+div.gentitle-empty {
+	background-color: #aaa;
+}
+div.gentitle-empty:hover {
+	text-decoration: none;
+	background-color: #7ab733;
+	cursor: pointer;
+}
+a.gentitle-empty {
+	text-decoration:none;
+	color:white;
+}
+
 #sendDocMail{
 	text-align: center;
 	margin-top: 5px;
+}
+
+#btn-add-matiere {
+	background-color: #7ab733;
+	border-radius: 5px;
+}
+#btn-add-matiere a {
+	color:white;
+}
+#btn-add-matiere:hover a {
+	color:#7ab733;
 }

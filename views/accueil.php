@@ -3,7 +3,7 @@
 <html lang="en" id="root-dom-tag">
 <head>
 	<meta charset="UTF-8">
-	<title>ICS</title>
+	<title>LearnHub</title>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://use.fontawesome.com/f51a5e5d23.js"></script>
@@ -27,9 +27,9 @@
 <body onload="init()">
 	<? include_once "layouts/navbar.php" ?>
 	<div class="container" id="main-container">
-		<h1>Bienvenue sur ICS <? if($auth->isAuthenticated()) echo $_SESSION['prenom']. " !"?></h1><br/>
+		<h1>Bienvenue sur LearnHub <? if($auth->isAuthenticated()) echo $_SESSION['prenom']. " !"?></h1><br/>
 		<? if($auth->isAuthenticated()) {?>
-			<h2>Vous n'avez aucune notification. Vous pouvez néanmoins <a href="?u=addCourse">poster un cours</a>. Ceci dit, ce texte est là pour voir s'il n'y a pas un genre d'erreur avec le menu que vous pourrez bientôt voir sur votre droite. -> oui juste ici</h2>
+			<h2>Vous n'avez aucune notification. Vous pouvez néanmoins <a href="?u=addCourse">poster un cours</a></h2>
 		<? } else {?>
 			<h2>Vous n'êtes pas connecté.</h2>
 		<? } ?>

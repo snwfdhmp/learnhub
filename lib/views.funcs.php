@@ -13,13 +13,15 @@ function matieres_line_view($promo, $focus = 1) {
 	}
 
 	foreach ($matieres as $matiere) {
+		/* $firstChap = getChapitres($matiere['id_matiere']);
+		$str = $firstChap[0]['id_chapitre']; */
 		echo '<li role="presentation"';
-		if($matiere['id_matiere'] == $focus)
+		if($matiere['id_matiere'] == $focus) 
 			echo 'class="active"';
 		echo '><a href="?u='.
 		$GLOBALS['active_view'].'&m='.$matiere['id_matiere'].'">'.$matiere['diminutif'].'</a></li>';
 	}
-	echo '<li role="presentation"><a href="?u=addMat&promo='.$promo.'">+ Matiere</a></li>';
+	echo '<li role="presentation" id="btn-add-matiere"><a href="?u=addMat&promo='.$promo.'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></li>';
 	echo'</ul><br/>';
 	return true;
 }
@@ -102,6 +104,47 @@ function documents_table_view($chapitre) {
 		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a>";
 		return false;
 	}
+	$i=0;
+	$inners = Array();
+	foreach ($documents as $document) {
+		$auteur = getUser($document['id_auteur']);
+		if(!isset($inners[doctypeToStr($document['doc_type'])])) $inners[doctypeToStr($document['doc_type'])] = "";
+
+		if(! hasSeen($document['id_doc'], $_SESSION['id_user'])) {
+			$notSeen = "<span class='label label-success'>Nouveau !</span>";
+		} else {
+			$notSeen = "";
+		}
+		$nbrComs = count(getComments($document['id_doc']));
+		$vues = "<span class='label label-default'>".$document['vues']." vues</span>";
+		if($nbrComs > 0)
+			$coms = "<span class='label label-primary'>".$nbrComs." réactions</span>";
+		else
+			$coms = "";
+		$inners[doctypeToStr($document['doc_type'])] .= '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a> '.$vues.' '.$coms.' '.$notSeen.'</td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+	}
+	foreach($GLOBALS['config']['database']['doctypes'] as $doctype) {
+		if(! isset($inners[$doctype])) {
+			echo "<div class='gentitle gentitle-empty'><a href='?u=addCourse' class='gentitle-empty'><h2>$doctype +</h2></a></div>";
+		}
+		else {
+			echo "<div class='gentitle'><h2>$doctype</h2></div>
+				<table class='table table-hover'>
+			<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
+			echo $inners[$doctype];
+			echo '</table>';
+		}
+	}
+	return true;
+}
+/* RIAD DOC VIEW
+function documents_table_view_($chapitre) {
+	$documents = getDocuments($chapitre);
+
+	if($documents == NULL) {
+		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a>";
+		return false;
+	}
 	echo '<div class="gentitle"><h2>Cours</h2></div>';
 	echo '<table class="table table-hover">';
 	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
@@ -156,7 +199,7 @@ function documents_table_view($chapitre) {
 	echo '</table>';
 	return true;
 }
-
+*/
 /*
 function comments_doc_view($id_doc, $logged = false) {
 	$comments = getComments($id_doc);

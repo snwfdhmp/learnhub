@@ -13,9 +13,15 @@ $GLOBALS['config'] = array(
 	"database" => array(
 		"host"=>"localhost",
 		"username"=>"root",
-		"password"=>"rootdbs1",
-		"name"=>"share2i",
-		"type_ref" => array("comment"=>"0")
+		"password"=>"root",
+		"name"=>"ICS",
+		"type_ref" => array("comment"=>"0"),
+		"doctypes"=>array(
+			1=>"Cours",
+			2=>"Exercices",
+			3=>"Annales",
+			4=>"Corrections"
+			)
 		),
 	"paths" => array(
 		"views" => "../views/",
@@ -57,7 +63,8 @@ $GLOBALS['config'] = array(
 			'jpeg',
 			'gif',
 			'png',
-			'pdf')
+			'pdf',
+			'txt')
 		),
 	"default" => array(
 		"view" => "accueil"

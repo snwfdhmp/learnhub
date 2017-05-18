@@ -1,5 +1,4 @@
 <?
-require_once ($GLOBALS['config']['paths']['libs'].'db.funcs.php');
 
 class Authenticator {
 	private $authenticated;
@@ -42,14 +41,14 @@ class Authenticator {
 	}
 }
 
-	/*private function generateSessionCookie() { //generateSessionCookie
+	private function generateSessionCookie() { //generateSessionCookie
 		return bin2hex(random_bytes($GLOBALS["config"]["authenticator"]["sessionCookieLength"]));
 	}
 
 	private function createConnexion() {
 		$cookie = $this-> generateSessionCookie();
 		echo "<p>Generating a new cookie : ".$cookie."</p>";
-	}*/
+	}
 
 
 	private function validateCredentials($email, $pass) {
@@ -81,7 +80,7 @@ class Authenticator {
 		$session_cookie = bin2hex($bytes);
 		$last_ip = $_SERVER['REMOTE_ADDR'];
 
-		$query = $GLOBALS['db']->query('SELECT * FROM connexions WHERE 1');
+		//$query = $GLOBALS['db']->query('SELECT * FROM connexions WHERE 1');
 		$query = $GLOBALS['db']->prepare("INSERT INTO connexions (session_cookie, id_user, last_ip) VALUES(:session_cookie, :id_user, :last_ip)");
 		$query->bindParam(':session_cookie', $session_cookie);
 		$query->bindParam(':id_user', $id_user);
@@ -91,14 +90,15 @@ class Authenticator {
 
 		$query->execute();
 
-		//setcookie("session_cookie",$session_cookie,time()+360000000);
+		setcookie("session_cookie",$session_cookie,time()+360000000);
 
 		$this->applyAuth($id_user);
+		//die("${_SESSION['prenom']}");
 		header('Location: ?u=explore');
 	}
 
 	public function requiresAuth() {
-		/*$id_user = $this->verifyAuth();
+		$id_user = $this->verifyAuth();
 		if($id_user !== false) {
 			$this->applyAuth($id_user);
 			return true;
@@ -108,13 +108,12 @@ class Authenticator {
 			header('Location: ?u=login&f=on');
 			exit();
 			return false;
-		}*/
-		return 1;
+		}
 	}
 
-	private function verifyAuth() {
-		/*if(!isset($_COOKIE['session_cookie']))
-			return false;*/
+	public function verifyAuth() {
+		if(!isset($_COOKIE['session_cookie']))
+			return false;
 
 		$GLOBALS['db'] = getPdoDbObject();
 		$query = $GLOBALS['db']->prepare('SELECT * FROM connexions WHERE session_cookie=:cookie AND id_user=:id_user AND last_ip=:ip');
@@ -127,8 +126,12 @@ class Authenticator {
 		$nbRows = $query->rowCount();
 		$rep = $query->fetch();
 
-		if($nbRows <= 0) // || intval($rep['last_ping']) < $timeout
+		if($nbRows <= 0) { // || intval($rep['last_ping']) < $timeout
+			if($this->isAuthenticated() == true) {
+				$this->disconnect();
+			}
 			return false;
+		}
 		return $rep['id_user'];
 	}
 

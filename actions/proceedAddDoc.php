@@ -13,7 +13,7 @@ if(!is_uploaded_file($_FILES["doc"]["tmp_name"])) header('Location: ?u=accueil&x
 		$resultat = move_uploaded_file($_FILES['doc']['tmp_name'],$cible);
 		if($resultat){
 			$datenow=date("Y-m-d H:i:s");
-			$query = $db->prepare("INSERT INTO documents (id_auteur, id_chapitre, doc_type, nom, url,date_creation,likes) VALUES(:id_auteur, :id_chapitre, :type, :nom, :url,:datenow,0)");
+			$query = $db->prepare("INSERT INTO documents (id_auteur, id_chapitre, doc_type, nom, url,date_creation) VALUES(:id_auteur, :id_chapitre, :type, :nom, :url,:datenow)");
 			$query->bindParam(':id_auteur', $_SESSION['id_user']);
 			$query->bindParam(':id_chapitre', $_POST["chapitre"]);
 			$query->bindParam(':type', $_POST["type"]);

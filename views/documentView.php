@@ -10,6 +10,9 @@ if(!isset($_GET['id']) || $_GET['id'] == '') {
 
 $id = $_GET['id'];
 $document = getDocument($id);
+
+putView($id, $_SESSION['id_user']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +42,7 @@ $document = getDocument($id);
 				getComments();
 				return false;
 			});
+			changeShadow(document.getElementById('comment-color'));
 		}
  
 		function getComments(){
@@ -102,9 +106,9 @@ $document = getDocument($id);
 							</div>
 							<div class="input-group-addon">
 								<select name="type" id="comment-color" onchange="changeShadow(this);">
-									<option value="primary" selected>Basic</option>
-									<option value="danger">Attention</option>
-									<option value="success">Recommendation</option>
+									<option value="primary" selected>Commenter</option>
+									<option value="danger">Avertir</option>
+									<option value="success">Recommander</option>
 								</select>
 							</div>
 							<input id="comment-input" type="text" class="form-control" placeholder="Poster un commentaire">

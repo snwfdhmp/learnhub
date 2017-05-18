@@ -86,7 +86,7 @@ if($auth->isAuthenticated() && (!isset($_GET['f']) || $_GET['f'] != "on")) {
 			<div class="row">
 				<div class="col-sm-6 col-md-4 col-md-offset-4">
 					<div class="account-wall">
-						<h1 class="text-center login-title">Créez un compte pour utiliser ICS</h1>
+						<h1 class="text-center login-title">Créez un compte pour utiliser LearnHub</h1>
 						<div class="profile-img">
 							<i class="fa fa-plus-square" aria-hidden="true"></i>
 						</div>

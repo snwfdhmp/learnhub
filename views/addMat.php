@@ -23,20 +23,31 @@ $GLOBALS['active_view']="addCourse";
 	</script>
 </head>
 <body>
-
-	<?
-	if(isset($_GET["x"]) && $_GET["x"]=="addFail")
-		echo '<p>Ajout Echoué</p>';
-	if(isset($_GET["x"]) && $_GET["x"]=="addSucc")
-		echo '<p>Ajout Réussi</p>';
-	?>
-
 	<a href="?u=accueil">
 		<button class="btn btn-danger" style="float: right; margin-right: 150px;">Retour</button>
 	</a>
 	<div class="container">
-			<h1>Ajouter une Matière</h1>
-			<? include_once('layouts/addMatForm.php') ?>
-		</div>
+		<h1>Ajouter une Matière</h1>
+		<h2>LearnHub vous permet d'ajouter une matière à votre promo afin de pouvoir mettre en ligne des documents.<br/>
+		Si vous le souhaitez vous pouvez également <a href="?u=addChap">ajouter un chapitre à une matière existante</a>.</h2><br/>
+		<?
+		if(isset($_GET["x"])) {
+			echo '<div class="alert alert-danger">';
+			switch($_GET["x"]) {
+				case "addfail" :
+				echo 'La matière n\'a pas pu être ajoutée. Veuillez réessayer.';
+				break;
+				case "fill":
+				echo "Veuillez remplir tous les champs du formulaire";
+				break;
+				default:
+				echo "Erreur lors de l'ajout de la matière. Contactez un administrateur.";
+				break;
+			}
+			echo "</div>";
+		}
+		?>
+		<? include_once('layouts/addMatForm.php') ?>
 	</div>
+</div>
 </body>

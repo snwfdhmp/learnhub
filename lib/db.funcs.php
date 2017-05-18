@@ -78,6 +78,36 @@ function searchDocuments($search) {
 	$query->execute();
 	return $query->fetchAll();
 }
+function putView($id_doc, $id_user) {
+	if($id_user != null) {
+		if(!hasSeen($id_doc, $id_user)) {
+			$query = $GLOBALS['db']->prepare('INSERT INTO vues (id_doc, id_user, count) VALUES(:id_doc, :id_user, 1)');
+			$query->bindParam(':id_doc', $id_doc);
+			$query->bindParam(':id_user', $id_user);
+			$query->execute();
+		}
+		else {
+			$query = $GLOBALS['db']->prepare('UPDATE vues SET count=count+1 WHERE id_user=:id_user AND id_doc = :id_doc');
+			$query->bindParam(':id_doc', $id_doc);
+			$query->bindParam(':id_user', $id_user);
+			$query->execute();
+		}
+	}
+
+	$query = $GLOBALS['db']->prepare('UPDATE documents SET vues=vues+1 WHERE id_doc=:id_doc');
+	$query->bindParam(':id_doc', $id_doc);
+
+	return $query->execute();
+}
+
+function hasSeen($id_doc, $id_user) {
+	$query = $GLOBALS['db']->prepare('SELECT count FROM vues WHERE id_doc=:id_doc AND id_user=:id_user');
+	$query->bindParam(':id_doc', $id_doc);
+	$query->bindParam(':id_user', $id_user);
+	$query->execute();
+	$rep = $query->fetchAll();
+	return $rep != null;
+}
 
 function getComments($id_doc) {
 	$query = $GLOBALS['db']->query("SELECT * FROM comments WHERE id_doc=".$id_doc."");
@@ -90,7 +120,7 @@ function getOnlineUsers() {
 	$timeover = time() + 200;
 	$timeout = $GLOBALS['config']['authenticator']['onlineTimeout'];
 
-	$query = $GLOBALS['db']->query("SELECT id_user, last_ping FROM connexions WHERE last_ping > current_timestamp()-".$timeout/*." ""AND id_user = ".$_SESSION['id_user']*/);
+	$query = $GLOBALS['db']->query("SELECT id_user, last_ping FROM connexions WHERE last_ping > current_timestamp()-".$timeout." AND id_user!='".$_SESSION['id_user']."'");
 	$query->execute();
 	$rep = $query->fetchAll();
 	return $rep;
@@ -165,27 +195,27 @@ function SendDocMail($id_doc,$email) {
 	$mail->addAttachment($path, 'Share2i-'.$nom.'.pdf');    
 	$mail->isHTML(true);
 	$mail->SMTPOptions = array(
-	    'ssl' => array(
-	        'verify_peer' => false,
-	        'verify_peer_name' => false,
-	        'allow_self_signed' => true
-	    )
-	); 
+		'ssl' => array(
+			'verify_peer' => false,
+			'verify_peer_name' => false,
+			'allow_self_signed' => true
+			)
+		); 
 	$mail->Subject = 'Votre Document Share2i';
 	$mail->Body    = 'Bonjour '.$_SESSION['prenom'].' '.$_SESSION['nom'].' ,<br>
-					  Vous trouverez en pièce jointe le document " '.$nom.' "<br />
-					  Cordialement,<br>
-					  Share2i';
+	Vous trouverez en pièce jointe le document " '.$nom.' "<br />
+	Cordialement,<br>
+	Share2i';
 	$mail->AltBody = 'Bonjour'.$_SESSION['prenom'].' '.$_SESSION['nom'].',
-					  Vous trouverez en pièce jointe le document " '.$nom.' "
-					  Cordialement,
-					  Share2i';
+	Vous trouverez en pièce jointe le document " '.$nom.' "
+	Cordialement,
+	Share2i';
 	if(!$mail->send()) {
-	    echo 'Erreur';
-	    die();
+		echo 'Erreur';
+		die();
 	} else {
-	    echo 'Message Envoyé';
-	    die();
+		echo 'Message Envoyé';
+		die();
 	}
 }
 

@@ -4,7 +4,13 @@
 	<div class="container-fluid navbar-custom">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<a class="navbar-brand" href="?u=accueil"><span class="glyphicon glyphicon-console"></span> ICS</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="?u=accueil"><span class="glyphicon glyphicon-console"></span> LearnHub</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -70,8 +76,8 @@
 	});
 	$("#search-bar").on('keydown', function() {
 		if($("#search-bar").val().length > 0) {
-		getSearch();
-		openSearchView();
+			getSearch();
+			openSearchView();
 		}
 		else {
 			closeSearchView();
@@ -79,8 +85,8 @@
 	});
 	$("#search-bar").on('keyup', function() {
 		if($("#search-bar").val().length > 0) {
-		getSearch();
-		openSearchView();
+			getSearch();
+			openSearchView();
 		}
 		else {
 			closeSearchView();

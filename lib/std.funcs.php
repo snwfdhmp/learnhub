@@ -51,4 +51,9 @@ function time2str($ts)
         return date('F Y', $ts);
     }
 }
+
+function doctypeToStr($doctype) {
+    return $GLOBALS['config']['database']['doctypes'][$doctype];
+}
+
 ?>

@@ -15,6 +15,7 @@ Le repo : https://github.com/snwfdhmp/MPM
 - times
 - Pouvoir choisir la couleur de son commentaire
 - Bouton pour s'envoyer le doc par mail
+- Tri des commentaires par note
 
 #Notes
 
