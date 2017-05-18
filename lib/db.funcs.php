@@ -126,12 +126,68 @@ function putLike($type_ref, $id_ref, $valeur) {
 }
 
 
-function postComment($id_doc, $content, $id_user) {
-	$query = $GLOBALS['db']->prepare("INSERT INTO comments (id_doc, id_auteur, contenu) VALUES(:id_doc, :id_user, :content)");
+function postComment($id_doc, $content,$type, $id_user) {
+	$nowdate=date('Y-m-d H:i:s');
+	$query = $GLOBALS['db']->prepare("INSERT INTO comments (id_doc, id_auteur, contenu,date_creation,type) VALUES(:id_doc, :id_user,:content,:daten,:type)");
 	$query->bindParam(':id_doc', $id_doc);
 	$query->bindParam(':id_user', $id_user);
+	$query->bindParam(':daten',$nowdate);
 	$query->bindParam(':content', $content);
+	$query->bindParam(':type', $type);
 	return $query->execute();
 }
+
+function getdocpath($id_doc){
+	$query = $GLOBALS['db']->query("SELECT url,nom FROM documents WHERE id_doc=".$id_doc);
+	$query->execute();
+	$rep = $query->fetchAll();
+	return $rep;
+
+}
+function SendDocMail($id_doc,$email) {
+	$url=getdocpath($id_doc);
+	$path=$url[0]["url"];
+	$nom=$url[0]["nom"];
+	require '../mailer/PHPMailerAutoload.php';
+	$mail = new PHPMailer;
+	//$mail->SMTPDebug = 3; 
+	$mail->CharSet = 'UTF-8';                             
+	$mail->isSMTP();                                    
+	$mail->Host = 'smtp.gmail.com';  
+	$mail->SMTPAuth = true; 
+	$mail->Username = 'geekriyad@gmail.com';                 
+	$mail->Password = 'RR@test19';  
+	$mail->SMTPSecure = 'tls';                           
+	$mail->Port = 587;
+	$mail->setFrom('geekriyad@gmail.com', 'Share2i');
+	$mail->addAddress($email);     
+	$mail->addReplyTo('geekriyad@gmail.com', 'Riyad');
+	$mail->addAttachment($path, 'Share2i-'.$nom.'.pdf');    
+	$mail->isHTML(true);
+	$mail->SMTPOptions = array(
+	    'ssl' => array(
+	        'verify_peer' => false,
+	        'verify_peer_name' => false,
+	        'allow_self_signed' => true
+	    )
+	); 
+	$mail->Subject = 'Votre Document Share2i';
+	$mail->Body    = 'Bonjour '.$_SESSION['prenom'].' '.$_SESSION['nom'].' ,<br>
+					  Vous trouverez en pièce jointe le document " '.$nom.' "<br />
+					  Cordialement,<br>
+					  Share2i';
+	$mail->AltBody = 'Bonjour'.$_SESSION['prenom'].' '.$_SESSION['nom'].',
+					  Vous trouverez en pièce jointe le document " '.$nom.' "
+					  Cordialement,
+					  Share2i';
+	if(!$mail->send()) {
+	    echo 'Erreur';
+	    die();
+	} else {
+	    echo 'Message Envoyé';
+	    die();
+	}
+}
+
 
 ?>

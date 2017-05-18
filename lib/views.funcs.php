@@ -19,6 +19,7 @@ function matieres_line_view($promo, $focus = 1) {
 		echo '><a href="?u='.
 		$GLOBALS['active_view'].'&m='.$matiere['id_matiere'].'">'.$matiere['diminutif'].'</a></li>';
 	}
+	echo '<li role="presentation"><a href="?u=addMat&promo='.$promo.'">+ Matiere</a></li>';
 	echo'</ul><br/>';
 	return true;
 }
@@ -101,14 +102,57 @@ function documents_table_view($chapitre) {
 		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a>";
 		return false;
 	}
-
+	echo '<div class="gentitle"><h2>Cours</h2></div>';
 	echo '<table class="table table-hover">';
 	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
+	$i=0;
 	foreach ($documents as $document) {
-		$auteur = getUser($document['id_auteur']);
-		echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+		if($document["doc_type"]==1){
+			++$i;
+			$auteur = getUser($document['id_auteur']);
+			echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+		}
 	}
-
+	if($i==0)  echo "<tr><td><p style='color:red;'>Aucun Document n'éxiste dans cette section</p></td><td></td><td></td></tr>";
+	echo '</table>';
+	echo '<div class="gentitle"><h2>Exercice</h2></div>';
+	echo '<table class="table table-hover">';
+	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
+	$i=0;
+	foreach ($documents as $document) {
+		if($document["doc_type"]==2){
+			$i++;
+			$auteur = getUser($document['id_auteur']);
+			echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+		}
+	}
+	if($i==0)  echo "<tr><td><p style='color:red;'>Aucun Document n'éxiste dans cette section</p></td><td></td><td></td></tr>";
+	echo '</table>';
+	echo '<div class="gentitle"><h2>Correction</h2></div>';
+	echo '<table class="table table-hover">';
+	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
+	$i=0;
+	foreach ($documents as $document) {
+		if($document["doc_type"]==4){
+			$i++;
+			$auteur = getUser($document['id_auteur']);
+			echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+		}
+	}
+	if($i==0)  echo "<tr><td><p style='color:red;'>Aucun Document n'éxiste dans cette section</p></td><td></td><td></td></tr>";
+	echo '</table>';
+	echo '<div class="gentitle"><h2>Annale</h2></div>';
+	echo '<table class="table table-hover">';
+	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
+	$i=0;
+	foreach ($documents as $document) {
+		if($document["doc_type"]==3){
+			$i++;
+			$auteur = getUser($document['id_auteur']);
+			echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+		}
+	}
+	if($i==0)  echo "<tr><td><p style='color:red;'>Aucun Document n'éxiste dans cette section</p></td><td></td><td></td></tr>";
 	echo '</table>';
 	return true;
 }
@@ -151,7 +195,7 @@ function comments_doc_view($id_doc, $logged = false) {
 		$likes = getLikes($GLOBALS['config']['database']['type_ref']['comment'], $comment['id_com']);
 		echo '
 		<div class="col-md-4 col-md-offset-4 comment">
-			<div class="panel panel-danger">
+			<div class="panel panel-'.$comment['type'].'">
 				<div class="panel-heading">
 					'.$auteur['prenom'].' '.$auteur['nom'].'
 				</div>
@@ -167,7 +211,7 @@ function comments_doc_view($id_doc, $logged = false) {
 							<div class="btn-toolbar" role="toolbar">
 								<div class="btn-group-xs" role="group">
 									<button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')" class="btn btn-default like-btn"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-									<button class="btn btn-default"> <span class="like-com" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'"> '.$likes.' </span> </button><button class="btn btn-default dislike-btn" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+									<button class="btn btn-default"> <span class="like-com" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'"> '."$likes".' </span> </button><button class="btn btn-default dislike-btn" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
 								</div>
 							</div>
 						</div>

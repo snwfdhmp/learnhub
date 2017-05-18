@@ -237,3 +237,15 @@ table#documentInfos td{
 .like-view {
 	
 }
+.gentitle{
+	width: 150px;
+	background-color: #337ab7;
+	color: white;
+}
+.gentitle h2{
+	padding: 8px;
+}
+#sendDocMail{
+	text-align: center;
+	margin-top: 5px;
+}
