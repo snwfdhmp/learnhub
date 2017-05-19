@@ -13,13 +13,12 @@ function matieres_line_view($promo, $focus = 1) {
 	}
 
 	foreach ($matieres as $matiere) {
-		/* $firstChap = getChapitres($matiere['id_matiere']);
-		$str = $firstChap[0]['id_chapitre']; */
+		$firstChap = getFirstChap($matiere['id_matiere']);
 		echo '<li role="presentation"';
 		if($matiere['id_matiere'] == $focus) 
 			echo 'class="active"';
 		echo '><a href="?u='.
-		$GLOBALS['active_view'].'&m='.$matiere['id_matiere'].'">'.$matiere['diminutif'].'</a></li>';
+		$GLOBALS['active_view'].'&m='.$matiere['id_matiere'].'&c='.$firstChap['id_chapitre'].'">'.$matiere['diminutif'].'</a></li>';
 	}
 	echo '<li role="presentation" id="btn-add-matiere"><a href="?u=addMat&promo='.$promo.'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></li>';
 	echo'</ul><br/>';
@@ -40,6 +39,7 @@ function matieres_select_view($promo, $focus = 1) {
 			echo ' selected';
 		echo '>'.$matiere['diminutif'].'</option>';
 	}
+	return true;
 }
 
 function chapitres_list_view($matiere, $focus) {
@@ -139,94 +139,6 @@ function documents_table_view($chapitre) {
 	}
 	return true;
 }
-/* RIAD DOC VIEW
-function documents_table_view_($chapitre) {
-	$documents = getDocuments($chapitre);
-
-	if($documents == NULL) {
-		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a>";
-		return false;
-	}
-	echo '<div class="gentitle"><h2>Cours</h2></div>';
-	echo '<table class="table table-hover">';
-	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
-	$i=0;
-	foreach ($documents as $document) {
-		if($document["doc_type"]==1){
-			++$i;
-			$auteur = getUser($document['id_auteur']);
-			echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
-		}
-	}
-	if($i==0)  echo "<tr><td><p style='color:red;'>Aucun Document n'éxiste dans cette section</p></td><td></td><td></td></tr>";
-	echo '</table>';
-	echo '<div class="gentitle"><h2>Exercice</h2></div>';
-	echo '<table class="table table-hover">';
-	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
-	$i=0;
-	foreach ($documents as $document) {
-		if($document["doc_type"]==2){
-			$i++;
-			$auteur = getUser($document['id_auteur']);
-			echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
-		}
-	}
-	if($i==0)  echo "<tr><td><p style='color:red;'>Aucun Document n'éxiste dans cette section</p></td><td></td><td></td></tr>";
-	echo '</table>';
-	echo '<div class="gentitle"><h2>Correction</h2></div>';
-	echo '<table class="table table-hover">';
-	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
-	$i=0;
-	foreach ($documents as $document) {
-		if($document["doc_type"]==4){
-			$i++;
-			$auteur = getUser($document['id_auteur']);
-			echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
-		}
-	}
-	if($i==0)  echo "<tr><td><p style='color:red;'>Aucun Document n'éxiste dans cette section</p></td><td></td><td></td></tr>";
-	echo '</table>';
-	echo '<div class="gentitle"><h2>Annale</h2></div>';
-	echo '<table class="table table-hover">';
-	echo "<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
-	$i=0;
-	foreach ($documents as $document) {
-		if($document["doc_type"]==3){
-			$i++;
-			$auteur = getUser($document['id_auteur']);
-			echo '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
-		}
-	}
-	if($i==0)  echo "<tr><td><p style='color:red;'>Aucun Document n'éxiste dans cette section</p></td><td></td><td></td></tr>";
-	echo '</table>';
-	return true;
-}
-*/
-/*
-function comments_doc_view($id_doc, $logged = false) {
-	$comments = getComments($id_doc);
-
-	if($comments==NULL) {
-		echo "<p class='well col-md-6 col-md-offset-3'>Il n'y a pas encore de commentaires sur ce post. Soyez le premier à commenter.</p>";
-		return false;
-	}
-
-	foreach ($comments as $comment) {
-		$auteur = getUser($comment['id_auteur']);
-		$likes = getLikes($GLOBALS['config']['database']['type_ref']['comment'], $comment['id_com']);
-		echo '<div class="col-md-4 col-md-offset-4 comment">
-		<div class="input-group">
-			<div class="input-group-btn"><button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')" class="btn btn-default">+</button><button class="btn btn-default"><span class="badge" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'">'.$likes.'</span></button><button class="btn btn-default" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')">-</button><button class="btn btn-default">
-				'.$auteur['prenom'].' '.$auteur['nom'].'</button></div>
-				<div class="form-control">
-					'.$comment['contenu'].'
-				</div>
-			</div>
-		</div>';
-	}
-	return true;
-}*/
-
 function comments_doc_view($id_doc, $logged = false) {
 	$comments = getComments($id_doc);
 

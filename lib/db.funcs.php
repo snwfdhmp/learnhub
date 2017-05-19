@@ -36,6 +36,12 @@ function getChapitre($id_chapitre) {
 	return $query->fetch();
 }
 
+function getFirstChap($id_matiere) {
+	$query = $GLOBALS['db']->query("SELECT * FROM chapitres WHERE id_matiere=".$id_matiere." ORDER BY id_chapitre ASC");
+	$query->execute();
+	return $query->fetch();
+}
+
 function getPromoName($id_promo) {
 	$query = $GLOBALS['db']->query("SELECT * FROM promos WHERE id_promo=".$id_promo."");
 	$query->execute();
