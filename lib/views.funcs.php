@@ -231,7 +231,7 @@ function comments_doc_view($id_doc, $logged = false) {
 	$comments = getComments($id_doc);
 
 	if($comments==NULL) {
-		echo "<p class='well col-md-6 col-md-offset-1'>Il n'y a pas encore de commentaires sur ce post. Soyez le premier à commenter.</p>";
+		echo "<p class='well'>Il n'y a pas encore de commentaires sur ce post. Soyez le premier à commenter.</p>";
 		return false;
 	}
 
@@ -242,8 +242,11 @@ function comments_doc_view($id_doc, $logged = false) {
 		<div class="comment">
 			<div class="panel panel-'.$comment['type'].'">
 				<div class="panel-heading">
-					'.$auteur['prenom'].' '.$auteur['nom'].'
-				</div>
+					<div class="row">
+					<span class="col-md-10">'.$auteur['prenom'].' '.$auteur['nom']."</span><span class='col-md-1 col-md-offset-1'>".
+					($auteur['id_user'] == $_SESSION['id_user'] ? "<span class='text-right'>&#10008;</span></span>":"")
+					.'
+				</div></div>
 				<div class="panel-body">
 					'.$comment['contenu'].'
 				</div>
