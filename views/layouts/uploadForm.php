@@ -2,6 +2,11 @@
 //$auth->requiresAuth();
 include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
 ?>
+
+<script>
+  
+</script>
+
 <form action="?u=accueil" enctype="multipart/form-data" method="POST">
 <input type="hidden" name="action" value="addDoc">
 <div class="container container-fluid">
@@ -27,23 +32,23 @@ include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
   <div class="addcourse-input input-group input-group-lg col-md-4">
     <span class="input-group-addon" id="sizing-addon1">Type</span>
     <select name="type" class="form-control">
-     <option value="1">Cours</option>
-     <option value="2">Exercice</option>
-     <option value="3">Annale</option>
-     <option value="4">Correction</option>
+     <option value="1" <? selectedIf($_GET['t'], "Cours") ?>>Cours</option>
+     <option value="2" <? selectedIf($_GET['t'], "Exercices") ?>>Exercice</option>
+     <option value="3" <? selectedIf($_GET['t'], "Annales") ?>>Annale</option>
+     <option value="4" <? selectedIf($_GET['t'], "Corrections") ?>>Correction</option>
    </select>
  </div><br/>
  <div class="addcourse-input input-group input-group-lg col-md-4">
   <span class="input-group-addon" id="sizing-addon1">Matière</span>
   <select id="matiere-select" name="matiere" class="form-control" onchange="getChap(this.value)">
-  <? matieres_select_view($_SESSION['promo']); ?>
+  <? matieres_select_view($_SESSION['promo'], $_GET['m']); ?>
  </select>
 </div><br/>
 
 <div class="addcourse-input input-group input-group-lg col-md-4">
   <span class="input-group-addon" id="sizing-addon1">Chapitre</span>
   <select id="chapitre-select" name="chapitre" class="form-control">
-  <? chapitres_select_view(1); ?>
+  <? chapitres_select_view(1, $_GET['c']); ?>
   </select>
 </div><br/>
 <div class="addcourse-input col-md-4">

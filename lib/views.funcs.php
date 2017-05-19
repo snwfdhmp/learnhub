@@ -36,7 +36,7 @@ function matieres_select_view($promo, $focus = 1) {
 
 	foreach ($matieres as $matiere) {
 		echo '<option value="'.$matiere['id_matiere'].'"';
-		if($matiere['id_matiere'] == $focus)
+		if(isset($focus) && $matiere['id_matiere'] == $focus)
 			echo ' selected';
 		echo '>'.$matiere['diminutif'].'</option>';
 	}
@@ -74,7 +74,7 @@ function chapitres_select_view($matiere, $focus = 1) {
 
 	foreach ($chapitres as $chapitre) {
 		echo '<option value="'.$chapitre['id_chapitre'].'"';
-		if($chapitre['id_chapitre'] == $focus)
+		if(isset($focus) && ($chapitre['id_chapitre'] == $focus))
 			echo ' selected';
 		echo '>'.$chapitre['nom'].'</option>';
 	}
@@ -99,6 +99,7 @@ function promo_select_view($focus) {
 
 function documents_table_view($chapitre) {
 	$documents = getDocuments($chapitre);
+	$chapitre = getChapitre($chapitre);
 
 	if($documents == NULL) {
 		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a>";
@@ -115,7 +116,7 @@ function documents_table_view($chapitre) {
 		} else {
 			$notSeen = "";
 		}
-		$nbrComs = count(getComments($document['id_doc']));
+		$nbrComs = countComments($document['id_doc']);
 		$vues = "<span class='label label-default'>".$document['vues']." vues</span>";
 		if($nbrComs > 0)
 			$coms = "<span class='label label-primary'>".$nbrComs." réactions</span>";
@@ -125,13 +126,14 @@ function documents_table_view($chapitre) {
 	}
 	foreach($GLOBALS['config']['database']['doctypes'] as $doctype) {
 		if(! isset($inners[$doctype])) {
-			echo "<div class='gentitle gentitle-empty'><a href='?u=addCourse' class='gentitle-empty'><h2>$doctype +</h2></a></div>";
+			echo "<div class='gentitle gentitle-empty'><a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."' class='gentitle-empty'><h2>$doctype +</h2></a></div>";
 		}
 		else {
 			echo "<div class='gentitle'><h2>$doctype</h2></div>
 				<table class='table table-hover'>
 			<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
 			echo $inners[$doctype];
+			echo '<tr><td><a href="?u=addCourse&m='.$chapitre['id_matiere'].'&c='.$chapitre['id_chapitre'].'&t='.$doctype.'">Ajouter un document...</a></td></tr>';
 			echo '</table>';
 		}
 	}
@@ -229,7 +231,7 @@ function comments_doc_view($id_doc, $logged = false) {
 	$comments = getComments($id_doc);
 
 	if($comments==NULL) {
-		echo "<p class='well col-md-6 col-md-offset-3'>Il n'y a pas encore de commentaires sur ce post. Soyez le premier à commenter.</p>";
+		echo "<p class='well col-md-6 col-md-offset-1'>Il n'y a pas encore de commentaires sur ce post. Soyez le premier à commenter.</p>";
 		return false;
 	}
 
@@ -237,7 +239,7 @@ function comments_doc_view($id_doc, $logged = false) {
 		$auteur = getUser($comment['id_auteur']);
 		$likes = getLikes($GLOBALS['config']['database']['type_ref']['comment'], $comment['id_com']);
 		echo '
-		<div class="col-md-4 col-md-offset-4 comment">
+		<div class="comment">
 			<div class="panel panel-'.$comment['type'].'">
 				<div class="panel-heading">
 					'.$auteur['prenom'].' '.$auteur['nom'].'

@@ -231,11 +231,15 @@ table#documentInfos td{
 .like-btn {
 	color: rgba(42, 66, 183, 1);
 }
+.like-btn.active {
+	color: rgba(10, 15, 16, 1);
+}
 .dislike-btn {
 	color: rgba(183, 66, 42, 1);
 }
 .like-view {
-	
+	position:absolute;
+	right:25px;
 }
 .gentitle{
 	width: 150px;
@@ -254,7 +258,7 @@ div.gentitle-empty:hover {
 	background-color: #7ab733;
 	cursor: pointer;
 }
-a.gentitle-empty {
+.gentitle-empty > a {
 	text-decoration:none;
 	color:white;
 }
@@ -273,4 +277,20 @@ a.gentitle-empty {
 }
 #btn-add-matiere:hover a {
 	color:#7ab733;
+}
+.doc-sidebar-outer {
+    position: relative;
+}
+@media (min-width: 768px) {
+    .doc-sidebar {
+        position: fixed;
+    }
+}
+@media (max-width: 1200px) {
+	.doc-sidebar {
+		display: none;
+	}
+}
+
+	right:100px;
 }

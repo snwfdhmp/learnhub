@@ -5,6 +5,11 @@ function activeIf($view) {
         echo "class='active'";
 }
 
+function selectedIf($var, $view) {
+    if(isset($var) && ($var == $view))
+        echo "selected";
+}
+
 
 function time2str($ts)
 {
@@ -54,6 +59,10 @@ function time2str($ts)
 
 function doctypeToStr($doctype) {
     return $GLOBALS['config']['database']['doctypes'][$doctype];
+}
+
+function userToStr($user) {
+    return $user['prenom'].' '.$user['nom'];
 }
 
 ?>

@@ -18,10 +18,28 @@ function getMatieres($promo) {
 	return $query->fetchAll();
 }
 
+function getMatiere($id_matiere) {
+	$query = $GLOBALS['db']->query("SELECT * FROM matieres WHERE id_matiere=".$id_matiere."");
+	$query->execute();
+	return $query->fetch();
+}
+
 function getChapitres($id_matiere) {
 	$query = $GLOBALS['db']->query("SELECT * FROM chapitres WHERE id_matiere=".$id_matiere." ORDER BY rang");
 	$query->execute();
 	return $query->fetchAll();
+}
+
+function getChapitre($id_chapitre) {
+	$query = $GLOBALS['db']->query("SELECT * FROM chapitres WHERE id_chapitre=".$id_chapitre."");
+	$query->execute();
+	return $query->fetch();
+}
+
+function getPromoName($id_promo) {
+	$query = $GLOBALS['db']->query("SELECT * FROM promos WHERE id_promo=".$id_promo."");
+	$query->execute();
+	return $query->fetch()['nom'];
 }
 
 function getDocuments($chapitre) {
@@ -114,6 +132,10 @@ function getComments($id_doc) {
 	$query->execute();
 	$rep = $query->fetchAll();
 	return $rep;
+}
+
+function countComments($id_doc) {
+	return count(getComments($id_doc));
 }
 
 function getOnlineUsers() {
