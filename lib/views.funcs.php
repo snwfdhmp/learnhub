@@ -122,7 +122,7 @@ function documents_table_view($chapitre) {
 			$coms = "<span class='label label-primary'>".$nbrComs." réactions</span>";
 		else
 			$coms = "";
-		$inners[doctypeToStr($document['doc_type'])] .= '<tr><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a> '.$vues.' '.$coms.' '.$notSeen.'</td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a> '.$vues.' '.$coms.' '.$notSeen.'</td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
 	}
 	foreach($GLOBALS['config']['database']['doctypes'] as $doctype) {
 		if(! isset($inners[$doctype])) {

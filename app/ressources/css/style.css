@@ -292,5 +292,6 @@ div.gentitle-empty:hover {
 	}
 }
 
-	right:100px;
+.doc-table-view-row > td {
+	font-size: 20px;
 }

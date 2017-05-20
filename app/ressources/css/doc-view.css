@@ -1,3 +1,14 @@
 #doc-like {
 	font-size: 30px;
 }
+
+.doc-like {
+	margin-right: 15px;
+}
+.doc-dislike {
+	margin-left: 15px;
+}
+
+.doc-like-count {
+	margin-bottom: 0px;
+}
