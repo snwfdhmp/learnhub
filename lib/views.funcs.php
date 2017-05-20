@@ -124,9 +124,9 @@ function documents_table_view($chapitre) {
 			$notSeen = "";
 		}
 		$nbrComs = countComments($document['id_doc']);
-		$vues = "<span class='label label-default'>".$document['vues']." vues</span>";
+		$vues = "<span class='label label-default'>".$document['vues']." <i class='fa fa-eye' aria-hidden='true'></i></span>";
 		if($nbrComs > 0)
-			$coms = "<span class='label label-primary'>".$nbrComs." réactions</span>";
+			$coms = "<span class='label label-primary'>".$nbrComs." <i class='fa fa-commenting' aria-hidden='true'></i></span>";
 		else
 			$coms = "";
 		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a> '.$vues.' '.$coms.' '.$notSeen.'</td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
