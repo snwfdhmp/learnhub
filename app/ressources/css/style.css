@@ -299,7 +299,23 @@ div.gentitle-empty:hover {
 .doc-table-view-type-nonvoid {
 	background-color: #428bca;
 }
+.doc-table-view-type-nonvoid > a {
+	text-decoration: none;
+}
+
 
 .doc-table-view-type{
 	font-size: 30px;
+}
+span.doc-table-view-type-add{
+	font-size: 12px;
+}
+a.doc-table-view-type-add:hover {
+	text-decoration: none;
+	cursor:pointer;
+}
+
+.doc-view-section-end > td {
+	border-style:none;
+	margin-bottom: 20px;
 }

@@ -24,7 +24,7 @@ if(isset($_GET['c']) && $_GET['c'] != "")
 </head>
 <body>
 	<? include_once "layouts/navbar.php" ?>
-	<div class="container">
+	<div class="container" id="explore-view">
 		<div class="row">
 			<? 
 			if(matieres_line_view($_SESSION['promo'], $matiere_focused)) {

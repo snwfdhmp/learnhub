@@ -17,7 +17,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li <?activeIf('accueil')?> ><a href="?u=accueil">Accueil </a></li>
-				<li <?activeIf('explore')?> ><a href="?u=explore" onclick="changeView(this)">Explorer </a></li>
+				<li <?activeIf('explore')?> ><a href="?u=explore#explore-view" onclick="changeView(this)">Explorer </a></li>
 			</ul>
 			<form class="navbar-form navbar-left">
 				<div class="form-group input-group">
