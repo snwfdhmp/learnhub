@@ -292,7 +292,7 @@ div.gentitle-empty:hover {
 	}
 }
 
-.doc-table-view-row > td {
+.doc-table-view-row > td , .doc-table-view-row > th {
 	font-size: 20px;
 }
 

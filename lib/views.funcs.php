@@ -5,23 +5,28 @@ include_once $GLOBALS['config']['paths']['libs'].'std.funcs.php';
 function matieres_line_view($promo, $focus = 1) {
 	$matieres = getMatieres($promo);
 
-	echo '<ul class="nav nav-pills nav-justified">';
+	echo '<div class="col-md-1">';
+	echo '<ul class="nav nav-pills nav-stacked">';
 
 	if($matieres == NULL) {
-		echo "<h2>Il n'y a pas encore de documents pour votre promo ... <a href='?u=addCourse'>Soyez le premier à poster un document</a></h2>";
+		echo "</div>";
+		echo "<div class='col-md-10'> <h2>Il n'y a pas encore de matières pour votre promo ... <a href='?u=addCourse'>Soyez le premier à en créer une.</a></h2>
+		</div>";
 		return false;
 	}
 
 	foreach ($matieres as $matiere) {
 		$firstChap = getFirstChap($matiere['id_matiere']);
-		echo '<li role="presentation"';
-		if($matiere['id_matiere'] == $focus) 
-			echo 'class="active"';
-		echo '><a href="?u='.
-		$GLOBALS['active_view'].'&m='.$matiere['id_matiere'].'&c='.$firstChap['id_chapitre'].'">'.$matiere['diminutif'].'</a></li>';
+		echo '<a class="';
+		if($matiere['id_matiere'] == $focus)
+			echo 'btn btn-primary';
+		else
+			echo 'label label-default';
+		echo ' nav-btn" href="?u='.
+		$GLOBALS['active_view'].'&m='.$matiere['id_matiere'].'&c='.$firstChap['id_chapitre'].'">'.$matiere['diminutif'].'</a><br/>';
 	}
-	echo '<li role="presentation" id="btn-add-matiere"><a href="?u=addMat&promo='.$promo.'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></li>';
-	echo'</ul><br/>';
+	echo '<a class="label label-default" href="?u=addMat&promo='.$promo.'"><i class="fa fa-plus-square" aria-hidden="true"></i></a></li>';
+	echo'</ul></div>';
 	return true;
 }
 
@@ -127,7 +132,7 @@ function documents_table_view($chapitre) {
 		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a> '.$vues.' '.$coms.' '.$notSeen.'</td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
 	}
 	echo "<table class='table table-hover'>
-			<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
+			<tr class='doc-table-view-row'><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
 	foreach($GLOBALS['config']['database']['doctypes'] as $doctype) {
 		if(! isset($inners[$doctype])) {
 			$bottom .= "<tr><td><div class='badge badge-lg badge-default doc-table-view-type'><a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>$doctype +</a></div></td><td></td><td></td></tr>";

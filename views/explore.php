@@ -24,16 +24,18 @@ if(isset($_GET['c']) && $_GET['c'] != "")
 </head>
 <body>
 	<? include_once "layouts/navbar.php" ?>
-	<div class="row">
-	<div class="container col-md-10 col-md-offset-1">
-		<? 
-			if(matieres_line_view($_SESSION['promo'], $matiere_focused))
-	  	   		if(chapitres_list_view($matiere_focused, $chapitre_focused))
-	  	   			documents_table_view($chapitre_focused);
+	<div class="container">
+		<div class="row">
+			<? 
+			if(matieres_line_view($_SESSION['promo'], $matiere_focused)) {
+				echo "<div class='col-md-10'>";
+				if(chapitres_list_view($matiere_focused, $chapitre_focused))
+					documents_table_view($chapitre_focused);
+				echo "</div>";
+			}
 
-		?>
-	</div>
-	<div class="container col-md-1"></div>
+			?>
+		</div>
 	</div>
 </body>
 </html>

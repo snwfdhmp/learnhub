@@ -20,3 +20,8 @@
 .navbar-custom {
 	background-color: #efefef !important;
 }
+
+.nav-btn {
+	margin-top: 3px;
+	margin-bottom: 1px;
+}
