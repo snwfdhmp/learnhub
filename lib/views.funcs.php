@@ -147,6 +147,8 @@ function comments_doc_view($id_doc, $logged = false) {
 		return false;
 	}
 
+	$inners = Array();
+
 	foreach ($comments as $comment) {
 		$auteur = getUser($comment['id_auteur']);
 		$likes = getLikes($GLOBALS['config']['database']['type_ref']['comment'], $comment['id_com']);

@@ -8,7 +8,8 @@ class Config
 	// Classes and funcs
 	const src_dir = array(
 		"classes" => "../src/classes",
-		"funcs" => "../src/funcs"
+		"funcs" => "../src/funcs",
+		"renderers" => "../src/renderers"
 		);
 	const classes = array(
 		"MainController" => "MainController.class.php",
@@ -24,9 +25,9 @@ class Config
 
 	//Ressources
 	const ressources_dir = array(
-		"image" => "../ressources/img",
-		"css"=>"../ressources/css",
-		"js"=>"../ressources/js",
+		"image" => "ressources/img",
+		"css"=>"ressources/css",
+		"js"=>"ressources/js",
 		"js-dist"=>"",
 		"css-dist"=>""
 		);
@@ -43,7 +44,8 @@ class Config
 			'bootstrap' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
 			),
 		'css' => array(
-			'navbar' => 'navbar.css'
+			'navbar' => 'navbar.css',
+			'login' => 'login.css'
 			)
 		);
 

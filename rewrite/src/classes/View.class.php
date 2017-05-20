@@ -38,6 +38,43 @@ class View
 		$this->provider = $obj->provider;
 	}
 
+	public function render_signup()
+	{
+		# code...
+	}
+
+	public function render_login()
+	{
+		global $_MainController;
+		Provider::include('css-dist', 'bootstrap');
+		Provider::include('css', 'login');
+		$_MainController->body(
+			"<div class='container'>
+				<div class='row'>
+					<div class='col-sm-6 col-md-4 col-md-offset-4'>
+						<div class='account-wall'>
+							<h1 class='text-center login-title'>Connectez-vous pour utiliser LearnHub</h1>
+							<div class='profile-img'>
+								<i class='fa fa-power-off' aria-hidden='true'></i>
+							</div>"
+							.
+							(isset($_GET['err']) ? 
+								($_GET['err'] == 'creds' ? "Erreur, ces identifiants ne sont pas corrects." : 
+									($_GET['err'] == 'creds' ? "Veuillez nous excuser, une erreur s'est produite lors de votre connexion." : ""
+										)):"")
+							.
+							Renderer::call("loginForm")
+							.
+							"</div>"
+							.
+							Renderer::link("signup", "Créer un compte", "", "class='text-center new-account'")
+							."
+						</div>
+					</div>
+				</div>
+				");
+	}
+
 	public function render_accueil()
 	{
 		global $_MainController;

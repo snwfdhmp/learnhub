@@ -17,9 +17,11 @@ class Authenticator {
 
 	public function ping() {
 		global $_db;
+		if(!(isset($_COOKIE['session_cookie']) && isset($_SESSION['id_user']) && isset($_SERVER['REMOTE_ADDR'])));
+			return false;
 
 		if(!$_db->ping($_COOKIE['session_cookie'], $_SESSION['id_user'], $_SERVER['REMOTE_ADDR']))
-			return -1;
+			return false;
 
 		$_db->deleteOldConnexions();
 
@@ -76,7 +78,7 @@ class Authenticator {
 
 	public function verifyAuth() {
 		global $_db;
-		if(!isset($_COOKIE['session_cookie']))
+		if(!isset($_COOKIE['session_cookie']) || !isset($_SESSION['id_user']) || !isset($_SERVER['REMOTE_ADDR']))
 			return false;
 		$status = $_db->validSessionCookie($_COOKIE['session_cookie'], $_SESSION['id_user'], $_SERVER['REMOTE_ADDR']);
 		if($status === false)

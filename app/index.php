@@ -4,8 +4,6 @@ ini_set('display_errors',1);
 session_start();
 
 require_once('config/globals.config.php');
-
-
 require_once($GLOBALS['config']['paths']['libs']."db.funcs.php");
 
 $GLOBALS['db'] = getPdoDbObject();

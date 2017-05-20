@@ -191,128 +191,138 @@ class Renderer
 		return true;
 	}
 
+	public static function link($view, $inner, $args = "", $props="") {
+		if(method_exists('View', 'render_'.$view))
+			return "<a href='?u=". $view . $args . "' ".$props.">". $inner ."</a>";
+
+	}
+
+	public static function call($renderer) {
+		return file_get_contents(url(Config::src_dir['renderers'], $renderer.'.renderer.php'));
+	}
+
 	public static function render_navbar() {
 		global $_auth;
 		global $_MainController;
 
 		$_MainController->body('<nav class="navbar navbar-default">
-		<div class="container-fluid navbar-custom">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<a class="navbar-brand" href="?u=accueil"><span class="glyphicon glyphicon-console"></span> '.Config::app_name.'</a>
-			</div>
-
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li '.activeIf('accueil').' ><a href="?u=accueil">Accueil </a></li>
-					<li '.activeIf('explore').' ><a href="?u=explore" onclick="changeView(this)">Explorer </a></li>
-				</ul>
-				<form class="navbar-form navbar-left">
-					<div class="form-group input-group">
-						<li class="dropdown" style="list-style-type: none">
-							<input type="text" class="form-control" id="search-bar" placeholder="Rechercher">
-							<button class="btn btn-default" id="search-btn" type="button">Go!</button>
-							<ul id="search-view" class="dropdown-menu"></ul>
-							<input id="search-toggle" type="hidden" class="dropdown-toggle" data-toggle="dropdown">
-						</li>
-					</div>
-					<button type="submit" id="search-submit" class="btn btn-default">Submit</button>
-				</form>
-				<ul class="nav navbar-nav navbar-right">');
-					if($GLOBALS['active_view']!="accueil") {
-						$_MainController->body('<li><a href="#"><span class="server-status" class="server-ping-fire"></span></a></li>');
-					}
-					$_MainController->body('<li><a href="?u=addCourse">+ Publier</a></li>');
-					if(! $_auth->isAuthenticated()) { 
-						$_MainController->body('<li><a href="?u=login">Se connecter</a></li><li><a href="?u=signup">S\'inscrire</a></li>');
-					} 
-					else { 
-						$_MainController->body('<li><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$_SESSION['prenom'].' '.$_SESSION['nom'].'<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="?u=profile">Voir mon profil</a></li>
-								<li><a href="#">Modifier mon profil</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="?r=logout&u=accueil">Se déconnecter</a></li>
-							</ul>
-						</li>');
-					}
-					$_MainController->body('</ul>
+			<div class="container-fluid navbar-custom">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<a class="navbar-brand" href="?u=accueil"><span class="glyphicon glyphicon-console"></span> '.Config::app_name.'</a>
 				</div>
-			</div>
-		</nav>');
 
-		$_MainController->body('
-		<script>
-			var opened = false;
-
-			function openSearchView() {
-				if(!opened) {
-					$("#search-toggle").dropdown("toggle");
-					opened = true;
-				}
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li '.activeIf('accueil').' ><a href="?u=accueil">Accueil </a></li>
+						<li '.activeIf('explore').' ><a href="?u=explore" onclick="changeView(this)">Explorer </a></li>
+					</ul>
+					<form class="navbar-form navbar-left">
+						<div class="form-group input-group">
+							<li class="dropdown" style="list-style-type: none">
+								<input type="text" class="form-control" id="search-bar" placeholder="Rechercher">
+								<button class="btn btn-default" id="search-btn" type="button">Go!</button>
+								<ul id="search-view" class="dropdown-menu"></ul>
+								<input id="search-toggle" type="hidden" class="dropdown-toggle" data-toggle="dropdown">
+							</li>
+						</div>
+						<button type="submit" id="search-submit" class="btn btn-default">Submit</button>
+					</form>
+					<ul class="nav navbar-nav navbar-right">');
+			if($GLOBALS['active_view']!="accueil") {
+				$_MainController->body('<li><a href="#"><span class="server-status" class="server-ping-fire"></span></a></li>');
 			}
-
-			function closeSearchView() {
-				if(opened) {
-					$("#search-toggle").dropdown("toggle");
-					opened = false;
-				}
+			$_MainController->body('<li><a href="?u=addCourse">+ Publier</a></li>');
+			if(! $_auth->isAuthenticated()) { 
+				$_MainController->body('<li><a href="?u=login">Se connecter</a></li><li><a href="?u=signup">S\'inscrire</a></li>');
+			} 
+			else { 
+				$_MainController->body('<li><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$_SESSION['prenom'].' '.$_SESSION['nom'].'<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="?u=profile">Voir mon profil</a></li>
+							<li><a href="#">Modifier mon profil</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="?r=logout&u=accueil">Se déconnecter</a></li>
+						</ul>
+					</li>');
 			}
+			$_MainController->body('</ul>
+		</div>
+	</div>
+</nav>');
 
-			$("#search-bar").on(\'focusin\', function() {
-				$("#search-btn").animate({opacity:\'1\'}, 200);
-			});
-			$("#search-bar").on(\'keydown\', function() {
-				if($("#search-bar").val().length > 0) {
-					getSearch();
-					openSearchView();
-				}
-				else {
-					closeSearchView();
-				}
-			});
-			$("#search-bar").on(\'keyup\', function() {
-				if($("#search-bar").val().length > 0) {
-					getSearch();
-					openSearchView();
-				}
-				else {
-					closeSearchView();
-				}
-			});
-			$("#search-bar").on(\'focusout\', function() {
-				$("#search-btn").animate({opacity:\'0\'}, 400);
-				opened = false;
-			});
+			$_MainController->body('
+				<script>
+					var opened = false;
 
-			function getSearch(){
-				ajaxGetAndReplace("search&search="+escape($("#search-bar").val()), "search-view");
-			}
+					function openSearchView() {
+						if(!opened) {
+							$("#search-toggle").dropdown("toggle");
+							opened = true;
+						}
+					}
 
-			function changeview(obj) {
-				target = this.prop(\'href\');
-				ajaxGetAndReplace(target, "root-dom-tag");
-				return false;
-			}
-		</script>
+					function closeSearchView() {
+						if(opened) {
+							$("#search-toggle").dropdown("toggle");
+							opened = false;
+						}
+					}
 
-		<script src="#'./*$this->provide('js', 'ajax').*/'"></script>');
+					$("#search-bar").on(\'focusin\', function() {
+						$("#search-btn").animate({opacity:\'1\'}, 200);
+					});
+					$("#search-bar").on(\'keydown\', function() {
+						if($("#search-bar").val().length > 0) {
+							getSearch();
+							openSearchView();
+						}
+						else {
+							closeSearchView();
+						}
+					});
+					$("#search-bar").on(\'keyup\', function() {
+						if($("#search-bar").val().length > 0) {
+							getSearch();
+							openSearchView();
+						}
+						else {
+							closeSearchView();
+						}
+					});
+					$("#search-bar").on(\'focusout\', function() {
+						$("#search-btn").animate({opacity:\'0\'}, 400);
+						opened = false;
+					});
+
+					function getSearch(){
+						ajaxGetAndReplace("search&search="+escape($("#search-bar").val()), "search-view");
+					}
+
+					function changeview(obj) {
+						target = this.prop(\'href\');
+						ajaxGetAndReplace(target, "root-dom-tag");
+						return false;
+					}
+				</script>
+
+				<script src="#'./*$this->provide('js', 'ajax').*/'"></script>');
+		}
+
 	}
 
-}
+	function rt($tag, $txt = "", $properties = "")
+	{
+		return Renderer::render_tag($tag, $txt, $properties);
+	}
 
-function rt($tag, $txt = "", $properties = "")
-{
-	return Renderer::render_tag($tag, $txt, $properties);
-}
-
-function activeIf($view) {
-    if($GLOBALS['active_view'] == $view)
-        return "class='active'";
-}
+	function activeIf($view) {
+		if($GLOBALS['active_view'] == $view)
+			return "class='active'";
+	}
 
 
-?>
+	?>

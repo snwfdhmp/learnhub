@@ -49,7 +49,7 @@ function getPromoName($id_promo) {
 }
 
 function getDocuments($chapitre) {
-	$query = $GLOBALS['db']->query("SELECT * FROM documents WHERE id_chapitre=".$chapitre." ORDER BY nom");
+	$query = $GLOBALS['db']->query("SELECT * FROM documents WHERE id_chapitre=".$chapitre." ORDER BY id_doc DESC");
 	$query->execute();
 	return $query->fetchAll();
 }
@@ -133,8 +133,8 @@ function hasSeen($id_doc, $id_user) {
 	return $rep != null;
 }
 
-function getComments($id_doc) {
-	$query = $GLOBALS['db']->query("SELECT * FROM comments WHERE id_doc=".$id_doc."");
+function getComments($id_doc = "id_doc") {
+	$query = $GLOBALS['db']->query("SELECT * FROM comments WHERE id_doc=".$id_doc." ORDER BY likes DESC");
 	$query->execute();
 	$rep = $query->fetchAll();
 	return $rep;
@@ -171,16 +171,31 @@ function putLike($type_ref, $id_ref, $valeur) {
 	$rep = $query->fetchAll();
 	$query="";
 	if($rep != NULL) {
-		$query = $GLOBALS['db']->prepare("UPDATE likes SET valeur=:valeur WHERE type_ref=:type_ref AND id_ref=:id_ref AND id_auteur=:id_auteur");
+		$queryLikes = $GLOBALS['db']->prepare("UPDATE likes SET valeur=:valeur WHERE type_ref=:type_ref AND id_ref=:id_ref AND id_auteur=:id_auteur");
 	} else {
-		$query = $GLOBALS['db']->prepare("INSERT INTO likes (type_ref, id_ref, id_auteur, valeur) VALUES(:type_ref, :id_ref, :id_auteur, :valeur)");
+		$queryLikes = $GLOBALS['db']->prepare("INSERT INTO likes (type_ref, id_ref, id_auteur, valeur) VALUES(:type_ref, :id_ref, :id_auteur, :valeur)");
+
 	}
-	$query->bindParam(':type_ref', $type_ref);
-	$query->bindParam(':id_ref', $id_ref);
-	$query->bindParam(':id_auteur', $_SESSION['id_user']);
-	$query->bindParam(':valeur', $valeur);
-	$query = $query->execute();
-	return $query;
+	$queryLikes->bindParam(':type_ref', $type_ref);
+	$queryLikes->bindParam(':id_ref', $id_ref);
+	$queryLikes->bindParam(':id_auteur', $_SESSION['id_user']);
+	$queryLikes->bindParam(':valeur', $valeur);
+
+	$queryLikes = $queryLikes->execute();
+
+
+	$updateCom = $GLOBALS['db']->prepare("UPDATE comments SET likes=:likes WHERE id_com=:id_com");
+
+	$updateCom->bindParam(':likes', $likes);
+	$updateCom->bindParam(':id_com', $id_com);
+	$comments = getComments();
+	foreach ($comments as $comment) {
+		$id_com = $comment['id_com'];
+		$likes = getLikes($GLOBALS['config']['database']['type_ref']['comment'], $id_com);
+		$updateCom->execute();
+	}
+
+	return $queryLikes;
 }
 
 

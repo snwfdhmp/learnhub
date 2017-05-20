@@ -18,7 +18,7 @@ $_db = new Db();
 
 $_auth = NULL;
 
-if(not_null($_SESSION['auth'])) {
+if(isset($_SESSION['auth'])) {
 	$_auth = unserialize($_SESSION['auth']);
 	if(isset($_GET['r'])) {
 		if($_GET['r']=='ping') {
