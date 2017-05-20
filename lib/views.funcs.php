@@ -102,11 +102,13 @@ function documents_table_view($chapitre) {
 	$chapitre = getChapitre($chapitre);
 
 	if($documents == NULL) {
-		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a>";
+		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."'>Soyez le premier à poster un document</a>";
 		return false;
 	}
 	$i=0;
 	$inners = Array();
+	$top ="";
+	$bottom ="";
 	foreach ($documents as $document) {
 		$auteur = getUser($document['id_auteur']);
 		if(!isset($inners[doctypeToStr($document['doc_type'])])) $inners[doctypeToStr($document['doc_type'])] = "";
@@ -124,19 +126,23 @@ function documents_table_view($chapitre) {
 			$coms = "";
 		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a> '.$vues.' '.$coms.' '.$notSeen.'</td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
 	}
+	echo "<table class='table table-hover'>
+			<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
 	foreach($GLOBALS['config']['database']['doctypes'] as $doctype) {
 		if(! isset($inners[$doctype])) {
-			echo "<div class='gentitle gentitle-empty'><a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."' class='gentitle-empty'><h2>$doctype +</h2></a></div>";
+			$bottom .= "<tr><td><div class='badge badge-lg badge-default doc-table-view-type'><a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>$doctype +</a></div></td><td></td><td></td></tr>";
 		}
 		else {
-			echo "<div class='gentitle'><h2>$doctype</h2></div>
-				<table class='table table-hover'>
-			<tr><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
-			echo $inners[$doctype];
-			echo '<tr><td><a href="?u=addCourse&m='.$chapitre['id_matiere'].'&c='.$chapitre['id_chapitre'].'&t='.$doctype.'">Ajouter un document...</a></td></tr>';
-			echo '</table>';
+			$top .= "<tr><td><div class='badge badge-lg doc-table-view-type doc-table-view-type-nonvoid'>$doctype</div></td><td></td><td></td></tr>"
+			.
+			$inners[$doctype]
+			.
+			'<tr><td><a href="?u=addCourse&m='.$chapitre['id_matiere'].'&c='.$chapitre['id_chapitre'].'&t='.$doctype.'">Ajouter un document...</a></td><td></td><td></td></tr>';
 		}
 	}
+	echo $top;
+	echo $bottom;
+	echo '</table>';
 	return true;
 }
 function comments_doc_view($id_doc, $logged = false) {

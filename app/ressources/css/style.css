@@ -258,7 +258,7 @@ div.gentitle-empty:hover {
 	background-color: #7ab733;
 	cursor: pointer;
 }
-.gentitle-empty > a {
+.doc-table-view-type > a {
 	text-decoration:none;
 	color:white;
 }
@@ -294,4 +294,12 @@ div.gentitle-empty:hover {
 
 .doc-table-view-row > td {
 	font-size: 20px;
+}
+
+.doc-table-view-type-nonvoid {
+	background-color: #428bca;
+}
+
+.doc-table-view-type{
+	font-size: 30px;
 }

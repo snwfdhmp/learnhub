@@ -32,10 +32,10 @@ include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
   <div class="addcourse-input input-group input-group-lg col-md-4">
     <span class="input-group-addon" id="sizing-addon1">Type</span>
     <select name="type" class="form-control">
-     <option value="1" <? selectedIf($_GET['t'], "Cours") ?>>Cours</option>
-     <option value="2" <? selectedIf($_GET['t'], "Exercices") ?>>Exercice</option>
-     <option value="3" <? selectedIf($_GET['t'], "Annales") ?>>Annale</option>
-     <option value="4" <? selectedIf($_GET['t'], "Corrections") ?>>Correction</option>
+     <option value="1" <? (isset($_GET['t']) ? selectedIf($_GET['t'], "Cours") : "" ) ?>>Cours</option>
+     <option value="2" <? (isset($_GET['t']) ? selectedIf($_GET['t'], "Exercices") : "" )?>>Exercice</option>
+     <option value="3" <? (isset($_GET['t']) ? selectedIf($_GET['t'], "Annales") : "" ) ?>>Annale</option>
+     <option value="4" <? (isset($_GET['t']) ? selectedIf($_GET['t'], "Corrections") : "" ) ?>>Correction</option>
    </select>
  </div><br/>
  <div class="addcourse-input input-group input-group-lg col-md-4">
