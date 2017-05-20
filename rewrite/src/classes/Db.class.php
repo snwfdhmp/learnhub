@@ -149,4 +149,78 @@ class Db
 		$query->bindParam(':content', $content);
 		return $query->execute();
 	}
+
+
+	//Connexions
+
+	function validCreds($email, $pass) {
+		if(strlen($pass) >= 8) {
+			$query = $this->db->prepare("SELECT id_user, pass FROM users WHERE email=:email");
+			$query->bindParam(':email', $email);
+			$query->execute();
+			$answer = $query->fetch();
+
+			if (password_verify($pass, $answer["pass"])) {
+				return $answer["id_user"];
+			}
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+
+	function getSelfInfos($id_user) {
+		$query = $this->db->prepare("SELECT id_user, prenom, nom, email, url_pdp, promo, pseudo_cas FROM users WHERE id_user = :id_user");
+		$query->bindParam(':id_user', $id_user);
+		$query->execute();
+		return $query->fetch();
+	}
+
+	function insertConnexion($session_cookie, $id_user, $ip) {
+		$query = $this->db->prepare("INSERT INTO connexions (session_cookie, id_user, last_ip) VALUES(:session_cookie, :id_user, :last_ip)");
+		$query->bindParam(':session_cookie', $session_cookie);
+		$query->bindParam(':id_user', $id_user);
+		$query->bindParam(':last_ip', $last_ip);
+
+		$query->execute();
+	}
+
+	function ping($session_cookie, $id_user, $ip) {
+		$query = $this->db->prepare("UPDATE connexions SET last_ping=current_timestamp(), last_ip=:last_ip WHERE session_cookie=:session_cookie AND id_user=:id_user");
+		$query->bindParam(':session_cookie', $session_cookie);
+		$query->bindParam(':id_user', $id_user);
+		$query->bindParam(':last_ip', $ip);
+		return ($query->execute() > 0);
+	}
+
+	function validSessionCookie($session_cookie, $id_user, $ip) {
+		global $_auth;
+		$query = $this->db->prepare('SELECT * FROM connexions WHERE session_cookie=:cookie AND id_user=:id_user AND last_ip=:ip');
+
+		$query->bindParam(':cookie', $session_cookie);
+		$query->bindParam(':id_user', $id_user);
+		$query->bindParam(':ip', $ip);
+
+		$query->execute();
+		$nbRows = $query->rowCount();
+
+		if($nbRows <= 0)
+			return false;
+		$rep = $query->fetch();
+		return $rep['id_user'];
+	}
+
+	function deleteOldConnexions() {
+		$query = $this->db->prepare("DELETE FROM connexions WHERE last_ping<current_timestamp()-:timeout");
+		$timeout = Config::auth_timeout;
+		$query->bindParam(':timeout', $timeout);
+		$query->execute();
+	}
+
+	public function deleteCookie($cookie) {
+		$query = $this->db->prepare("DELETE FROM connexions WHERE session_cookie=:session_cookie");
+		$query->bindParam(':session_cookie', $cookie);
+		$query->execute();
+	}
 }

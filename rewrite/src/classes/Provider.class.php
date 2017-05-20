@@ -21,15 +21,15 @@ class Provider
 				return url(Config::ressources_dir[$type], Config::ressources[$type][$name]);
 			}
 			else {
-				global $main;
-				$main->error("Provider: ${type} does not contain any named '${name}' ressource");
+				global $_MainController;
+				$_MainController->error("Provider: ${type} does not contain any named '${name}' ressource");
 				return -1;
 			}
 		}
 	}
 
 	public static function include($type, $name) {
-		global $main;
+		global $_MainController;
 		$url = Provider::provide_ressource($type, $name);
 		$include="";
 		switch($type) {
@@ -42,8 +42,9 @@ class Provider
 			case "css-dist":
 				$include="<link rel='stylesheet' href='".$url."'>";
 				break;
+			default:
 		}
-		$main->include($include);
+		$_MainController->include($include);
 	}
 }
 

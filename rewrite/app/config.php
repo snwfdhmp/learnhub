@@ -62,11 +62,14 @@ class Config
 	const auth_cookie_length = 40;
 
 	//App config
-	const app_name = "ICS";
+	const app_name = "LearnHub";
 	const app_lang = "fr";
 	const app_charset = "UTF-8";
 
-	public $app_title = "ICS";
+	//Defaults
+	const default_view="accueil";
+
+	public $app_title = "LearnHub";
 	
 	function __construct()
 	{

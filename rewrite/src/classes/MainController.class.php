@@ -54,9 +54,11 @@ class MainController
 	}
 
 	function route() {
-		if(not_null($_GET['u'])) {
-			$GLOBALS['main']->call_view($_GET['u']);
-		}
+		if(!isset($_GET['u']) || $_GET['u'] == "")
+			$url = Config::default_view;
+		else
+			$url = $_GET['u'];
+			$this->call_view($url);
 	}
 
 	function body($str, $overwrite=false) {

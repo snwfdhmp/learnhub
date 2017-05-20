@@ -1,5 +1,7 @@
 <?
 
+include_once 'config.php';
+
 /**
 * 
 */
@@ -190,14 +192,14 @@ class Renderer
 	}
 
 	public static function render_navbar() {
-		global $auth;
-		global $main;
+		global $_auth;
+		global $_MainController;
 
-		$main->body('<nav class="navbar navbar-default">
+		$_MainController->body('<nav class="navbar navbar-default">
 		<div class="container-fluid navbar-custom">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
-				<a class="navbar-brand" href="?u=accueil"><span class="glyphicon glyphicon-console"></span> ICS</a>
+				<a class="navbar-brand" href="?u=accueil"><span class="glyphicon glyphicon-console"></span> '.Config::app_name.'</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -219,14 +221,14 @@ class Renderer
 				</form>
 				<ul class="nav navbar-nav navbar-right">');
 					if($GLOBALS['active_view']!="accueil") {
-						$main->body('<li><a href="#"><span class="server-status" class="server-ping-fire"></span></a></li>');
+						$_MainController->body('<li><a href="#"><span class="server-status" class="server-ping-fire"></span></a></li>');
 					}
-					$main->body('<li><a href="?u=addCourse">+ Publier</a></li>');
-					if(! $auth->isAuthenticated()) { 
-						$main->body('<li><a href="?u=login">Se connecter</a></li><li><a href="?u=signup">S\'inscrire</a></li>');
+					$_MainController->body('<li><a href="?u=addCourse">+ Publier</a></li>');
+					if(! $_auth->isAuthenticated()) { 
+						$_MainController->body('<li><a href="?u=login">Se connecter</a></li><li><a href="?u=signup">S\'inscrire</a></li>');
 					} 
 					else { 
-						$main->body('<li><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a></li>
+						$_MainController->body('<li><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$_SESSION['prenom'].' '.$_SESSION['nom'].'<span class="caret"></span></a>
 							<ul class="dropdown-menu">
@@ -237,12 +239,12 @@ class Renderer
 							</ul>
 						</li>');
 					}
-					$main->body('</ul>
+					$_MainController->body('</ul>
 				</div>
 			</div>
 		</nav>');
 
-		$main->body('
+		$_MainController->body('
 		<script>
 			var opened = false;
 

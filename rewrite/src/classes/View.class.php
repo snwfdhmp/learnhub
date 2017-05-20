@@ -38,40 +38,10 @@ class View
 		$this->provider = $obj->provider;
 	}
 
-	public function render_index()
-	{
-		global $main;
-
-		Provider::include('js-dist', 'jquery');
-		Provider::include('js-dist', 'bootstrap');
-		Provider::include('css-dist', 'bootstrap');
-
-		Renderer::render_navbar();
-
-		$main->body(
-			Tag::h1("Coucou".
-				Tag::a("Cliquez ici")
-				)
-			);
-	}
-
-	public function render_profil() {
-		global $main;
-		Provider::include('css-dist', 'bootstrap');
-
-		Renderer::render_navbar();
-
-		Renderer::render_doc($id);
-
-		$main->body(
-			Tag::div(Tag::h1("Bonjour"), array("class"=>"container"))
-			);
-	}
-
 	public function render_accueil()
 	{
-		global $main;
-		global $auth;
+		global $_MainController;
+		global $_auth;
 		Provider::include('js-dist', 'jquery');
 		Provider::include('js-dist', 'fontawesome');
 		Provider::include('js-dist', 'bootstrap');
@@ -80,19 +50,17 @@ class View
 
 		Renderer::render_navbar();
 
-		$main->body(
-			Tag::div(
-				Tag::h1(
-					"Bienvenue sur ".Config::app_name." !"
-					).($auth->isAuthenticated() ? Tag::h3("Heureux de vous revoir ".$_SESSION['prenom']." ".$_SESSION['nom']." ! :)") : Tag::h3("Vous pouvez vous inscrire")),
-				array("class"=> "container")
-				)
-			);
+		$_MainController->body('
+			<div class="container" id="main-container">
+				<h1>Bienvenue sur '.Config::app_name.' '.($_auth->isAuth() ? $_SESSION['prenom'] : "").' ! </h1>
+				'.($_auth->isAuth() ? '<h2>Vous n\'avez aucune notification. Vous pouvez néanmoins <a href="?u=addCourse">poster un cours</a></h2>' : "<h2>Vous n'êtes pas connecté").'
+			</div>
+			');
 	}
 	public function render_404()
 	{
-		global $main;
-		$main->body("<h2>Erreur : Cette page n'existe pas !!</h2>");
+		global $_MainController;
+		$_MainController->body("<h2>Erreur : Cette page n'existe pas !!</h2>");
 	}
 
 
