@@ -15,7 +15,7 @@ $GLOBALS['config'] = array(
 		"username"=>"dev",
 		"password"=>"dev",
 		"name"=>"ICS",
-		"type_ref" => array("comment"=>"0"),
+		"type_ref" => array("comment"=>"0", "document"=>"1"),
 		"doctypes"=>array(
 			1=>"Cours",
 			2=>"Exercices",
@@ -49,7 +49,8 @@ $GLOBALS['config'] = array(
 		"search" => "search.get.php",
 		"like" => "like.post.php",
 		"online_users" => "online_users.get.php", 
-		"sendDocMail" => "sendDocMail.get.php"
+		"sendDocMail" => "sendDocMail.get.php",
+		"getlikes" => "like.get.php"
 		),
 	"actions" => array(
 		"signup" => "proceedSignUp.php",

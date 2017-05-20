@@ -30,6 +30,7 @@ $auteur = getUser($document['id_auteur']);
 	<link rel="stylesheet" href="ressources/css/navbar.css">
 	<link rel="stylesheet" href="ressources/css/style.css">
 	<link rel="stylesheet" href="ressources/css/comments.css">
+	<link rel="stylesheet" href="ressources/css/doc-view.css">
 	<script src="<? echo $GLOBALS['config']['paths']['js'].'ajax.funcs.js'?>"></script>
 	<script>
 		var id_doc = <? echo $id ?>;
@@ -44,6 +45,7 @@ $auteur = getUser($document['id_auteur']);
 				return false;
 			});
 			changeShadow(document.getElementById('comment-color'));
+			ajaxGetAndReplace("getlikes&type=" + '<?echo $GLOBALS['config']['database']['type_ref']['document']."&ref=".$document['id_doc']?>' <? ?>, "doc-likes-count");
 		}
 
 		function getComments(){
@@ -99,6 +101,9 @@ $auteur = getUser($document['id_auteur']);
 				<h2>Document</h2>
 				<div class="panel panel-default"><div class="panel-heading">Nom: </div><div class="panel-body"><? echo $document['nom'] ?></div></div>
 				<div class="panel panel-default"><div class="panel-heading">Uploadé par: </div><div class="panel-body"><? echo userToStr($auteur) ?></div></div>
+				<div class="well text-center" id="doc-like"><i class="fa fa-thumbs-o-up" aria-hidden="true" onclick="putLike(<?echo $GLOBALS['config']['database']['type_ref']['document'].",".$document['id_doc']?>)"></i> | <i class="fa fa-thumbs-o-down" aria-hidden="true" onclick="putDislike(<?echo $GLOBALS['config']['database']['type_ref']['document'].",".$document['id_doc']?>)"></i><br/>
+				<span id="doc-likes-count">
+				</span></div>
 				<div class="well"><h3><span><? echo $document['vues'] ?></span> vues</h3></div>
 				<div class="well"><h3><? echo countComments($document['id_doc']) ?> commentaires</h3></div>
 				<div class="col-md-2" id="sendDocmail" onclick="sendDocMail();"><button id="sendDocMail" class="btn btn-primary">Recevoir par Mail</button></div>

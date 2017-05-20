@@ -33,6 +33,7 @@ function putLike(type, ref) {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.open("GET", "?ajax=like&type=" + type +"&ref="+ref+"&val=like", true);
 	xmlhttp.send();
+	ajaxGetAndReplace("getlikes&type=" + type +"&ref="+ref, "doc-likes-count");
 	var tmp = document.getElementById("badge-like-"+type+"-"+ref).innerHTML;
 	document.getElementById("badge-like-"+type+"-"+ref).innerHTML = ++tmp;
 	getComments();
@@ -43,6 +44,7 @@ function putDislike(type, ref) {
 	xmlhttp.open("GET", "?ajax=like&type=" + type +"&ref="+ref+"&val=dislike", true);
 	xmlhttp.send();
 	getComments();
+	ajaxGetAndReplace("getlikes&type=" + type +"&ref="+ref, "doc-likes-count");
 	var tmp = document.getElementById("badge-like-"+type+"-"+ref).innerHTML;
 	document.getElementById("badge-like-"+type+"-"+ref).innerHTML = --tmp;
 	getComments();
