@@ -1,7 +1,10 @@
-<? include_once($GLOBALS['config']['paths']['libs']."std.funcs.php"); ?>
+<? include_once($GLOBALS['config']['paths']['libs']."std.funcs.php");
+include_once($GLOBALS['config']['paths']['libs']."views.funcs.php");
+$user_note = getGlobalNote($_SESSION['id_user']);
+?>
 
 <nav class="navbar navbar-default">
-	<div class="container-fluid navbar-custom">
+	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -10,7 +13,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="?u=accueil"><span class="glyphicon glyphicon-console"></span> LearnHub</a>
+			<a class="navbar-brand" href="?u=accueil"><span class="glyphicon glyphicon-console"></span> Learn<span class="text-warning">Hub</span></a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -40,9 +43,9 @@
 				<? } else { ?>
 				<li><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="label label-danger"><? echo getGlobalNote($_SESSION['id_user'])?></span><span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="label label-<?echo noteToColor($user_note) ?>"><? echo $user_note ?></span><span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="#"><span class="label label-danger"><? echo getGlobalNote($_SESSION['id_user'])?></span> points</a></li>
+						<li><a href="#"><span class="label label-<? echo noteToColor($user_note) ?>"><? echo $user_note ?></span> points</a></li>
 						<li><a href="?u=profile">Voir mon profil</a></li>
 						<li><a href="#">Modifier mon profil</a></li>
 						<li role="separator" class="divider"></li>
@@ -54,7 +57,6 @@
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
-
 <script>
 	var opened = false;
 

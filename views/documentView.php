@@ -121,7 +121,7 @@ $auteur = getUser($document['id_auteur']);
 					
 					<h2>Document</h2>
 					<div class="panel panel-default"><div class="panel-heading">Nom: </div><div class="panel-body"><? echo $document['nom'] ?></div></div>
-					<div class="panel panel-default"><div class="panel-heading">Uploadé par: </div><div class="panel-body"><? echo userToStr($auteur) ?></div></div>
+					<div class="panel panel-default"><div class="panel-heading">Uploadé par: </div><div class="panel-body"><a href="?u=profile&id=<? echo $auteur['id_user'] ?>"><? echo userToStr($auteur) ?></a></div></div>
 					<div class="well well-sm text-center doc-like-count" id="doc-like">Note : 
 						<span id="doc-likes-count">
 						</span></div>
