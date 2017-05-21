@@ -12,7 +12,8 @@ Le repo : https://github.com/snwfdhmp/MPM
 - create chapitres, promo and school
 - button download doc
 - profile page
-- ajout automatique de comptes
+- ajout automatique de comptes (avec activation par email)
+- ajouter liens à chaque fois que possible
 
 #Notes
 
