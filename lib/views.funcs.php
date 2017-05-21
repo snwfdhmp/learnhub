@@ -105,7 +105,8 @@ function promo_select_view($focus) {
 	}
 }
 
-function documents_table_view($chapitre) {
+function documents_table_view_($chapitre) {
+
 	$documents = getDocuments($chapitre);
 	$chapitre = getChapitre($chapitre);
 
@@ -132,13 +133,95 @@ function documents_table_view($chapitre) {
 			$coms = "<span class='label label-primary'>".$nbrComs." <i class='fa fa-commenting' aria-hidden='true'></i></span>";
 		else
 			$coms = "";
-		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a href="?u=view&id='.$document['id_doc'].'">'.$document['nom'].'</a> '.$vues.' '.$coms.' '.$notSeen.'</td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+		$inners[doctypeToStr($document['doc_type'])] .= 
+		'<div class="col-md-3">
+		<div class="panel panel-default">
+		<div class="panel-heading text-center">
+		<a href="?u=view&id='.$document['id_doc'].'">
+		'.$document['nom'].'
+		</a>'
+		.$vues
+		.' '
+		.$coms
+		.' '
+		.$notSeen
+		.'</div>
+		<div class="panel-body>"'
+		.'<p>Uploadé par '
+		.'<a href="?u=profile&id='
+		.$auteur['id_user']
+		.'">'
+		.$auteur['prenom']
+		.' '
+		.$auteur['nom']
+		.'</a></p>
+		
+		</div>'
+		.'<div class="panel-footer">'
+		.time2str($document['date_creation'])
+		.'</div></div></div>';
 	}
-	echo "<table class='table table-hover'>
-	<tr class='doc-table-view-row'><th>Nom</th><th>Auteur</th><th>Date d'ajout</th></tr>";
 	foreach($GLOBALS['config']['database']['doctypes'] as $doctype) {
 		if(! isset($inners[$doctype])) {
-			$bottom .= "<tr><td><div class='badge badge-lg badge-default doc-table-view-type'><a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>$doctype +</a></div></td><td></td><td></td></tr>";
+			$bottom .= "<div class='badge badge-lg badge-default doc-table-view-type'><a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>$doctype +</a></div><br/>";
+		}
+		else {
+			$top .= "<div class='badge badge-lg doc-table-view-type doc-table-view-type-nonvoid'>$doctype</div>";
+			/*
+			<a class='doc-table-view-type-add' href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>
+			<span class='label label-danger doc-table-view-type-add'>+</span>
+			</a>
+			*/
+			$top .= "<div class='row doc-list'>"
+			.
+			$inners[$doctype]."<a class='doc-table-view-type-add' href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>"
+			.
+			"</div>";
+		}
+	}
+	echo $top;
+	echo $bottom;
+	return true;
+}
+
+function documents_table_view($chapitre) {
+	$documents = getDocuments($chapitre);
+	$chapitre = getChapitre($chapitre);
+
+	if($documents == NULL) {
+		echo "<h2>Il n'y a pas encore de documents pour cette matière ... <a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."'>Soyez le premier à poster un document</a>";
+		return false;
+	}
+	$i=0;
+	$inners = Array();
+	$top ="";
+	$bottom ="";
+	foreach ($documents as $document) {
+		$auteur = getUser($document['id_auteur']);
+		if(!isset($inners[doctypeToStr($document['doc_type'])])) $inners[doctypeToStr($document['doc_type'])] = "";
+
+		if(! hasSeen($document['id_doc'], $_SESSION['id_user'])) {
+			$notSeen = "<span class='badge'>nouveau !</span>";
+		} else {
+			$notSeen = "";
+		}
+		$nbrComs = countComments($document['id_doc']);
+
+		//labels
+		$vues = "<span class='label label-info'>".$document['vues']." <i class='fa fa-eye' aria-hidden='true'></i></span>";
+		if($nbrComs > 0)
+			$coms = "<span class='label label-primary'>".$nbrComs." <i class='fa fa-commenting' aria-hidden='true'></i></span>";
+		else
+			$coms = "";
+		$note = "<span class='label label-success'>".getLikes($GLOBALS['config']['database']['type_ref']['document'], $document['id_doc'])." <i class='fa fa-thumbs-o-up' aria-hidden='true'></i></span>";
+
+		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a class="doc-table-name" href="?u=view&id='.$document['id_doc'].'"><span class="label label-danger doc-table-name">'.$document['nom'].'</span></a> '.$notSeen.'</td><td> '.$note.' '.$vues.' '.$coms.' </td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+	}
+	echo "<table class='table table-hover'>
+	<tr class='doc-table-view-row'><th>Nom</th><th></th><th>Auteur</th><th>Date d'ajout</th></tr>";
+	foreach($GLOBALS['config']['database']['doctypes'] as $doctype) {
+		if(! isset($inners[$doctype])) {
+			$bottom .= "<tr><td><div class='badge badge-lg badge-default doc-table-view-type'><a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>$doctype +</a></div></td><td></td><td></td><td></td></tr>";
 		}
 		else {
 			$top .= "<tr><td><div class='badge badge-lg doc-table-view-type doc-table-view-type-nonvoid'>$doctype</div>";
@@ -147,9 +230,9 @@ function documents_table_view($chapitre) {
 			<span class='label label-danger doc-table-view-type-add'>+</span>
 			</a>
 			*/
-			$top .= "</td><td></td><td></td></tr>"
+			$top .= "</td><td></td><td></td><td></td></tr>"
 			.
-			$inners[$doctype]."<tr class='doc-view-section-end'><td><a class='doc-table-view-type-add' href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>Ajouter
+			$inners[$doctype]."<tr class='doc-view-section-end'><td><a class='doc-table-view-type-add' href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>Publier un document
 			</a></tr>";
 		}
 	}

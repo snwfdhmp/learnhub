@@ -97,7 +97,7 @@ function searchDocuments($search) {
 		$req=$req.'")) OR ';
 	}
 
-	$req=$req."0 LIMIT 7";
+	$req=$req."0 ORDER BY date_creation DESC LIMIT 7";
 	$query = $GLOBALS['db']->query($req);
 	$query->execute();
 	return $query->fetchAll();

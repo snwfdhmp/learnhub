@@ -60,19 +60,38 @@ $auteur = getUser($document['id_auteur']);
 		function expand() {
 			resizeFrameToContent(document.getElementById("doc-frame"));
 		}
-		function changeShadow(obj){
+		function changeBg(obj){
 			var type=obj.value;
+			var shadow;
 			switch(type){
 				case "primary":
-				document.getElementById("comment-input").style.boxShadow = "inset 0 1px 1px blue";
+				shadow = "rgba(66,139,202, 0.2)";
 				break;
 				case "success":
-				document.getElementById("comment-input").style.boxShadow = "inset 0 1px 1px green";
+				shadow = "rgba(92,184,92, 0.2)";
 				break;
 				case "danger":
-				document.getElementById("comment-input").style.boxShadow = "inset 0 1px 1px red"; 
+				shadow = "rgba(217,83,79,0.2)"; 
 				break;
 			}
+			document.getElementById("comment-input").style.background = shadow;
+			document.getElementById('post-comment-btn').className = "btn btn-"+type;
+		}
+		function changeShadow(obj){
+			var type=obj.value;
+			var shadow;
+			switch(type){
+				case "primary":
+				shadow = "inset 0 1px 1px blue";
+				break;
+				case "success":
+				shadow = "inset 0 1px 1px green";
+				break;
+				case "danger":
+				shadow = "inset 0 1px 1px red"; 
+				break;
+			}
+			document.getElementById("comment-input").style.boxShadow = shadow;
 		}
 		function sendDocMail() {
 			document.getElementById("sendDocMail").innerHTML="Envoi en Cours....";
@@ -135,7 +154,7 @@ $auteur = getUser($document['id_auteur']);
 								</div>
 								<input id="comment-input" type="text" class="form-control" placeholder="Poster un commentaire">
 								<div class="input-group-btn">
-									<input type="submit" class="btn btn-primary" value="Poster">
+									<input type="submit" class="btn btn-primary" id="post-comment-btn" value="Poster">
 								</div>
 							</div>
 						</form>

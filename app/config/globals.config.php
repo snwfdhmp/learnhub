@@ -39,7 +39,8 @@ $GLOBALS['config'] = array(
 		"explore" => "explore.php",
 		"profile" => "profile.php",
 		"view" => "documentView.php",
-		"addMat" => "addMat.php"
+		"addMat" => "addMat.php",
+		"docView" => "docView.php"
 		),
 	"ajax" => array(
 		"getchap" => "chapitres.get.php",

@@ -293,7 +293,7 @@ div.gentitle-empty:hover {
 }
 
 .doc-table-view-row > td , .doc-table-view-row > th {
-	font-size: 20px;
+	font-size: 18px;
 }
 
 .doc-table-view-type-nonvoid {
@@ -303,6 +303,9 @@ div.gentitle-empty:hover {
 	text-decoration: none;
 }
 
+.doc-list {
+	margin-bottom: 20px;
+}
 
 .doc-table-view-type{
 	font-size: 30px;
@@ -318,4 +321,21 @@ a.doc-table-view-type-add:hover {
 .doc-view-section-end > td {
 	border-style:none;
 	margin-bottom: 20px;
+}
+span.text-right {
+	position:absolute;
+	right:25px;
+}
+
+.doc-table-name {
+	font-size: 18px;
+	cursor:pointer;
+}
+
+.doc-table-name:hover {
+	background: rgba(177, 38, 12, 0.5);
+}
+
+a.doc-table-name:hover {
+	text-decoration: none;
 }
