@@ -6,16 +6,13 @@ Le repo : https://github.com/snwfdhmp/MPM
 
 #TODO next
 
-- Emails/Newsletter
 - Notifications
 - Messages
 - Doctype
-- like sur doc
-- create matiere et chapitres
-- times
-- Pouvoir choisir la couleur de son commentaire
-- Bouton pour s'envoyer le doc par mail
-- Tri des commentaires par note
+- create chapitres, promo and school
+- button download doc
+- profile page
+- ajout automatique de comptes
 
 #Notes
 

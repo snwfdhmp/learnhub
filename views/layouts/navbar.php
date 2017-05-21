@@ -40,8 +40,9 @@
 				<? } else { ?>
 				<li><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="label label-danger"><? echo getGlobalNote($_SESSION['id_user'])?></span><span class="caret"></span></a>
 					<ul class="dropdown-menu">
+						<li><a href="#"><span class="label label-danger"><? echo getGlobalNote($_SESSION['id_user'])?></span> points</a></li>
 						<li><a href="?u=profile">Voir mon profil</a></li>
 						<li><a href="#">Modifier mon profil</a></li>
 						<li role="separator" class="divider"></li>

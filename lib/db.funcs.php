@@ -198,6 +198,53 @@ function putLike($type_ref, $id_ref, $valeur) {
 	return $queryLikes;
 }
 
+function getCommentsCount($id_user) {
+	$query = $GLOBALS['db']->prepare("SELECT COUNT(*) as nb FROM comments WHERE id_auteur=:id_user");
+	$query->bindParam(":id_user", $id_user);
+	$query->execute();
+	return $query->fetch()['nb'];
+}
+
+function getDocumentsCount($id_user) {
+	$query = $GLOBALS['db']->prepare("SELECT COUNT(*) as nb FROM documents WHERE id_auteur=:id_user");
+	$query->bindParam(":id_user", $id_user);
+	$query->execute();
+	return $query->fetch()['nb'];
+}
+
+function getGlobalNote($id_user) {
+	$note = 0;
+
+	// Points for DocLike
+	$query = $GLOBALS['db']->prepare("SELECT SUM(l.valeur) as likesCount FROM documents d, likes l WHERE l.type_ref=1 AND d.id_doc=l.id_ref AND d.id_auteur=:id_user");
+
+	$query->bindParam(":id_user", $id_user);
+	$query->execute();
+	$note += $GLOBALS['config']['values']['docLike']*($query->fetch()['likesCount']);
+
+	// Points for doc upload
+	$query = $GLOBALS['db']->prepare("SELECT COUNT(*) as count FROM documents WHERE id_auteur=:id_user");
+
+	$query->bindParam(":id_user", $id_user);
+	$query->execute();
+	$note += $GLOBALS['config']['values']['doc']*($query->fetch()['count']);
+
+	// Points for comment posting
+	$query = $GLOBALS['db']->prepare("SELECT COUNT(*) as count FROM comments WHERE id_auteur=:id_user");
+
+	$query->bindParam(":id_user", $id_user);
+	$query->execute();
+	$note += $GLOBALS['config']['values']['comment']*($query->fetch()['count']);
+
+	// Points for comment like
+	$query = $GLOBALS['db']->prepare("SELECT SUM(likes) as likesCount FROM comments WHERE id_auteur=:id_user");
+
+	$query->bindParam(":id_user", $id_user);
+	$query->execute();
+	$note += $GLOBALS['config']['values']['commentLike']* $query->fetch()['likesCount'];
+
+	return $note;
+}
 
 function postComment($id_doc, $content,$type, $id_user) {
 	$nowdate=date('Y-m-d H:i:s');

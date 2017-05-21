@@ -8,7 +8,7 @@ function ajaxGetAndReplace(url, target) {
 		if (this.readyState == 4 && this.status == 200) {
 			var targetView = document.getElementById(target);
 			if (htmlEncode(this.responseText) != targetView.innerHTML) {
-				targetView.innerHTML = this.responseText;
+				targetView.innerHTML = unescape(this.responseText);
 			}
 		}
 	};
@@ -18,6 +18,8 @@ function ajaxGetAndReplace(url, target) {
 }
 
 function postComment(text,type,id_doc){
+	if(text.replace(/\s+/g, '').length < 0)
+		return false;
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {

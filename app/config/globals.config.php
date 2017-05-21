@@ -70,6 +70,12 @@ $GLOBALS['config'] = array(
 			'c',
 			'cpp')
 		),
+	"values" => array(
+			'docLike'=>'4',
+			'commentLike'=>'2',
+			'doc'=>'3',
+			'comment'=>'1'
+		),
 	"default" => array(
 		"view" => "accueil"
 		)

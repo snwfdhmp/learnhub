@@ -215,7 +215,7 @@ function documents_table_view($chapitre) {
 			$coms = "";
 		$note = "<span class='label label-success'>".getLikes($GLOBALS['config']['database']['type_ref']['document'], $document['id_doc'])." <i class='fa fa-thumbs-o-up' aria-hidden='true'></i></span>";
 
-		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a class="doc-table-name" href="?u=view&id='.$document['id_doc'].'"><span class="label label-danger doc-table-name">'.$document['nom'].'</span></a> '.$notSeen.'</td><td> '.$note.' '.$vues.' '.$coms.' </td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a></td><td>'.time2str($document['date_creation']).'</td></tr>';
+		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a class="doc-table-name" href="?u=view&id='.$document['id_doc'].'"><span class="label label-danger doc-table-name">'.$document['nom'].'</span></a> '.$notSeen.'</td><td> '.$note.' '.$vues.' '.$coms.' </td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a> '.getNoteDisplay($auteur['id_user']).'</td><td>'.time2str($document['date_creation']).'</td></tr>';
 	}
 	echo "<table class='table table-hover'>
 	<tr class='doc-table-view-row'><th>Nom</th><th></th><th>Auteur</th><th>Date d'ajout</th></tr>";
@@ -241,6 +241,58 @@ function documents_table_view($chapitre) {
 	echo '</table>';
 	return true;
 }
+
+function noteToColor($note) {
+	if($note < 10)
+		$color = "default";
+	else if ($note < 50)
+		$color = "info";
+	else if ($note < 100)
+		$color = "primary";
+	else if ($note < 150)
+		$color = "success";
+	else
+		$color = "danger";
+
+	return $color;
+}
+
+function noteToColorText($note) {
+	if($note < 10)
+		$color = "primary";
+	else if ($note < 50)
+		$color = "primary";
+	else if ($note < 100)
+		$color = "default";
+	else if ($note < 150)
+		$color = "default";
+	else
+		$color = "default";
+
+	return $color;
+}
+
+function getNoteDisplay($id_user) {
+	$note = getGlobalNote($id_user);
+	$color = noteToColor($note);
+	return "<span class='label label-".$color."'>".noteToRang($note)."</span>";
+}
+
+function noteToRang($note) {
+	if($note < 10)
+		$rang = "sleeping";
+	else if ($note < 50)
+		$rang = "normal";
+	else if ($note < 100)
+		$rang = "active";
+	else if ($note < 150)
+		$rang = "powerful";
+	else
+		$rang = "god";
+
+	return $rang;
+}
+
 function comments_doc_view($id_doc, $logged = false) {
 	$comments = getComments($id_doc);
 

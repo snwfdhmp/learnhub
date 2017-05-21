@@ -26,8 +26,17 @@ $user = getUser($id);
 <body>
 	<? include_once "layouts/navbar.php" ?>
 	<div class="container">
-		<h2><? echo $user['prenom']." ".$user['nom'] ?></h2>
-		<div class="text-center"><p>Contact : <a mailto="<? echo $user['email'] ?>"><? echo $user['email'] ?></a></p></div>
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<h2><? echo $user['prenom']." ".$user['nom'] ?></h2>
+				<div class="well well-lg">
+				<h2>Activité :</h2>
+				<span class="btn btn-primary">Commentaires <span class="badge"><? echo getCommentsCount($user['id_user'])?></span></span><br/><br/>
+				<span class="btn btn-success">Documents uploadés <span class="badge"><? echo getDocumentsCount($user['id_user']) ?></span></span><br/><br/>
+				<span class="btn btn-danger">Note globale <span class="badge"><? echo getGlobalNote($user['id_user']) ?></span></span>
+				</div><br/>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
