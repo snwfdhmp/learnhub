@@ -2,11 +2,27 @@
 $GLOBALS['active_view']="explore";
 include_once $GLOBALS['config']['paths']['libs'].'views.funcs.php';
 $matiere_focused = 1;
-if(isset($_GET['m']) && $_GET['m'] != "")
+if(isset($_GET['m']) && $_GET['m'] != "") {
 	$matiere_focused=$_GET['m'];
-$chapitre_focused = 1;
-if(isset($_GET['c']) && $_GET['c'] != "")
+} else {
+	$matieres = getMatieres($_SESSION['promo']);
+	if ($matieres != NULL) {
+		$matiere_focused = $matieres[0]['id_matiere'];
+	}
+	else {
+		$matiere_focused = -1;
+	}
+}
+if(isset($_GET['c']) && $_GET['c'] != "") {
 	$chapitre_focused=$_GET['c'];
+}
+else {
+	$chapitres = getChapitres($matiere_focused);
+	if($chapitres != NULL)
+		$chapitre_focused = $chapitres[0]['id_chapitre'];
+	else
+		$chapitre_focused = -1;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

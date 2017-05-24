@@ -1,6 +1,10 @@
 <? include_once($GLOBALS['config']['paths']['libs']."std.funcs.php");
 include_once($GLOBALS['config']['paths']['libs']."views.funcs.php");
-$user_note = getGlobalNote($_SESSION['id_user']);
+
+if($auth->isAuthenticated()) {
+	$user_note = getGlobalNote($_SESSION['id_user']);
+}
+
 ?>
 
 <nav class="navbar navbar-default">
@@ -37,13 +41,13 @@ $user_note = getGlobalNote($_SESSION['id_user']);
 				<li><a href="#"><span class="server-status" class="server-ping-fire"></span></a></li>
 				<? } ?>
 				<li><a href="?u=addCourse">+ Publier</a></li>
-				<? if(! $auth->isAuthenticated()) { ?>
+				<? if(! $auth->isAuthenticated()) {?>
 				<li><a href="?u=login">Se connecter</a></li> 
 				<li><a href="?u=signup">S'inscrire</a></li> 
 				<? } else { ?>
 				<li><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom'] ?> <span class="label label-<?echo noteToColor($user_note) ?>"><? echo $user_note ?></span><span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><? echo $_SESSION['prenom']." ".$_SESSION['nom']." ".getNoteDisplay($_SESSION['id_user']) ?><span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="#"><span class="label label-<? echo noteToColor($user_note) ?>"><? echo $user_note ?></span> points</a></li>
 						<li><a href="?u=profile">Voir mon profil</a></li>

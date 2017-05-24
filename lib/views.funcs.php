@@ -13,7 +13,7 @@ function matieres_line_view($promo, $focus = 1) {
 
 	if($matieres == NULL) {
 		echo "</div>";
-		echo "<div class='col-md-10'> <h2>Il n'y a pas encore de matières pour votre promo ... <a href='?u=addCourse'>Soyez le premier à en créer une.</a></h2>
+		echo "<div class='col-md-10'> <h2>Il n'y a pas encore de matières pour votre promo ... <a href='?u=addMat'>Soyez le premier à en créer une.</a></h2>
 	</div>";
 	return false;
 }
@@ -37,7 +37,7 @@ function matieres_select_view($promo, $focus = 1) {
 	$matieres = getMatieres($promo);
 
 	if($matieres == NULL) {
-		echo "<option value='' selected disabled>Il n'y a pas encore de matière pour votre promo ... </option><a href='?u=addCourse'>Soyez le premier à créer une matière</a>";
+		echo "<option value='' selected disabled>Il n'y a pas encore de matière pour votre promo ... </option><a href='?u=addMat'>Soyez le premier à créer une matière</a>";
 		return false;
 	}
 
@@ -56,7 +56,7 @@ function chapitres_list_view($matiere, $focus) {
 	echo '<ul class="nav nav-tabs">';
 
 	if($chapitres == NULL) {
-		echo "<h2>Il n'y a pas encore de chapitres pour cette matière ... <a href='?u=addCourse'>Soyez le premier à poster un document</a></h2>";
+		echo "<h2>Il n'y a pas encore de chapitres pour cette matière ... <a href='?u=addChap&m=".$matiere."'>Soyez le premier à créer un chapitre</a></h2>";
 		return false;
 	}
 
@@ -66,6 +66,7 @@ function chapitres_list_view($matiere, $focus) {
 			echo 'class="active"';
 		echo '><a class="chapitre-menu" href="?u='.$GLOBALS['active_view'].'&m='.$chapitre['id_matiere'].'&c='.$chapitre['id_chapitre'].'">'.$chapitre['nom'].'</a></li>';
 	}
+	echo "<li role='presentation'><a href='?u=addChap&m=".$matiere."'>+</a></li>";
 
 	echo '</ul><br/>';
 	return true;
@@ -136,37 +137,37 @@ function documents_table_view_($chapitre) {
 		$inners[doctypeToStr($document['doc_type'])] .= 
 		'<div class="col-md-3">
 		<div class="panel panel-default">
-		<div class="panel-heading text-center">
-		<a href="?u=view&id='.$document['id_doc'].'">
-		'.$document['nom'].'
-		</a>'
-		.$vues
-		.' '
-		.$coms
-		.' '
-		.$notSeen
-		.'</div>
-		<div class="panel-body>"'
-		.'<p>Uploadé par '
-		.'<a href="?u=profile&id='
-		.$auteur['id_user']
-		.'">'
-		.$auteur['prenom']
-		.' '
-		.$auteur['nom']
-		.'</a></p>
-		
-		</div>'
-		.'<div class="panel-footer">'
-		.time2str($document['date_creation'])
-		.'</div></div></div>';
-	}
-	foreach($GLOBALS['config']['database']['doctypes'] as $doctype) {
-		if(! isset($inners[$doctype])) {
-			$bottom .= "<div class='badge badge-lg badge-default doc-table-view-type'><a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>$doctype +</a></div><br/>";
-		}
-		else {
-			$top .= "<div class='badge badge-lg doc-table-view-type doc-table-view-type-nonvoid'>$doctype</div>";
+			<div class="panel-heading text-center">
+				<a href="?u=view&id='.$document['id_doc'].'">
+					'.$document['nom'].'
+				</a>'
+				.$vues
+				.' '
+				.$coms
+				.' '
+				.$notSeen
+				.'</div>
+				<div class="panel-body>"'
+					.'<p>Uploadé par '
+					.'<a href="?u=profile&id='
+					.$auteur['id_user']
+					.'">'
+					.$auteur['prenom']
+					.' '
+					.$auteur['nom']
+					.'</a></p>
+
+				</div>'
+				.'<div class="panel-footer">'
+				.time2str($document['date_creation'])
+				.'</div></div></div>';
+			}
+			foreach($GLOBALS['config']['database']['doctypes'] as $doctype) {
+				if(! isset($inners[$doctype])) {
+					$bottom .= "<div class='badge badge-lg badge-default doc-table-view-type'><a href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>$doctype +</a></div><br/>";
+				}
+				else {
+					$top .= "<div class='badge badge-lg doc-table-view-type doc-table-view-type-nonvoid'>$doctype</div>";
 			/*
 			<a class='doc-table-view-type-add' href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>
 			<span class='label label-danger doc-table-view-type-add'>+</span>
@@ -233,28 +234,13 @@ function documents_table_view($chapitre) {
 			$top .= "</td><td></td><td></td><td></td></tr>"
 			.
 			$inners[$doctype]."<tr class='doc-view-section-end'><td><a class='doc-table-view-type-add' href='?u=addCourse&m=".$chapitre['id_matiere']."&c=".$chapitre['id_chapitre']."&t=".$doctype."'>Publier un document
-			</a></tr>";
-		}
+		</a></tr>";
 	}
-	echo $top;
-	echo $bottom;
-	echo '</table>';
-	return true;
 }
-
-function noteToColor($note) {
-	if($note < 10)
-		$color = "default";
-	else if ($note < 50)
-		$color = "info";
-	else if ($note < 100)
-		$color = "primary";
-	else if ($note < 150)
-		$color = "success";
-	else
-		$color = "danger";
-
-	return $color;
+echo $top;
+echo $bottom;
+echo '</table>';
+return true;
 }
 
 function noteToColorText($note) {
@@ -279,18 +265,36 @@ function getNoteDisplay($id_user) {
 }
 
 function noteToRang($note) {
-	if($note < 10)
-		$rang = "sleeping";
-	else if ($note < 50)
-		$rang = "normal";
-	else if ($note < 100)
-		$rang = "active";
-	else if ($note < 150)
-		$rang = "powerful";
-	else
-		$rang = "god";
+	if($note < 10) $rang = "casual";
+	else if ($note < 30) $rang = "regular";
+	else if ($note < 50) $rang = "active";
+	else if ($note < 75) $rang = "smart";
+	else if ($note < 100) $rang = "major";
+	else if ($note < 135) $rang = "genius";
+	else if ($note < 180) $rang = "super genius";
+	else if ($note < 200) $rang = "power genius";
+	else if ($note < 250) $rang = "hardcore genius";
+	else if ($note < 350) $rang = "master genius";
+	else if ($note == 333) $rang = "einstein";
+	else $rang = "god";
 
 	return $rang;
+}
+
+function noteToColor($note) {
+	if($note < 10) $color = "info";
+	else if ($note < 30) $color = "info";
+	else if ($note < 50) $color = "warning";
+	else if ($note < 75) $color = "warning";
+	else if ($note < 100) $color = "default";
+	else if ($note < 135) $color = "default";
+	else if ($note < 180) $color = "success";
+	else if ($note < 200) $color = "success";
+	else if ($note < 250) $color = "warning";
+	else if ($note < 350) $color = "warning";
+	else $color = "danger";
+
+	return $color;
 }
 
 function comments_doc_view($id_doc, $logged = false) {
@@ -311,78 +315,87 @@ function comments_doc_view($id_doc, $logged = false) {
 			<div class="panel panel-'.$comment['type'].'">
 				<div class="panel-heading">
 					<div class="row">
-						<span class="col-md-10">'.$auteur['prenom'].' '.$auteur['nom']."</span><span class='col-md-1 col-md-offset-1'>".
-						($auteur['id_user'] == $_SESSION['id_user'] ? "<span class='text-right'>&#10008;</span></span>":"")
+						<span class="col-md-10 comment-prenom"><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom']."</a> ".getNoteDisplay($auteur['id_user'])."</span><span class='col-md-1 col-md-offset-1'>".
+						(($auteur['id_user'] == $_SESSION['id_user']) || (adminOnly()) ? "<span class='text-right' onclick='delCom(".$comment['id_com'].");getComments();'>&#10008;</span></span>":"")
 						.'
-					</div></div>
-					<div class="panel-body">
-						'.$comment['contenu'].'
 					</div>
-					<div class="panel-footer">
-						<div class="row">
-							<div class="col-md-9 text-muted">
-								'.time2str($comment['date_creation']).'
-							</div>
-							<div class="like-view">
-								<div class="btn-toolbar" role="toolbar">
-									<div class="btn-group-xs" role="group">
-										<button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')" class="btn btn-default like-btn"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-										<button class="btn btn-default"> <span class="like-com" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'"> '."$likes".' </span> </button><button class="btn btn-default dislike-btn" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
-									</div>
+				</div>
+				<div class="panel-body">
+					'.$comment['contenu'].'
+				</div>
+				<div class="panel-footer">
+					<div class="row">
+						<div class="col-md-9 text-muted">
+							'.time2str($comment['date_creation']).'
+						</div>
+						<div class="like-view">
+							<div class="btn-toolbar" role="toolbar">
+								<div class="btn-group-xs" role="group">
+									<button onclick="putLike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')" class="btn btn-default like-btn"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+									<button class="btn btn-default"> <span class="like-com" id="badge-like-'.$GLOBALS['config']['database']['type_ref']['comment'].'-'.$comment['id_com'].'"> '."$likes".' </span> </button><button class="btn btn-default dislike-btn" onclick="putDislike('.$GLOBALS['config']['database']['type_ref']['comment'].','.$comment['id_com'].')"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>';
-		}
-		return true;
+			</div>
+		</div>';
+	}
+	return true;
+}
+
+function search_view($search) {
+	$results = searchDocuments($search);
+
+	if($results == NULL) {
+		echo "<li><a href='#'>Pas de résultat</a></li>";
+		die();
 	}
 
-	function search_view($search) {
-		$results = searchDocuments($search);
-
-		if($results == NULL) {
-			echo "<li><a href='#'>Pas de résultat</a></li>";
-			die();
-		}
-
-		foreach ($results as $result) {
-			echo "<li><a href='?u=view&id=".$result['id_doc']."'>".$result['nom']."</a></li>";
-		}
-
-		return true;
+	foreach ($results as $result) {
+		echo "<li><a href='?u=view&id=".$result['id_doc']."'>".$result['nom']."</a></li>";
 	}
 
-	function online_users_view() {
-		$online = getOnlineUsers();
+	return true;
+}
 
-		if($online == NULL) {
-			echo "<li><a href='#'>Personne en ligne actuellement</a></li>";
-			die();
-		}
+function online_users_view() {
+	$online = getOnlineUsers();
 
-		foreach ($online as $on) {
-			$id_user = $on['id_user'];
-			$user = getUser($id_user);
-			echo "<li><a href='?u=profile&id=".$id_user."'><span class='green-dot'></span>".$user['prenom']." ".$user['nom']."</a></li>";
-		}
-
-		return true;
+	if($online == NULL) {
+		echo "<li><a href='#'>Personne en ligne actuellement</a></li>";
+		die();
 	}
-	function online_users_sidebar() {
-		$online = getOnlineUsers();
 
-		if($online == NULL) {
-			echo "<li><a href='#'>Personne en ligne actuellement</a></li>";
-			die();
-		}
-
-		foreach ($online as $on) {
-			$id_user = $on['id_user'];
-			$user = getUser($id_user);
-			echo '<div class="user-online-box"><li><a href="?u=profile&id='.$id_user.'"><span class="green-dot"></span>'.$user["prenom"].' '.$user["nom"].'</a><span class="user-online-links"> <a href="?u=profile&id='.$id_user.'"><i class="fa fa-address-card" aria-hidden="true"></i></a> <a><i class="fa fa-comments" aria-hidden="true"></i></a></span></li></div>';
-		}
-
-		return true;
+	foreach ($online as $on) {
+		$id_user = $on['id_user'];
+		$user = getUser($id_user);
+		echo "<li><a href='?u=profile&id=".$id_user."'><span class='green-dot'></span>".$user['prenom']." ".$user['nom']."</a></li>";
 	}
+
+	return true;
+}
+function online_users_sidebar() {
+	$online = getOnlineUsers();
+
+	if($online == NULL) {
+		echo "<li><a href='#'>Personne en ligne actuellement</a></li>";
+		die();
+	}
+
+	foreach ($online as $on) {
+		$id_user = $on['id_user'];
+		$user = getUser($id_user);
+		echo '<div class="user-online-box"><li><a href="?u=profile&id='.$id_user.'"><span class="green-dot"></span>'.$user["prenom"].' '.$user["nom"].'</a><span class="user-online-links"> <a href="?u=profile&id='.$id_user.'"><i class="fa fa-address-card" aria-hidden="true"></i></a> <a><i class="fa fa-comments" aria-hidden="true"></i></a></span></li></div>';
+	}
+
+	return true;
+}
+
+function select_promo_admin_change($promo) {
+	$promos = getPromos();
+
+	foreach ($promos as $promo) {
+		echo "<a href='?u=explore&r=setpromo&promo=".$promo['id_promo']."' class='btn btn-sm btn-primary'>".$promo['nom']."</a> ";
+	}
+}

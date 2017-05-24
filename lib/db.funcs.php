@@ -1,5 +1,7 @@
 <?
 
+include_once "../lib/std.funcs.php";
+
 function getPdoDbObject() {
 	try {
 		$db = new PDO('mysql:host=localhost;dbname='.$GLOBALS['config']['database']['name'], $GLOBALS['config']['database']['username'], $GLOBALS['config']['database']['password']);
@@ -65,7 +67,7 @@ function getNomPromo($id_promo) {
 }
 
 function getUser($id_user) {
-	$query = $GLOBALS['db']->query("SELECT id_user, prenom, nom, email FROM users WHERE id_user=".$id_user."");
+	$query = $GLOBALS['db']->query("SELECT id_user, prenom, nom, email, permissions FROM users WHERE id_user=".$id_user."");
 	$query->execute();
 	$rep = $query->fetch();
 	return $rep;
@@ -255,6 +257,19 @@ function postComment($id_doc, $content,$type, $id_user) {
 	$query->bindParam(':content', $content);
 	$query->bindParam(':type', $type);
 	return $query->execute();
+}
+
+function delComment($id) {
+	if(adminOnly()) {
+		$query = $GLOBALS['db']->prepare("DELETE FROM comments WHERE id_com=:id");
+		$query->bindParam(':id', $id);
+		return $query->execute();
+	} else {
+		$query = $GLOBALS['db']->prepare("DELETE FROM comments WHERE id_com=:id AND id_user=:id_user");
+		$query->bindParam(':id', $id);
+		$query->bindParam(':id_user', $_SESSION['id_user']);
+		return $query->execute();
+	}
 }
 
 function getdocpath($id_doc){

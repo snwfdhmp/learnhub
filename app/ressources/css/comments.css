@@ -5,3 +5,7 @@
 .badge {
 	padding:5px;
 }
+
+.comment-prenom > a  {
+	color:white;
+}

@@ -2,6 +2,19 @@ function htmlEncode(mystring) {
 	return mystring.replace(/&/g, "&amp;").replace('\'', '"');
 }
 
+function delCom(id) {
+	var r = confirm("Voulez-vous réellement supprimer ce commentaire ?");
+	if(r == false)
+		return false;
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("GET", "?ajax=delCom&id="+id, true);
+	xmlhttp.onreadystatechange = function() {
+	}
+	xmlhttp.send();
+	xmlhttp = null;
+	return true;
+}
+
 function ajaxGetAndReplace(url, target) {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
@@ -23,8 +36,10 @@ function postComment(text,type,id_doc){
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			if (this.responseText !== false) 
+			if (this.responseText !== false)  {
+				getCommentsAndScroll();
 				document.getElementById("comment-input").value = "";
+				}
 		}
 	};
 	xmlhttp.open("GET", "?ajax=postCom&id=" + id_doc +"&content="+escape(text)+"&type="+escape(type), true);
@@ -51,4 +66,5 @@ function putDislike(type, ref) {
 	document.getElementById("badge-like-"+type+"-"+ref).innerHTML = --tmp;
 	getComments();
 }
+
 

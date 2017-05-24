@@ -15,17 +15,32 @@ $auth = NULL;
 
 if(isset($_SESSION['auth'])) {
 	$auth = unserialize($_SESSION['auth']);
-	if(isset($_GET['r']) && $_GET['r']=='logout') {
-		$auth->disconnect();
-		header('Location: ?u=accueil');
-		exit();
+	if(isset($_GET['r'])) {
+		switch ($_GET['r']) {
+			case 'logout':
+			$auth->disconnect();
+			header('Location: ?u=accueil');
+			exit();
+			break;
+			case 'ping':
+			echo $auth->ping();
+			exit();
+			case 'setpromo':
+			if(isset($_GET['promo'])) {
+				$_SESSION['force_promo']=true;
+				$_SESSION['promo']=$_GET['promo'];
+			}
+			break;
+			default:
+			break;
+		}
 	}
-	if(isset($_GET['r']) && $_GET['r']=='ping') {
-		echo $auth->ping();
-		exit();
-	}
+	
 	$auth->ping();
 }
+
+if((!isset($_SESSION['force_promo'])) || $_SESSION['force_promo'] != true)
+				$_SESSION['force_promo']=false;
 
 if($auth == NULL)
 	$auth = new Authenticator();

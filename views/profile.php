@@ -28,7 +28,7 @@ $user = getUser($id);
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
-				<h2><? echo $user['prenom']." ".$user['nom'] ?></h2>
+				<h2><? echo $user['prenom']." ".$user['nom']." ".getNoteDisplay($user['id_user']) ?></h2>
 				<div class="well well-lg">
 				<h2>Activité :</h2>
 				<span class="btn btn-primary">Commentaires <span class="badge"><? echo getCommentsCount($user['id_user'])?></span></span><br/><br/>

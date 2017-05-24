@@ -54,6 +54,22 @@ $auteur = getUser($document['id_auteur']);
 			ajaxGetAndReplace("comments&id="+id_doc, "comments-view");
 		}
 
+		function getCommentsAndScroll() {
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var targetView = document.getElementById("comments-view");
+					if (htmlEncode(this.responseText) != targetView.innerHTML) {
+						targetView.innerHTML = unescape(this.responseText);
+						$("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+					}
+				}
+			};
+			xmlhttp.open("GET", "?ajax="+"comments&id="+id_doc, true);
+			xmlhttp.send();
+			xmlhttp = null;
+		}
+
 		function resizeFrameToContent( frame ) {
 			frame.width  = frame.contentWindow.document.body.scrollWidth;
 			frame.height = frame.contentWindow.document.body.scrollHeight;
@@ -118,8 +134,6 @@ $auteur = getUser($document['id_auteur']);
 			</div>
 			<div class="col-md-2 col-md-offset-1 col-sm-offset-2 col-xs-offset-2 doc-sidebar-outer">
 				<div class="doc-sidebar">
-					
-					<h2>Document</h2>
 					<div class="panel panel-default"><div class="panel-heading">Nom: </div><div class="panel-body"><? echo $document['nom'] ?></div></div>
 					<div class="panel panel-default"><div class="panel-heading">Uploadé par: </div><div class="panel-body"><a href="?u=profile&id=<? echo $auteur['id_user'] ?>"><? echo userToStr($auteur) ?></a></div></div>
 					<div class="well well-sm text-center doc-like-count" id="doc-like">Note : 

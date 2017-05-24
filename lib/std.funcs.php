@@ -65,4 +65,12 @@ function userToStr($user) {
     return $user['prenom'].' '.$user['nom'];
 }
 
+function adminOnly() {
+    if(intval(getUser($_SESSION['id_user'])['permissions']) > 0) {
+        return true;
+    }
+    else
+        return false;
+}
+
 ?>

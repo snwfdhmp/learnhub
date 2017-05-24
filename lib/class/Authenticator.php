@@ -149,7 +149,8 @@ private function applyAuth($id_user) {
 	$_SESSION['nom'] = $req['nom'];
 	$_SESSION['email'] = $req['email'];
 	$_SESSION['url_pdp'] = $req['url_pdp'];
-	$_SESSION['promo'] = $req['promo'];
+	if($_SESSION['force_promo'] != true)
+		$_SESSION['promo'] = $req['promo'];
 	$_SESSION['pseudo_cas'] = $req['pseudo_cas'];
 
 	$this->authenticated = true;

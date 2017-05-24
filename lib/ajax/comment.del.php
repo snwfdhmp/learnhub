@@ -8,10 +8,8 @@ if(!isset($_GET['id']) || $_GET['id'] == "") {
 	die('ERR_SYNT');
 }
 
-$id_doc=$_GET['id'];
-$content=$_GET['content'];
-$type=rawurldecode($_GET['type']);
-echo postComment($id_doc,$content,$type,$_SESSION['id_user']);
+$id = $_GET['id'];
+delComment($id);
 
 exit();
 ?>

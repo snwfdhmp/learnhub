@@ -1,4 +1,6 @@
-<? $GLOBALS['active_view']="accueil"; ?>
+<? $GLOBALS['active_view']="accueil";
+include_once "../lib/views.funcs.php"
+?>
 <!DOCTYPE html>
 <html lang="en" id="root-dom-tag">
 <head>
@@ -16,22 +18,29 @@
 	<script>
 		function init() {
 			<? if ($auth->isAuthenticated() == true) { ?>
-			$("#main-container").addClass("col-md-8");
-			$("#main-container").addClass("col-md-offset-1");
-			$("#main-container").addClass("col-sm-8");
-			$("#main-container").addClass("col-sm-offset-1");
-			<? } ?>
-		} 
-	</script>
-</head>
-<body onload="init()">
-	<? include_once "layouts/navbar.php" ?>
-	<div class="container" id="main-container">
-		<h1>Bienvenue sur LearnHub <? if($auth->isAuthenticated()) echo $_SESSION['prenom']. " !"?></h1><br/>
-		<? if($auth->isAuthenticated()) {?>
-			<h2>Vous n'avez aucune notification. Vous pouvez néanmoins <a href="?u=addCourse">poster un cours</a></h2>
-		<? } else {?>
-			<h2>Vous n'êtes pas connecté.</h2>
+				$("#main-container").addClass("col-md-8");
+				$("#main-container").addClass("col-md-offset-1");
+				$("#main-container").addClass("col-sm-8");
+				$("#main-container").addClass("col-sm-offset-1");
+				<? } ?>
+			} 
+		</script>
+	</head>
+	<body onload="init()">
+		<? include_once "layouts/navbar.php" ?>
+		<div class="container" id="main-container">
+			<h1>Bienvenue sur LearnHub <? if($auth->isAuthenticated()) echo $_SESSION['prenom']. " !"?></h1><br/>
+			<? if($auth->isAuthenticated()) {?>
+			<h2>Vous n'avez aucune notification. Vous pouvez néanmoins <a href="?u=addCourse">poster un cours</a></h2>	
+			<? if (adminOnly()) {
+				echo "<h3>En tant qu'admin vous pouvez changer de promo pour la session :</h3>";
+				echo "<h3>";
+				select_promo_admin_change($_SESSION['promo']);
+				echo "</h3>";
+			}
+		}
+		else {?>
+		<h2>Vous n'êtes pas connecté.</h2>
 		<? } ?>
 	</div>
 	<? include_once "layouts/sidebar.php" ?>

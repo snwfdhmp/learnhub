@@ -14,6 +14,7 @@ Le repo : https://github.com/snwfdhmp/MPM
 - profile page
 - ajout automatique de comptes (avec activation par email)
 - ajouter liens à chaque fois que possible
+- delete commentaire
 
 #Notes
 
