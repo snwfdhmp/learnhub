@@ -1,5 +1,7 @@
 <?
 
+include_once "../lib/db.funcs.php";
+
 function activeIf($view) {
     if($GLOBALS['active_view'] == $view)
         echo "class='active'";
@@ -71,6 +73,17 @@ function adminOnly() {
     }
     else
         return false;
+}
+
+function emailToken($id_token) {
+    $token = getTokenById($id_token);
+    $user = getUser($token['id_user']);
+
+    $link = "http://".$GLOBALS['config']['domain']."/"."?u=initAccount&token=".$token['value'];
+
+    $content ="Bienvenue sur LearnHub ".$user['prenom']." ".$user['nom']."\nCliquez sur le lien pour activer votre compte : ".$link." (ou copiez-collez dans la barre d'adresse de votre navigateur).";
+
+    mail($user['email'], "Activez votre compte LearnHub", $content);
 }
 
 ?>

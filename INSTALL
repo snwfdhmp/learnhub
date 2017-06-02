@@ -1,0 +1,8 @@
+PHP : v.7.0.10
+Serveur web : MAMP
+
+ - Ouvrir OPEN_ME/CREATE_TABLE.sql et l'éxécuter dans une instance PhpMyAdmin
+
+ - Configurer les informations de connexion à la base dans le fichier public_html/config/global.config.php
+
+ - Ouvrir l'adresse %path_to_project%/public_html/

@@ -1,0 +1,27 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
+
+#search-submit {
+	display:none;
+}
+
+#search-bar {
+	width:100px;
+    transition: ease-in-out, width .35s ease-in-out;
+}
+
+#search-bar:focus {
+	width:150px;
+}
+
+#search-btn {
+	opacity:0;
+}
+
+.navbar-custom {
+	background-color: #efefef !important;
+}
+
+.nav-btn {
+	margin-top: 3px;
+	margin-bottom: 1px;
+}

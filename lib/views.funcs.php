@@ -209,14 +209,11 @@ function documents_table_view($chapitre) {
 		$nbrComs = countComments($document['id_doc']);
 
 		//labels
-		$vues = "<span class='label label-info'>".$document['vues']." <i class='fa fa-eye' aria-hidden='true'></i></span>";
-		if($nbrComs > 0)
-			$coms = "<span class='label label-primary'>".$nbrComs." <i class='fa fa-commenting' aria-hidden='true'></i></span>";
-		else
-			$coms = "";
-		$note = "<span class='label label-success'>".getLikes($GLOBALS['config']['database']['type_ref']['document'], $document['id_doc'])." <i class='fa fa-thumbs-o-up' aria-hidden='true'></i></span>";
+		$vues = " | ".$document['vues']." <i class='fa fa-eye' aria-hidden='true'></i>";
+		$coms = " | ".$nbrComs." <i class='fa fa-commenting' aria-hidden='true'></i>";
+		$note = getLikes($GLOBALS['config']['database']['type_ref']['document'], $document['id_doc'])." <i class='fa fa-thumbs-o-up' aria-hidden='true'></i>";
 
-		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a class="doc-table-name" href="?u=view&id='.$document['id_doc'].'"><span class="label label-danger doc-table-name">'.$document['nom'].'</span></a> '.$notSeen.'</td><td> '.$note.' '.$vues.' '.$coms.' </td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a> '.getNoteDisplay($auteur['id_user']).'</td><td>'.time2str($document['date_creation']).'</td></tr>';
+		$inners[doctypeToStr($document['doc_type'])] .= '<tr class="doc-table-view-row"><td><a class="doc-table-name" href="?u=view&id='.$document['id_doc'].'"><span class="label label-danger doc-table-name">'.$document['nom'].'</span></a> '.$notSeen.'<td><span class="label label-primary">'.$note.' '.$vues.' '.$coms.' </span></td><td><a href="?u=profile&id='.$auteur['id_user'].'">'.$auteur['prenom'].' '.$auteur['nom'].'</a> '.getNoteDisplay($auteur['id_user']).'</td><td>'.time2str($document['date_creation']).'</td></tr>';
 	}
 	echo "<table class='table table-hover'>
 	<tr class='doc-table-view-row'><th>Nom</th><th></th><th>Auteur</th><th>Date d'ajout</th></tr>";
@@ -256,6 +253,12 @@ function noteToColorText($note) {
 		$color = "default";
 
 	return $color;
+}
+
+function getUserDisplay($id_user) {
+	$user = getUser($id_user);
+
+	return $user['prenom']." ".$user['nom']." ".getNoteDisplay($user['id_user']);
 }
 
 function getNoteDisplay($id_user) {
@@ -398,4 +401,41 @@ function select_promo_admin_change($promo) {
 	foreach ($promos as $promo) {
 		echo "<a href='?u=explore&r=setpromo&promo=".$promo['id_promo']."' class='btn btn-sm btn-primary'>".$promo['nom']."</a> ";
 	}
+}
+
+function tokens_list_view($id_user) {
+	$tokens = getUserTokens($id_user);
+
+	if($tokens == NULL) {
+		echo "<h2>Vous n'avez pas de tokens en attente</h2><h3>Vous souhaitez peut-être inviter vos amis ?</h3> <a href='index.php?u=addAccounts' class='btn btn-lg btn-primary'>Inviter mes amis</a><br/><br/><a href='index.php?u=explore' class='btn btn-default btn-xs'><i class='fa fa-caret-left' aria-hidden='true'></i> Retourner sur LearnHub</a>  ";
+		return false;
+	}
+
+	echo "<table class='table table-hover'>";
+	echo "<tr><th>Nom</th><th>Email</th><th>Promo</th><th>Etat</th><th>Lien d'activation</th></tr>";
+
+	foreach ($tokens as $token) {
+		$user = getUser($token['id_user']);
+		if($user != NULL) {
+			echo "<tr><td>".getUserDisplay($user['id_user'])."</td><td>".$user['email']."</td><td>".getPromoName($user['promo'])."</td><td>";
+			switch($token['used']) {
+				case 0:
+				echo "<span class='text-danger'>Non utilisé</span>";
+				break;
+				case 1:
+				echo "<span class='text-success'>Utilisé</span>";
+				break;
+			}
+			echo "</td><td><div class='row'>";
+			if($token['used'] != 1) {
+				echo "<div class='col-md-6'><input class='form-control' type='text' value='"."http://".$GLOBALS['config']['domain']."/"."?u=initAccount&token=".$token['value']."'></div><div class='col-md-3'><a href='?u=viewTokens&r=emailToken&id=".$token['id']."'><button class='btn btn-primary btn-sm'>Renvoyer le lien</button></a></div><div class='col-md-3'><a href='?u=viewTokens&r=delToken&id=".$token['id']."'><button class='btn btn-danger btn-sm'>&#10008;</button></a></div></div>";
+			} else {
+				echo "<div class='col-md-8'><input class='form-control' type='text' value='"."http://".$GLOBALS['config']['domain']."/"."?u=initAccount&token=".$token['value']."'></div><div class='col-md-4'><a href='?u=viewTokens&r=delToken&id=".$token['id']."'><button class='btn btn-danger btn-sm'>&#10008;</button></a></div></div>";
+			}
+
+			echo "</td></tr>";
+		}
+	}
+
+	return true;
 }

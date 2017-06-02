@@ -14,6 +14,9 @@ $document = getDocument($id);
 putView($id, $_SESSION['id_user']);
 $auteur = getUser($document['id_auteur']);
 
+$chapitre = getChapitre($document['id_chapitre']);
+$matiere = getMatiere($chapitre['id_matiere']);
+$promoName = getPromoName($matiere['promo']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,11 +115,17 @@ $auteur = getUser($document['id_auteur']);
 			document.getElementById("comment-input").style.boxShadow = shadow;
 		}
 		function sendDocMail() {
-			document.getElementById("sendDocMail").innerHTML="Envoi en Cours....";
+			var btn = document.getElementById("sendDocMail");
+			btn.innerHTML="Envoi en Cours....";
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
-					document.getElementById("sendDocMail").innerHTML= this.responseText;
+					btn.innerHTML= this.responseText;
+					if(this.responseText == "Erreur") {
+						console.log("Erreur");
+						$("#sendDocMail").prop("class", "btn btn-danger");
+						btn.innerHTML="Une erreur s'est produite<br/>Merci de réessayer";
+					}
 				}
 			};
 			xmlhttp.open("GET", "?ajax=sendDocMail&id=" + id_doc, true);
@@ -129,8 +138,8 @@ $auteur = getUser($document['id_auteur']);
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8 col-sm-10">
-				<h1><? echo $document['nom']?> <small>- <? echo getPromoName(getMatiere(getChapitre($document['id_chapitre'])['id_matiere'])['promo']) ?></small></h1>
-				<iframe  height="500" width="800" src="<? echo $document['url'] ?>"></iframe>
+				<h1><a href='index.php?u=explore' class='btn btn-danger btn-xs'><i class='fa fa-arrow-left' aria-hidden='true'></i> </a> <?= $document['nom']?> <small>- <?= $matiere['nom_matiere'].": ".$chapitre['nom']." [".$promoName."]"?></small></h1>
+				<iframe  height="500" width="800" src="<?= $document['url'] ?>"></iframe>
 			</div>
 			<div class="col-md-2 col-md-offset-1 col-sm-offset-2 col-xs-offset-2 doc-sidebar-outer">
 				<div class="doc-sidebar">

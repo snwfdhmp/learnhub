@@ -14,6 +14,44 @@ function getPdoDbObject() {
 	return $db;
 }
 
+function signUp($prenom, $nom, $email, $pass, $passconf, $promo) {
+	if(strlen($prenom) > 0 && strlen($nom) > 0 && $promo>0 && $promo<=9 && filter_var($email, FILTER_VALIDATE_EMAIL) && strlen($pass) >= 8 && $pass === $passconf) {
+		$query = $GLOBALS['db']->prepare("SELECT * FROM users WHERE email=:email OR (prenom=:prenom AND nom=:nom AND promo=:promo)");
+		$query->bindParam(':prenom', $prenom);
+		$query->bindParam(':nom', $nom);
+		$query->bindParam(':email', $email);
+		$query->bindParam(':promo', $promo);
+		if(! $query->execute()) {
+			header('Location: ?u=signup&err=db');
+			exit(1);
+		}
+		$rep = $query->fetch();
+		if($rep != NULL) {
+			if($rep['email'] == $email)
+				header('Location: ?u=signup&err=doubleEmail');
+			else if ($rep['prenom'] == $prenom && $rep['nom'] == $nom && $rep['promo'] == $promo)
+				header('Location: ?u=signup&err=doubleIdentity');
+			exit(1);
+		}
+
+
+		$options = [
+		"cost"=>10,
+		];
+		$hash = password_hash($pass, PASSWORD_DEFAULT, $options);
+		$query = $GLOBALS['db']->prepare("INSERT INTO users (prenom, nom, pass, email,promo) VALUES(:prenom, :nom, :pass, :email,:promo)");
+		$query->bindParam(':prenom', $prenom);
+		$query->bindParam(':nom', $nom);
+		$query->bindParam(':pass', $hash);
+		$query->bindParam(':email', $email);
+		$query->bindParam(':promo', $promo);
+		if(! $query->execute()) {
+			header('Location: ?u=signup&err=db');
+			exit(1);
+		}
+	}
+}
+
 function getMatieres($promo) {
 	$query = $GLOBALS['db']->query("SELECT * FROM matieres WHERE promo=".$promo." ORDER BY id_matiere");
 	$query->execute();
@@ -67,7 +105,7 @@ function getNomPromo($id_promo) {
 }
 
 function getUser($id_user) {
-	$query = $GLOBALS['db']->query("SELECT id_user, prenom, nom, email, permissions FROM users WHERE id_user=".$id_user."");
+	$query = $GLOBALS['db']->query("SELECT id_user, prenom, nom, email, promo, permissions FROM users WHERE id_user=".$id_user."");
 	$query->execute();
 	$rep = $query->fetch();
 	return $rep;
@@ -287,18 +325,11 @@ function SendDocMail($id_doc,$email) {
 	$mail = new PHPMailer;
 	//$mail->SMTPDebug = 3; 
 	$mail->CharSet = 'UTF-8';                             
-	$mail->isSMTP();                                    
-	$mail->Host = 'smtp.gmail.com';  
-	$mail->SMTPAuth = true; 
-	$mail->Username = 'geekriyad@gmail.com';                 
-	$mail->Password = 'RR@test19';  
-	$mail->SMTPSecure = 'tls';                           
-	$mail->Port = 587;
-	$mail->setFrom('geekriyad@gmail.com', 'Share2i');
-	$mail->addAddress($email);     
-	$mail->addReplyTo('geekriyad@gmail.com', 'Riyad');
-	$mail->addAttachment($path, 'Share2i-'.$nom.'.pdf');    
-	$mail->isHTML(true);
+	$mail->SetFrom('noreply@learnhub.esy.es', 'LearnHub');
+	$mail->AddAddress($email);     
+	$mail->AddReplyTo('noreply@learnhub.esy.es', 'NO-REPLY');
+	$mail->AddAttachment($path, 'Share2i-'.$nom.'.pdf');    
+	$mail->IsHTML(true);
 	$mail->SMTPOptions = array(
 		'ssl' => array(
 			'verify_peer' => false,
@@ -315,13 +346,82 @@ function SendDocMail($id_doc,$email) {
 	Vous trouverez en pièce jointe le document " '.$nom.' "
 	Cordialement,
 	Share2i';
-	if(!$mail->send()) {
-		echo 'Erreur';
-		die();
+	if(!$mail->Send()) {
+		echo 'Erreur '.$mail->ErrorInfo;
 	} else {
-		echo 'Message Envoyé';
-		die();
+		echo 'Envoyé';
 	}
+}
+
+function createInitTokenUserId($id_user) {
+	if((!isset($id_user)) || $id_user == "" )
+		return false;
+
+	$token = bin2hex(random_bytes(48));
+	$query = $GLOBALS['db']->prepare("INSERT INTO tokens (id_user, type, value, id_owner) VALUES (:id_user, :type, :token, :id_owner)");
+	$query->bindParam(":id_user", $id_user, PDO::PARAM_INT);
+	$query->bindParam(":token", $token);
+	$query->bindParam(":id_owner", $_SESSION['id_user']);
+	$query->bindParam(":type", $GLOBALS['config']['database']['token_types']['initAccount']);
+	$query->execute();
+	return $token;
+}
+
+function getUserTokens($id_user) {
+	$query = $GLOBALS['db']->prepare("SELECT * FROM tokens WHERE id_owner=:id_user");
+	$query->bindParam(":id_user", $id_user);
+	$query->execute();
+	$rep = $query->fetchAll();
+	if($rep == NULL)
+		return false;
+	return $rep;
+}
+
+function getTokenById($token) {
+	$query = $GLOBALS['db']->prepare("SELECT * FROM tokens WHERE id=:id");
+	$query->bindParam(":id", $token);
+	$query->execute();
+	$rep = $query->fetch();
+	if($rep == NULL)
+		return false;
+	return $rep;
+}
+
+function getToken($token) {
+	$query = $GLOBALS['db']->prepare("SELECT * FROM tokens WHERE value=:value AND type=:type AND used=0");
+	$query->bindParam(":value", $token);
+	$query->bindParam(":type", $GLOBALS['config']['database']['token_types']['initAccount']);
+	$query->execute();
+	$rep = $query->fetch();
+	if($rep == NULL)
+		return false;
+	return $rep;
+}
+
+function getInitTokenUserId($token) {
+	$rep = getToken($token);
+	if($rep == NULL)
+		return false;
+	return $rep['id_user'];
+}
+
+function useToken($token) {
+	$rep = getToken($token);
+	$query = $GLOBALS['db']->prepare("UPDATE tokens SET used=1 WHERE value=:value AND id=:id AND type=:type AND id_user=:id_user");
+	$query->bindParam(":value", $rep['value']);
+	$query->bindParam(":type", $rep['type']);
+	$query->bindParam(":id", $rep['id']);
+	$query->bindParam(":id_user", $rep['id_user']);
+	$query->execute();
+	return $query;
+}
+
+function delToken($id) {
+	$query = $GLOBALS['db']->prepare("DELETE FROM tokens WHERE id=:id");
+	$query->bindParam(":id", $id);
+	if (! $query->execute())
+		return false;
+	return true;
 }
 
 

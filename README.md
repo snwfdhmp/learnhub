@@ -2,19 +2,15 @@
 
 First year web project at Ecole Centrale de Lille (IG2I).
 
-Le repo : https://github.com/snwfdhmp/MPM
+Le repo : https://github.com/snwfdhmp/learnhub
 
 #TODO next
 
 - Notifications
-- Messages
-- Doctype
-- create chapitres, promo and school
-- button download doc
-- profile page
-- ajout automatique de comptes (avec activation par email)
-- ajouter liens à chaque fois que possible
-- delete commentaire
+- Ajout de notes
+- Event schedule
+- Comptes profs
+- Classement élève par matière (+ possibilité de refuser d'être classé)
 
 #Notes
 

@@ -31,7 +31,7 @@ include_once "../lib/views.funcs.php"
 		<div class="container" id="main-container">
 			<h1>Bienvenue sur LearnHub <? if($auth->isAuthenticated()) echo $_SESSION['prenom']. " !"?></h1><br/>
 			<? if($auth->isAuthenticated()) {?>
-			<h2>Vous n'avez aucune notification. Vous pouvez néanmoins <a href="?u=addCourse">poster un cours</a></h2>	
+			<h2>Vous n'avez aucune notification. Vous pouvez néanmoins <a href="?u=addCourse">poster un cours</a></h2>
 			<? if (adminOnly()) {
 				echo "<h3>En tant qu'admin vous pouvez changer de promo pour la session :</h3>";
 				echo "<h3>";
